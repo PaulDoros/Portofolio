@@ -1,0 +1,22 @@
+{
+  "framework": "remix",
+  "buildCommand": "remix build",
+  "devCommand": "remix dev",
+  "installCommand": "npm install",
+  "outputDirectory": "public",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
+  ]
+} 
