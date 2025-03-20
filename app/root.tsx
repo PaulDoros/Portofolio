@@ -66,9 +66,9 @@ export function ErrorBoundary() {
         <head>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <title>{`Oops! ${error.status}`}</title>
           <Meta />
           <Links />
-          <title>Oops! {error.status}</title>
         </head>
         <body className="flex h-full items-center justify-center">
           <div className="p-8 text-center">
@@ -93,9 +93,9 @@ export function ErrorBoundary() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Oh no!</title>
         <Meta />
         <Links />
-        <title>Oh no!</title>
       </head>
       <body className="flex h-full items-center justify-center">
         <div className="p-8 text-center">
