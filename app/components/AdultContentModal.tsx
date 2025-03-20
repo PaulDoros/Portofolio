@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+} from './ui/dialog';
 
 interface AdultContentModalProps {
   isOpen: boolean;
@@ -15,26 +15,29 @@ interface AdultContentModalProps {
   siteName: string;
 }
 
-export function AdultContentModal({ isOpen, onClose, onConfirm, siteName }: AdultContentModalProps) {
+export function AdultContentModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  siteName,
+}: AdultContentModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Adult Content Warning</DialogTitle>
           <DialogDescription>
-            You are about to visit {siteName}, which contains adult content. By clicking continue, 
+            You are about to visit {siteName}, which contains adult content. By clicking continue,
             you confirm that you are at least 18 years old and wish to view adult content.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex justify-end gap-2 mt-4">
+        <DialogFooter className="mt-4 flex justify-end gap-2">
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={onConfirm}>
-            Continue
-          </Button>
+          <Button onClick={onConfirm}>Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-} 
+}
