@@ -1,14 +1,13 @@
-import { AlertTriangle, Shield, X, Lock } from 'lucide-react';
-import { Button } from '~/components/ui/button';
+import { AlertTriangle, Shield, X, Lock } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
-} from '~/components/ui/dialog';
-import { motion } from 'framer-motion';
+} from "~/components/ui/dialog";
+import { motion } from "framer-motion";
 
 interface AdultContentModalProps {
   isOpen: boolean;
@@ -67,8 +66,10 @@ export function AdultContentModal({
               </div>
               <div className="space-y-2">
                 <DialogDescription className="text-base">
-                  <span className="font-medium text-foreground">{siteName}</span> contains adult
-                  content. Are you sure you want to proceed?
+                  <span className="font-medium text-foreground">
+                    {siteName}
+                  </span>{" "}
+                  contains adult content. Are you sure you want to proceed?
                 </DialogDescription>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Lock className="h-4 w-4" />

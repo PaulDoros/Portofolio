@@ -1,4 +1,4 @@
-import { Mail, Send, Loader2, Github } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 
@@ -51,8 +51,8 @@ export function ContactForm({ className = "" }: ContactFormProps) {
           from_email: formData.email,
           to_name: "Paul Doros",
           reply_to: formData.email,
+          to_email: emailConfig.recipientEmail,
           email: emailConfig.recipientEmail,
-          recipient: emailConfig.recipientEmail,
           subject: formData.subject,
           message: formData.message,
         },

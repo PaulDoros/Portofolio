@@ -1,10 +1,5 @@
-import { Link } from '@remix-run/react';
-
-import { ThemeToggle } from '~/components/theme-toggle';
-import { Button } from '~/components/ui/button';
-
-import { Footer } from './footer';
-import { NavBar } from './nav-bar';
+import { Footer } from "./footer";
+import { NavBar } from "./nav-bar";
 
 interface LayoutProps {
   children: React.ReactNode;

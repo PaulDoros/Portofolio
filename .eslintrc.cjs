@@ -7,30 +7,33 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   extends: [
-    '@remix-run/eslint-config',
-    '@remix-run/eslint-config/node',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
-  rules: {
-    'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'off',
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: 2020,
+    sourceType: "module",
     ecmaFeatures: {
       jsx: true,
     },
+  },
+  plugins: ["react", "react-hooks", "@typescript-eslint"],
+  rules: {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+  ignorePatterns: ["node_modules", "build", "public", "**.d.ts"],
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
   },
 };
