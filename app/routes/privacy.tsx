@@ -1,6 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 
-
+import { Layout } from '~/components/layout/layout';
 import { Separator } from '~/components/ui/separator';
 
 export const meta: MetaFunction = () => {
@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 
 export default function Privacy() {
   return (
-    <>
+    <Layout>
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-6">Privacy Policy</h1>
@@ -97,6 +97,6 @@ export default function Privacy() {
           </section>
         </div>
       </div>
-    </>
+    </Layout>
   );
 } 

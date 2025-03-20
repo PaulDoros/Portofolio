@@ -4,6 +4,7 @@ import { Github, ExternalLink, Mail, Send, Download } from 'lucide-react';
 import { useState } from 'react';
 
 import { AdultContentModal } from '~/components/AdultContentModal';
+import { Layout } from '~/components/layout/layout';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
@@ -43,7 +44,7 @@ export default function Index() {
   };
 
   return (
-    <>
+    <Layout>
       {/* Hero Section */}
       <section id="hero" className="relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-small-black/[0.05] -z-10" />
@@ -51,9 +52,9 @@ export default function Index() {
         
         <div className="container mx-auto px-4 py-20 md:py-32 flex flex-col items-center justify-center text-center">
           <Badge className="mb-4">Available for Work</Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-content-primary">Paul Ionut Doros</h1>
-          <p className="text-2xl font-medium mb-2 text-content-secondary">Frontend Developer</p>
-          <p className="text-xl text-content-muted max-w-2xl mb-10">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">Paul Ionut Doros</h1>
+          <p className="text-2xl font-medium mb-2">Frontend Developer</p>
+          <p className="text-xl text-muted-foreground max-w-2xl mb-10">
             I build modern, responsive web applications with React, Remix, and TypeScript. 
             Let&apos;s work together to bring your ideas to life.
           </p>
@@ -76,9 +77,9 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-16">
             <Badge className="mb-4">About Me</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-content-primary">My Background</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">My Background</h2>
             <Separator className="w-24 mb-6" />
-            <p className="text-content-muted max-w-2xl">
+            <p className="text-muted-foreground max-w-2xl">
               Learn more about my journey, experience, and what drives me as a developer.
             </p>
           </div>
@@ -92,14 +93,14 @@ export default function Index() {
             </div>
             
             <div className="flex flex-col justify-center text-center">
-              <h3 className="text-2xl font-bold mb-4 text-content-primary">Hi, I&apos;m Paul Ionut Doros</h3>
-              <p className="text-content-muted mb-6">
+              <h3 className="text-2xl font-bold mb-4">Hi, I&apos;m Paul Ionut Doros</h3>
+              <p className="text-muted-foreground mb-6">
                 As a front-end developer, I don&apos;t just write code I create solutions. Over the past couple of years, 
                 I&apos;ve worked on a wide range of tasks, from building responsive, user-friendly features to troubleshooting 
                 complex issues. But what truly sets me apart is my adaptability and willingness to step outside of my role 
                 whenever necessary.
               </p>
-              <p className="text-content-muted mb-6">
+              <p className="text-muted-foreground mb-6">
                 My expertise lies in JavaScript/TypeScript, React, Remix, and React Native. I&apos;m experienced in UI/UX 
                 improvements, implementing animations and transitions, and building reusable component libraries for 
                 optimized development workflows.
@@ -122,9 +123,9 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center mb-16">
             <Badge className="mb-4">My Work</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-content-primary">Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Featured Projects</h2>
             <Separator className="w-24 mb-6" />
-            <p className="text-content-muted max-w-2xl">
+            <p className="text-muted-foreground max-w-2xl">
               A collection of my recent projects demonstrating my skills and capabilities.
             </p>
           </div>
@@ -134,15 +135,15 @@ export default function Index() {
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <img src="/images/devjourney.png" alt="" className="w-full h-full object-cover" />
+                  <span className="text-muted-foreground">Project Image</span>
                 </div>
               </div>
               <CardHeader>
-                <CardTitle className="text-content-primary">Dev Journey</CardTitle>
-                <CardDescription className="text-content-muted">Personal learning and portfolio website</CardDescription>
+                <CardTitle>Dev Journey</CardTitle>
+                <CardDescription>Personal learning and portfolio website</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-sm text-content-muted mb-4">
+                <p className="text-sm text-muted-foreground mb-4">
                   A personal learning and portfolio website with authentication, gamification, and dynamic UI components.
                   Features include themes, user achievements, and interactive UI components.
                 </p>
@@ -172,16 +173,16 @@ export default function Index() {
             {/* Project 2 */}
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
-              <div className="absolute inset-0 blur-xl flex items-center justify-center">
-                  <img src="/images/ai.png" alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-muted-foreground">Project Image</span>
                 </div>
               </div>
               <CardHeader>
-                <CardTitle className="text-content-primary">Kinky AI Chat</CardTitle>
-                <CardDescription className="text-content-muted">Real-Time AI Chat System</CardDescription>
+                <CardTitle>Kinky AI Chat</CardTitle>
+                <CardDescription>Real-Time AI Chat System</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-sm text-content-muted mb-4">
+                <p className="text-sm text-muted-foreground mb-4">
                   A real-time AI-powered chat platform with message filtering, smart auto-suggestions, and user tagging.
                   Built with WebSockets for instant message delivery.
                 </p>
@@ -214,16 +215,16 @@ export default function Index() {
             {/* Project 3 */}
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
-              <div className="absolute inset-0 blur-xl flex items-center justify-center">
-                  <img src="/images/clips.png" alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-muted-foreground">Project Image</span>
                 </div>
               </div>
               <CardHeader>
-                <CardTitle className="text-content-primary">KinkyClips</CardTitle>
-                <CardDescription className="text-content-muted">Mobile & Web Application</CardDescription>
+                <CardTitle>KinkyClips</CardTitle>
+                <CardDescription>Mobile & Web Application</CardDescription>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-sm text-content-muted mb-4">
+                <p className="text-sm text-muted-foreground mb-4">
                   Developed a React Native mobile app for both Google Play Store & Apple App Store with advanced
                   video processing, adaptive streaming, and admin dashboard.
                 </p>
@@ -377,8 +378,8 @@ export default function Index() {
             <p className="text-muted-foreground max-w-2xl">
               Have a project in mind or just want to say hello? Feel free to reach out!
             </p>
-        </div>
-
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
               <h3 className="text-xl font-semibold mb-6">Send Me a Message</h3>
@@ -569,11 +570,11 @@ export default function Index() {
 
       <AdultContentModal
         isOpen={modalState.isOpen}
-        siteName={modalState.siteName}
-        onConfirm={handleConfirm}
         onClose={handleClose}
+        onConfirm={handleConfirm}
+        siteName={modalState.siteName}
       />
-    </>
+    </Layout>
   );
 }
 

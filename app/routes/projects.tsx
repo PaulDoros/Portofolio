@@ -20,7 +20,6 @@ export default function Projects() {
     {
       id: 1,
       title: 'Dev Journey',
-      projectImage: '/images/devjourney.png',
       description: 'Personal learning and portfolio website',
       content: 'A personal learning and portfolio website, created to experiment with modern frontend development techniques and improve hands-on experience with Remix, React, and TypeScript. Features include authentication, gamification, and dynamic UI components.',
       technologies: ['Remix', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Framer Motion'],
@@ -30,7 +29,6 @@ export default function Projects() {
     {
       id: 2,
       title: 'Kinky AI Chat',
-      projectImage: '/images/ai.png',
       description: 'Real-Time AI Chat System',
       content: 'A real-time AI-powered chat platform, designed for seamless user interactions, message filtering, and smart auto-suggestions. Built with React.js & Next.js, utilizing WebSockets for instant message delivery.',
       technologies: ['React.js', 'Next.js', 'WebSockets', 'AI Integration', 'TypeScript'],
@@ -40,7 +38,6 @@ export default function Projects() {
     {
       id: 3,
       title: 'KinkyClips',
-      projectImage: '/images/clips.png',
       description: 'Mobile & Web Application',
       content: 'Developed a React Native mobile app for both Google Play Store & Apple App Store. Features include advanced video processing, adaptive streaming, secure payment gateways, and immersive UI effects.',
       technologies: ['React Native', 'Mobile Apps', 'Video Processing', 'Payments'],
@@ -50,7 +47,6 @@ export default function Projects() {
     {
       id: 4,
       title: 'Admin Dashboard for KinkyClips',
-      projectImage: '/images/dashboard.png',
       description: 'Content Moderation & Analytics Platform',
       content: 'A dedicated admin panel built to manage content, users, and financial transactions for the KinkyClips platform. Includes advanced analytics and automation tools for efficient moderation.',
       technologies: ['React.js', 'Analytics', 'Stripe API', 'Content Moderation'],
@@ -60,7 +56,6 @@ export default function Projects() {
     {
       id: 5,
       title: 'Secure User Database',
-      projectImage: '/images/secure.png',
       description: 'User Management System',
       content: 'Designed and built a secure user database with encrypted storage, role-based permissions, and API authentication. Features include advanced search and filtering with pagination.',
       technologies: ['Node.js', 'Two-Factor Auth', 'OAuth', 'Session Management'],
@@ -70,7 +65,6 @@ export default function Projects() {
     {
       id: 6,
       title: 'NPM Component Library',
-      projectImage: '/images/npm.png',
       description: 'Reusable UI Components',
       content: 'Built and maintained an NPM dependency containing reusable UI components like modals, sliders, input fields, forms, and notifications. Optimized for React, Remix, and React Native.',
       technologies: ['React.js', 'Tailwind CSS', 'NPM Package', 'Design System'],
@@ -97,11 +91,7 @@ export default function Projects() {
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-video bg-muted relative">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <img 
-                      src={project.projectImage} 
-                      alt="" 
-                      className={`w-full h-full object-cover ${(project.id === 2 || project.id === 3) ? 'blur-xl' : ''}`}
-                    />
+                    <span className="text-muted-foreground">Project Image</span>
                   </div>
                 </div>
                 <CardHeader>

@@ -12,8 +12,8 @@ import {
   isRouteErrorResponse,
 } from "@remix-run/react";
 
-import { Layout } from "./components/layout/layout";
 import { ThemeProvider } from "./components/theme-provider";
+import type { Theme } from "./components/theme-provider";
 import styles from "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -24,6 +24,25 @@ export const links: LinksFunction = () => [
 export const loader = async () => {
   return json({});
 };
+
+function getInitialTheme(): Theme {
+  // On the server, return system as default
+  if (typeof window === 'undefined') return 'system'
+  
+  try {
+    // Check localStorage
+    const stored = window.localStorage.getItem('theme') as Theme
+    if (stored && (stored === 'light' || stored === 'dark' || stored === 'system')) {
+      return stored
+    }
+
+    // Check system preference
+    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches
+    return systemPreference ? 'dark' : 'light'
+  } catch {
+    return 'system'
+  }
+}
 
 export default function App() {
   return (
@@ -36,11 +55,13 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="antialiased">
-        <ThemeProvider defaultTheme="system">
-          <Layout>
-            <Outlet />
-          </Layout>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <ThemeProvider defaultTheme={getInitialTheme()}>
+          <div className="relative flex min-h-screen flex-col">
+            <div className="flex-1">
+              <Outlet />
+            </div>
+          </div>
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
