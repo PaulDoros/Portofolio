@@ -84,11 +84,11 @@ export default function Index() {
             <div className="w-64 h-64 relative border rounded-xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-primary/5" />
               <div className="absolute inset-0 flex items-center justify-center">
-                  <img src="/img.jpg" alt="Paul Ionut Doros" className="w-full h-full object-cover" />
+                <img src="/img.jpg" alt="Paul Ionut Doros" className="w-full h-full object-cover" />
               </div>
             </div>
             
-            <div className="flex flex-col justify-center text-center">
+            <div className="flex flex-col justify-center text-center max-w-3xl">
               <h3 className="text-2xl font-bold mb-4">Hi, I&apos;m Paul Ionut Doros</h3>
               <p className="text-muted-foreground mb-6">
                 As a front-end developer, I don&apos;t just write code I create solutions. Over the past couple of years, 
@@ -96,11 +96,23 @@ export default function Index() {
                 complex issues. But what truly sets me apart is my adaptability and willingness to step outside of my role 
                 whenever necessary.
               </p>
-              <p className="text-muted-foreground mb-6">
-                My expertise lies in JavaScript/TypeScript, React, Remix, and React Native. I&apos;m experienced in UI/UX 
-                improvements, implementing animations and transitions, and building reusable component libraries for 
-                optimized development workflows.
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-2">
+                  <h4 className="font-semibold">Frontend Development</h4>
+                  <p className="text-sm text-muted-foreground">
+                    My expertise lies in JavaScript/TypeScript, React, Remix, and React Native. I&apos;m experienced in UI/UX 
+                    improvements, implementing animations and transitions, and building reusable component libraries for 
+                    optimized development workflows.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-semibold">Mobile Development</h4>
+                  <p className="text-sm text-muted-foreground">
+                    I&apos;ve developed cross-platform applications using React Native, optimizing for both iOS and Android. 
+                    My experience includes app store deployment, performance optimization, and implementing responsive layouts.
+                  </p>
+                </div>
+              </div>
               <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
                 <Button asChild>
                   <a href="/#contact">Get In Touch</a>
@@ -140,14 +152,26 @@ export default function Index() {
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground mb-4">
-                  A personal learning and portfolio website with authentication, gamification, and dynamic UI components.
-                  Features include themes, user achievements, and interactive UI components.
+                  A comprehensive learning platform that combines portfolio showcasing with interactive learning features. 
+                  Built with modern web technologies and a focus on user engagement.
                 </p>
+                <div className="space-y-2 mb-4">
+                  <h4 className="font-medium text-sm">Key Features:</h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• User authentication and profile management</li>
+                    <li>• Interactive learning modules and progress tracking</li>
+                    <li>• Gamification system with achievements and badges</li>
+                    <li>• Responsive design with dark/light mode</li>
+                    <li>• Dynamic UI components and animations</li>
+                  </ul>
+                </div>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Badge variant="secondary">Remix</Badge>
                   <Badge variant="secondary">React</Badge>
                   <Badge variant="secondary">TypeScript</Badge>
                   <Badge variant="secondary">Tailwind CSS</Badge>
+                  <Badge variant="secondary">Prisma</Badge>
+                  <Badge variant="secondary">PostgreSQL</Badge>
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between mt-auto">
@@ -179,14 +203,26 @@ export default function Index() {
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground mb-4">
-                  A real-time AI-powered chat platform with message filtering, smart auto-suggestions, and user tagging.
-                  Built with WebSockets for instant message delivery.
+                  An advanced AI-powered chat platform featuring real-time communication, 
+                  intelligent message filtering, and personalized user interactions.
                 </p>
+                <div className="space-y-2 mb-4">
+                  <h4 className="font-medium text-sm">Key Features:</h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Real-time messaging with WebSocket integration</li>
+                    <li>• AI-powered message filtering and moderation</li>
+                    <li>• Smart auto-suggestions and context awareness</li>
+                    <li>• User tagging and notification system</li>
+                    <li>• Responsive mobile-first design</li>
+                  </ul>
+                </div>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Badge variant="secondary">React.js</Badge>
                   <Badge variant="secondary">Next.js</Badge>
                   <Badge variant="secondary">WebSockets</Badge>
                   <Badge variant="secondary">AI Integration</Badge>
+                  <Badge variant="secondary">TypeScript</Badge>
+                  <Badge variant="secondary">Tailwind CSS</Badge>
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between mt-auto">
@@ -222,14 +258,26 @@ export default function Index() {
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-sm text-muted-foreground mb-4">
-                  Developed a React Native mobile app for both Google Play Store & Apple App Store with advanced
-                  video processing, adaptive streaming, and admin dashboard.
+                  A cross-platform mobile application with advanced video processing capabilities, 
+                  available on both iOS and Android platforms.
                 </p>
+                <div className="space-y-2 mb-4">
+                  <h4 className="font-medium text-sm">Key Features:</h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Cross-platform mobile app (iOS & Android)</li>
+                    <li>• Advanced video processing and editing</li>
+                    <li>• Adaptive streaming for optimal performance</li>
+                    <li>• Secure payment integration</li>
+                    <li>• Admin dashboard for content management</li>
+                  </ul>
+                </div>
                 <div className="flex flex-wrap gap-2 mt-4">
                   <Badge variant="secondary">React Native</Badge>
                   <Badge variant="secondary">Mobile Apps</Badge>
                   <Badge variant="secondary">Video Processing</Badge>
                   <Badge variant="secondary">Payments</Badge>
+                  <Badge variant="secondary">Firebase</Badge>
+                  <Badge variant="secondary">AWS</Badge>
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between mt-auto">
@@ -345,22 +393,112 @@ export default function Index() {
           
           <div className="mt-16">
             <h3 className="text-xl font-semibold mb-6 text-center">Technologies I Work With</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Badge className="py-2 px-4">JavaScript</Badge>
-              <Badge className="py-2 px-4">TypeScript</Badge>
-              <Badge className="py-2 px-4">React.js</Badge>
-              <Badge className="py-2 px-4">Next.js</Badge>
-              <Badge className="py-2 px-4">Remix</Badge>
-              <Badge className="py-2 px-4">React Native</Badge>
-              <Badge className="py-2 px-4">Vue.js</Badge>
-              <Badge className="py-2 px-4">Tailwind CSS</Badge>
-              <Badge className="py-2 px-4">Framer Motion</Badge>
-              <Badge className="py-2 px-4">Zustand</Badge>
-              <Badge className="py-2 px-4">Redux</Badge>
-              <Badge className="py-2 px-4">JWT/OAuth</Badge>
-              <Badge className="py-2 px-4">Figma</Badge>
-              <Badge className="py-2 px-4">Git</Badge>
-              <Badge className="py-2 px-4">Vercel</Badge>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="space-y-4">
+                <h4 className="font-medium">Frontend</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="py-2 px-4">JavaScript</Badge>
+                  <Badge className="py-2 px-4">TypeScript</Badge>
+                  <Badge className="py-2 px-4">React.js</Badge>
+                  <Badge className="py-2 px-4">Next.js</Badge>
+                  <Badge className="py-2 px-4">Remix</Badge>
+                  <Badge className="py-2 px-4">React Native</Badge>
+                  <Badge className="py-2 px-4">Vue.js</Badge>
+                  <Badge className="py-2 px-4">Tailwind CSS</Badge>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-medium">UI/UX</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="py-2 px-4">Framer Motion</Badge>
+                  <Badge className="py-2 px-4">GSAP</Badge>
+                  <Badge className="py-2 px-4">Chakra UI</Badge>
+                  <Badge className="py-2 px-4">Bootstrap</Badge>
+                  <Badge className="py-2 px-4">SASS</Badge>
+                  <Badge className="py-2 px-4">Styled Components</Badge>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-medium">State & Data</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="py-2 px-4">Zustand</Badge>
+                  <Badge className="py-2 px-4">Redux</Badge>
+                  <Badge className="py-2 px-4">JWT/OAuth</Badge>
+                  <Badge className="py-2 px-4">GraphQL</Badge>
+                  <Badge className="py-2 px-4">WebSockets</Badge>
+                  <Badge className="py-2 px-4">REST APIs</Badge>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h4 className="font-medium">Tools & DevOps</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="py-2 px-4">Git</Badge>
+                  <Badge className="py-2 px-4">Figma</Badge>
+                  <Badge className="py-2 px-4">Vercel</Badge>
+                  <Badge className="py-2 px-4">Firebase</Badge>
+                  <Badge className="py-2 px-4">AWS Lambda</Badge>
+                  <Badge className="py-2 px-4">Jira</Badge>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center text-center mb-16">
+            <Badge className="mb-4">Recommendations</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">What People Say</h2>
+            <Separator className="w-24 mb-6" />
+            <p className="text-muted-foreground max-w-2xl">
+              Testimonials from colleagues and clients I&apos;ve worked with.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-card rounded-lg p-8 shadow-lg">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="rounded-full bg-primary/10 p-3">
+                  <svg 
+                    className="h-6 w-6 text-primary" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold">Robert Pop</h4>
+                  <p className="text-sm text-muted-foreground">Co-Founder & CEO | Director of Technology | Product Developer</p>
+                </div>
+              </div>
+              <blockquote className="text-lg italic mb-6">
+                "I highly recommend working with Paul. His enthusiasm and quick thinking helped our development move forward. His ability to quickly adapt to our ever-changing business requirements is a big plus."
+              </blockquote>
+              <div className="flex items-center justify-between">
+                <a 
+                  href="https://robipop.dev" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline"
+                >
+                  robipop.dev
+                </a>
+                <a 
+                  href="tel:+40755640939" 
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  +40 755 640 939
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -437,7 +575,7 @@ export default function Index() {
                   Send Message
                 </Button>
               </form>
-        </div>
+            </div>
 
             <div>
               <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
