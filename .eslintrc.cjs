@@ -7,18 +7,18 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   extends: [
-    "@remix-run/eslint-config",
-    "@remix-run/eslint-config/node",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
+    '@remix-run/eslint-config',
+    '@remix-run/eslint-config/node',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
   ],
   rules: {
-    "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
   },
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
   },
   env: {
@@ -27,8 +27,8 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },

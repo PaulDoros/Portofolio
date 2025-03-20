@@ -6,17 +6,25 @@ import { Separator } from '~/components/ui/separator';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
+  const footerLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/#about' },
+    { name: 'Experience', href: '/experience' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'Contact', href: '/#contact' },
+  ];
+
   return (
     <footer className="bg-muted py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-lg font-semibold mb-4">Paul Doros</h3>
-            <p className="text-muted-foreground max-w-xs">
+            <h3 className="mb-4 text-lg font-semibold">Paul Doros</h3>
+            <p className="max-w-xs text-muted-foreground">
               Frontend Developer specializing in React, Remix, and modern web technologies.
             </p>
-            <div className="flex items-center gap-3 mt-4">
+            <div className="mt-4 flex items-center gap-3">
               <Button variant="ghost" size="icon" aria-label="GitHub" asChild>
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                   <Github className="h-5 w-5" />
@@ -39,30 +47,24 @@ export function Footer() {
               </Button>
             </div>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-4">Navigation</h3>
+            <h3 className="mb-4 text-lg font-semibold">Navigation</h3>
             <nav className="flex flex-col gap-2">
-              <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
-                Home
-              </Link>
-              <Link to="/#about" className="text-muted-foreground hover:text-foreground transition-colors">
-                About
-              </Link>
-              <Link to="/#projects" className="text-muted-foreground hover:text-foreground transition-colors">
-                Projects
-              </Link>
-              <Link to="/#skills" className="text-muted-foreground hover:text-foreground transition-colors">
-                Skills
-              </Link>
-              <Link to="/#contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                Contact
-              </Link>
+              {footerLinks.map(link => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.name}
+                </Link>
+              ))}
             </nav>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <h3 className="mb-4 text-lg font-semibold">Contact</h3>
             <address className="not-italic text-muted-foreground">
               <p>Email: dorospaul26@gmail.com</p>
               <p className="mt-2">Phone: +40 756 436 531</p>
@@ -73,18 +75,18 @@ export function Footer() {
             </Button>
           </div>
         </div>
-        
+
         <Separator className="my-8" />
-        
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-muted-foreground">
             © {currentYear} Paul Doros. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <Link to="/privacy" className="hover:text-foreground transition-colors">
+            <Link to="/privacy" className="transition-colors hover:text-foreground">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-foreground transition-colors">
+            <Link to="/terms" className="transition-colors hover:text-foreground">
               Terms of Service
             </Link>
           </div>
@@ -92,4 +94,4 @@ export function Footer() {
       </div>
     </footer>
   );
-} 
+}

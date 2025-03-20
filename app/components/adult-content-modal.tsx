@@ -1,5 +1,5 @@
-import { AlertTriangle, Shield, X, Lock } from "lucide-react";
-import { Button } from "~/components/ui/button";
+import { AlertTriangle, Shield, X, Lock } from 'lucide-react';
+import { Button } from '~/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "~/components/ui/dialog";
-import { motion } from "framer-motion";
+} from '~/components/ui/dialog';
+import { motion } from 'framer-motion';
 
 interface AdultContentModalProps {
   isOpen: boolean;
@@ -25,20 +25,23 @@ export function AdultContentModal({
 }: AdultContentModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] p-0 overflow-hidden border-0" onPointerDownOutside={onClose}>
+      <DialogContent
+        className="overflow-hidden border-0 p-0 sm:max-w-[425px]"
+        onPointerDownOutside={onClose}
+      >
         <div className="relative">
-          <div className="absolute top-4 right-4 z-10">
+          <div className="absolute right-4 top-4 z-10">
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-full hover:bg-destructive/10 hover:text-destructive transition-colors"
+              className="h-8 w-8 rounded-full transition-colors hover:bg-destructive/10 hover:text-destructive"
               onClick={onClose}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
           <div className="bg-gradient-to-br from-destructive/20 to-destructive/10 p-6">
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.2 }}
@@ -47,11 +50,13 @@ export function AdultContentModal({
               <div className="rounded-full bg-destructive/20 p-2 ring-2 ring-destructive/20">
                 <AlertTriangle className="h-5 w-5 text-destructive" />
               </div>
-              <DialogTitle className="text-destructive font-bold">Adult Content Warning</DialogTitle>
+              <DialogTitle className="font-bold text-destructive">
+                Adult Content Warning
+              </DialogTitle>
             </motion.div>
           </div>
           <div className="p-6">
-            <motion.div 
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.2 }}
@@ -62,8 +67,8 @@ export function AdultContentModal({
               </div>
               <div className="space-y-2">
                 <DialogDescription className="text-base">
-                  <span className="font-medium text-foreground">{siteName}</span> contains adult content. 
-                  Are you sure you want to proceed?
+                  <span className="font-medium text-foreground">{siteName}</span> contains adult
+                  content. Are you sure you want to proceed?
                 </DialogDescription>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Lock className="h-4 w-4" />
@@ -78,18 +83,14 @@ export function AdultContentModal({
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.2 }}
-            className="flex gap-3 w-full"
+            className="flex w-full gap-3"
           >
-            <Button 
-              variant="outline" 
-              onClick={onClose}
-              className="flex-1"
-            >
+            <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button 
-              onClick={onConfirm} 
-              className="flex-1 bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+            <Button
+              onClick={onConfirm}
+              className="flex-1 bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Proceed
             </Button>
@@ -98,4 +99,4 @@ export function AdultContentModal({
       </DialogContent>
     </Dialog>
   );
-} 
+}
