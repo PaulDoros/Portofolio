@@ -33,32 +33,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const config = {
-    emailjs: {
-      serviceId: process.env.EMAILJS_SERVICE_ID,
-      templateId: process.env.EMAILJS_TEMPLATE_ID,
-      publicKey: process.env.EMAILJS_PUBLIC_KEY,
-    },
-  };
-
-  // Log the config for debugging (remove in production)
-  console.log("EmailJS Config:", {
-    serviceId: config.emailjs.serviceId,
-    templateId: config.emailjs.templateId,
-    publicKey: config.emailjs.publicKey ? "Present" : "Missing",
-  });
-
-  if (
-    !config.emailjs.serviceId ||
-    !config.emailjs.templateId ||
-    !config.emailjs.publicKey
-  ) {
-    throw new Error(
-      "EmailJS configuration is missing. Please check your environment variables.",
-    );
-  }
-
-  return json(config);
+  return json({});
 };
 
 export default function Index() {

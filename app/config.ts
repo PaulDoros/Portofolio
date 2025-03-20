@@ -1,9 +1,19 @@
-// This file contains configuration that is injected at build time
-// These values are still client-accessible but not directly visible in the source code
+// This file contains client-side configuration using environment variables
+
+interface EnvVars {
+  EMAILJS_PUBLIC_KEY?: string;
+  EMAILJS_SERVICE_ID?: string;
+  EMAILJS_TEMPLATE_ID?: string;
+  RECIPIENT_EMAIL?: string;
+  [key: string]: string | undefined;
+}
+
+const envVars: EnvVars =
+  typeof process !== "undefined" && process.env ? process.env : {};
 
 export const emailConfig = {
-  publicKey: "Xw9u_u66agMT3Haie", // Will be replaced during build
-  serviceId: "service_ai7vj4x", // Will be replaced during build
-  templateId: "template_zf40apm", // Will be replaced during build
-  recipientEmail: "dorospaul26@gmail.com", // Will be replaced during build
+  publicKey: envVars.EMAILJS_PUBLIC_KEY,
+  serviceId: envVars.EMAILJS_SERVICE_ID,
+  templateId: envVars.EMAILJS_TEMPLATE_ID,
+  recipientEmail: envVars.RECIPIENT_EMAIL,
 };

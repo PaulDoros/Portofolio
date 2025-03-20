@@ -4,14 +4,12 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "prebuild": "node ./scripts/replace-env.js",
-    "build": "npx @remix-run/dev build",
-    "predev": "node ./scripts/replace-env.js",
-    "dev": "npx @remix-run/dev",
+    "dev": "remix dev",
+    "build": "remix build",
     "start": "npx @remix-run/serve ./build/index.js --port 3000",
     "typecheck": "tsc -b",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "format": "prettier --write . --ignore-path ./.prettierignore"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
