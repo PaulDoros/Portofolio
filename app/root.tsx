@@ -14,10 +14,10 @@ import {
 
 import { ThemeProvider } from "./components/theme-provider";
 import type { Theme } from "./components/theme-provider";
-import styles from "./tailwind.css";
+import tailwindStyles from "./tailwind.css";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: tailwindStyles },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
@@ -27,20 +27,25 @@ export const loader = async () => {
 
 function getInitialTheme(): Theme {
   // On the server, return system as default
-  if (typeof window === 'undefined') return 'system'
-  
+  if (typeof window === "undefined") return "system";
+
   try {
     // Check localStorage
-    const stored = window.localStorage.getItem('theme') as Theme
-    if (stored && (stored === 'light' || stored === 'dark' || stored === 'system')) {
-      return stored
+    const stored = window.localStorage.getItem("theme") as Theme;
+    if (
+      stored &&
+      (stored === "light" || stored === "dark" || stored === "system")
+    ) {
+      return stored;
     }
 
     // Check system preference
-    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches
-    return systemPreference ? 'dark' : 'light'
+    const systemPreference = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    return systemPreference ? "dark" : "light";
   } catch {
-    return 'system'
+    return "system";
   }
 }
 
@@ -50,8 +55,14 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Professional portfolio showcasing my projects, skills, and experience" />
-        <meta name="keywords" content="portfolio, developer, web development, projects" />
+        <meta
+          name="description"
+          content="Professional portfolio showcasing my projects, skills, and experience"
+        />
+        <meta
+          name="keywords"
+          content="portfolio, developer, web development, projects"
+        />
         <Meta />
         <Links />
       </head>
@@ -73,7 +84,7 @@ export default function App() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  
+
   if (isRouteErrorResponse(error)) {
     return (
       <html lang="en" className="h-full">
@@ -84,12 +95,14 @@ export function ErrorBoundary() {
           <Links />
           <title>Oops! {error.status}</title>
         </head>
-        <body className="h-full flex items-center justify-center">
-          <div className="text-center p-8">
-            <h1 className="text-4xl font-bold mb-4">
+        <body className="flex h-full items-center justify-center">
+          <div className="p-8 text-center">
+            <h1 className="mb-4 text-4xl font-bold">
               {error.status} - {error.statusText}
             </h1>
-            <p className="mb-6">{error.data.message || "Something went wrong"}</p>
+            <p className="mb-6">
+              {error.data.message || "Something went wrong"}
+            </p>
             <a href="/" className="text-blue-600 hover:underline">
               Go back home
             </a>
@@ -109,10 +122,12 @@ export function ErrorBoundary() {
         <Links />
         <title>Oh no!</title>
       </head>
-      <body className="h-full flex items-center justify-center">
-        <div className="text-center p-8">
-          <h1 className="text-4xl font-bold mb-4">Something went wrong</h1>
-          <p className="mb-6">Please try again later or contact support if the problem persists.</p>
+      <body className="flex h-full items-center justify-center">
+        <div className="p-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold">Something went wrong</h1>
+          <p className="mb-6">
+            Please try again later or contact support if the problem persists.
+          </p>
           <a href="/" className="text-blue-600 hover:underline">
             Go back home
           </a>
