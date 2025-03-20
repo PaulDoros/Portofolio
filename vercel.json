@@ -1,7 +1,7 @@
 {
   "framework": "remix",
-  "buildCommand": "remix build",
-  "devCommand": "remix dev",
+  "buildCommand": "npx @remix-run/dev build",
+  "devCommand": "npx @remix-run/dev",
   "installCommand": "npm install",
   "outputDirectory": "public",
   "routes": [
@@ -9,7 +9,8 @@
       "src": "/(.*)",
       "headers": {
         "cache-control": "public, max-age=0, must-revalidate"
-      }
+      },
+      "continue": true
     },
     {
       "handle": "filesystem"

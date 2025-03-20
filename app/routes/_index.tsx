@@ -1,17 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import {
-  Github,
-  ExternalLink,
-  Mail,
-  Send,
-  Download,
-  Loader2,
-} from "lucide-react";
-import { useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
+import { Github, ExternalLink, Mail, Download } from "lucide-react";
+import { useState } from "react";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 
 import { AdultContentModal } from "~/components/adult-content-modal";
 import { Layout } from "~/components/layout/layout";
@@ -27,7 +18,7 @@ import {
 } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { Separator } from "~/components/ui/separator";
-import { EmailStatusModal } from "~/components/email-status-modal";
+
 import { ContactForm } from "~/components/contact-form";
 
 export const meta: MetaFunction = () => {

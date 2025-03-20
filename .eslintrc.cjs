@@ -24,13 +24,22 @@ module.exports = {
   rules: {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
+    "react/no-unescaped-entities": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-var-requires": "off",
   },
   settings: {
     react: {
       version: "detect",
     },
   },
-  ignorePatterns: ["node_modules", "build", "public", "**.d.ts"],
+  ignorePatterns: [
+    "node_modules",
+    "build",
+    "public",
+    "**/*.d.ts",
+    "remix.init",
+  ],
   env: {
     browser: true,
     node: true,
