@@ -1,7 +1,9 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Github, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
 
 import { Layout } from '~/components/layout/layout';
+import { AdultContentModal } from '~/components/adult-content-modal';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
@@ -15,11 +17,32 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Projects() {
+  const [showAdultWarning, setShowAdultWarning] = useState(false);
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+  const [pendingSiteName, setPendingSiteName] = useState<string>("");
+
+  const handleAdultLinkClick = (url: string, siteName: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setPendingUrl(url);
+    setPendingSiteName(siteName);
+    setShowAdultWarning(true);
+  };
+
+  const handleConfirmAdultContent = () => {
+    if (pendingUrl) {
+      window.open(pendingUrl, '_blank');
+      setShowAdultWarning(false);
+      setPendingUrl(null);
+      setPendingSiteName("");
+    }
+  };
+
   // This could be loaded from a backend source in a real application
   const projects = [
     {
       id: 1,
       title: 'Dev Journey',
+      image: '/images/devjourney.png',
       description: 'Personal learning and portfolio website',
       content: 'A personal learning and portfolio website, created to experiment with modern frontend development techniques and improve hands-on experience with Remix, React, and TypeScript. Features include authentication, gamification, and dynamic UI components.',
       technologies: ['Remix', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Framer Motion'],
@@ -29,6 +52,7 @@ export default function Projects() {
     {
       id: 2,
       title: 'Kinky AI Chat',
+      image: '/images/ai.png',
       description: 'Real-Time AI Chat System',
       content: 'A real-time AI-powered chat platform, designed for seamless user interactions, message filtering, and smart auto-suggestions. Built with React.js & Next.js, utilizing WebSockets for instant message delivery.',
       technologies: ['React.js', 'Next.js', 'WebSockets', 'AI Integration', 'TypeScript'],
@@ -38,6 +62,7 @@ export default function Projects() {
     {
       id: 3,
       title: 'KinkyClips',
+      image: '/images/clips.png',
       description: 'Mobile & Web Application',
       content: 'Developed a React Native mobile app for both Google Play Store & Apple App Store. Features include advanced video processing, adaptive streaming, secure payment gateways, and immersive UI effects.',
       technologies: ['React Native', 'Mobile Apps', 'Video Processing', 'Payments'],
@@ -47,6 +72,7 @@ export default function Projects() {
     {
       id: 4,
       title: 'Admin Dashboard for KinkyClips',
+      image: '/images/dashboard.png',
       description: 'Content Moderation & Analytics Platform',
       content: 'A dedicated admin panel built to manage content, users, and financial transactions for the KinkyClips platform. Includes advanced analytics and automation tools for efficient moderation.',
       technologies: ['React.js', 'Analytics', 'Stripe API', 'Content Moderation'],
@@ -56,6 +82,7 @@ export default function Projects() {
     {
       id: 5,
       title: 'Secure User Database',
+      image: '/images/secure.png',
       description: 'User Management System',
       content: 'Designed and built a secure user database with encrypted storage, role-based permissions, and API authentication. Features include advanced search and filtering with pagination.',
       technologies: ['Node.js', 'Two-Factor Auth', 'OAuth', 'Session Management'],
@@ -65,6 +92,7 @@ export default function Projects() {
     {
       id: 6,
       title: 'NPM Component Library',
+      image: '/images/npm.png',
       description: 'Reusable UI Components',
       content: 'Built and maintained an NPM dependency containing reusable UI components like modals, sliders, input fields, forms, and notifications. Optimized for React, Remix, and React Native.',
       technologies: ['React.js', 'Tailwind CSS', 'NPM Package', 'Design System'],
@@ -91,7 +119,11 @@ export default function Projects() {
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-video bg-muted relative">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-muted-foreground">Project Image</span>
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className={`w-full h-full object-cover ${[2,3].includes(project.id) ? 'blur-xl' : ''}`}
+                    />
                   </div>
                 </div>
                 <CardHeader>
@@ -115,8 +147,12 @@ export default function Projects() {
                       Code
                     </a>
                   </Button>
-                  <Button size="sm" asChild>
-                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                  <Button 
+                    size="sm" 
+                    asChild
+                    onClick={[2,3].includes(project.id) ? handleAdultLinkClick(project.demoUrl, project.title) : undefined}
+                  >
+                    <a href={[2,3].includes(project.id) ? '#' : project.demoUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4" />
                       Demo
                     </a>
@@ -132,6 +168,17 @@ export default function Projects() {
             </Button>
           </div>
         </div>
+
+        <AdultContentModal
+          isOpen={showAdultWarning}
+          onClose={() => {
+            setShowAdultWarning(false);
+            setPendingUrl(null);
+            setPendingSiteName("");
+          }}
+          onConfirm={handleConfirmAdultContent}
+          siteName={pendingSiteName}
+        />
       </section>
     </Layout>
   );

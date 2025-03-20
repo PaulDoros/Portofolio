@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react";
 import { Github, ExternalLink, Mail, Send, Download } from 'lucide-react';
 import { useState } from 'react';
 
-import { AdultContentModal } from '~/components/AdultContentModal';
+import { AdultContentModal } from '~/components/adult-content-modal';
 import { Layout } from '~/components/layout/layout';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -19,28 +19,24 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const [modalState, setModalState] = useState<{
-    isOpen: boolean;
-    url: string;
-    siteName: string;
-  }>({
-    isOpen: false,
-    url: '',
-    siteName: '',
-  });
+  const [showAdultWarning, setShowAdultWarning] = useState(false);
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+  const [pendingSiteName, setPendingSiteName] = useState<string>("");
 
-  const handleAdultLink = (url: string, siteName: string) => (e: React.MouseEvent) => {
+  const handleAdultLinkClick = (url: string, siteName: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    setModalState({ isOpen: true, url, siteName });
+    setPendingUrl(url);
+    setPendingSiteName(siteName);
+    setShowAdultWarning(true);
   };
 
-  const handleConfirm = () => {
-    window.open(modalState.url, '_blank', 'noopener,noreferrer');
-    setModalState({ isOpen: false, url: '', siteName: '' });
-  };
-
-  const handleClose = () => {
-    setModalState({ isOpen: false, url: '', siteName: '' });
+  const handleConfirmAdultContent = () => {
+    if (pendingUrl) {
+      window.open(pendingUrl, '_blank');
+      setShowAdultWarning(false);
+      setPendingUrl(null);
+      setPendingSiteName("");
+    }
   };
 
   return (
@@ -135,7 +131,7 @@ export default function Index() {
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-muted-foreground">Project Image</span>
+                  <img src="/images/devjourney.png" alt="Dev Journey Project Screenshot" className="w-full h-full object-cover" />
                 </div>
               </div>
               <CardHeader>
@@ -173,8 +169,8 @@ export default function Index() {
             {/* Project 2 */}
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-muted-foreground">Project Image</span>
+                <div className="absolute inset-0 flex items-center justify-center blur-xl">
+                  <img src="/images/ai.png" alt="Kinky AI Chat Project Screenshot" className="w-full h-full object-cover" />
                 </div>
               </div>
               <CardHeader>
@@ -203,7 +199,8 @@ export default function Index() {
                 <Button size="sm" asChild>
                   <a 
                     href="https://chat.kink.ai" 
-                    onClick={handleAdultLink('https://chat.kink.ai', 'Kinky AI Chat')}
+                    onClick={handleAdultLinkClick('https://chat.kink.ai', 'Kinky AI Chat')}
+                    className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Demo
@@ -215,8 +212,8 @@ export default function Index() {
             {/* Project 3 */}
             <Card className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
               <div className="aspect-video bg-muted relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-muted-foreground">Project Image</span>
+                <div className="absolute inset-0 flex items-center justify-center blur-xl">
+                  <img src="/images/clips.png" alt="KinkyClips Project Screenshot" className="w-full h-full object-cover" />
                 </div>
               </div>
               <CardHeader>
@@ -245,7 +242,8 @@ export default function Index() {
                 <Button size="sm" asChild>
                   <a 
                     href="https://kinkyclips.com" 
-                    onClick={handleAdultLink('https://kinkyclips.com', 'KinkyClips')}
+                    onClick={handleAdultLinkClick('https://kinkyclips.com', 'KinkyClips')}
+                    className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Demo
@@ -569,10 +567,14 @@ export default function Index() {
       </section>
 
       <AdultContentModal
-        isOpen={modalState.isOpen}
-        onClose={handleClose}
-        onConfirm={handleConfirm}
-        siteName={modalState.siteName}
+        isOpen={showAdultWarning}
+        onClose={() => {
+          setShowAdultWarning(false);
+          setPendingUrl(null);
+          setPendingSiteName("");
+        }}
+        onConfirm={handleConfirmAdultContent}
+        siteName={pendingSiteName}
       />
     </Layout>
   );
