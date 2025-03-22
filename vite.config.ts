@@ -6,13 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
+    vercelPreset(),
     tailwindcss(),
     remix({
       ignoredRouteFiles: ['**/.*'],
       serverModuleFormat: 'esm',
     }),
     tsconfigPaths(),
-    vercelPreset(),
   ],
   css: {
     transformer: 'lightningcss',

@@ -3,7 +3,7 @@ export default {
   cacheDirectory: './node_modules/.cache/remix',
   ignoredRouteFiles: ['**/.*'],
   serverModuleFormat: 'esm',
-  server: './server.js',
+  server: process.env.NODE_ENV === 'production' ? './server.js' : undefined,
   serverBuildPath: 'build/index.js',
   serverPlatform: 'node',
   future: {
