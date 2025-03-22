@@ -18,8 +18,8 @@ export function Footer() {
   return (
     <footer className="bg-muted py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          <div>
+        <div className="grid grid-cols-1 gap-8 text-center md:grid-cols-3 md:text-left">
+          <div className="flex flex-col items-center md:items-start">
             <h3 className="mb-4 text-lg font-semibold">Paul Doros</h3>
             <p className="max-w-xs text-muted-foreground">
               Frontend Developer specializing in React, Remix, and modern web technologies.
@@ -48,9 +48,9 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h3 className="mb-4 text-lg font-semibold">Navigation</h3>
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col items-center gap-2 md:items-start">
               {footerLinks.map(link => (
                 <Link
                   key={link.name}
@@ -63,7 +63,7 @@ export function Footer() {
             </nav>
           </div>
 
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h3 className="mb-4 text-lg font-semibold">Contact</h3>
             <address className="not-italic text-muted-foreground">
               <p>Email: dorospaul26@gmail.com</p>
@@ -78,7 +78,7 @@ export function Footer() {
 
         <Separator className="my-8" />
 
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 text-center md:flex-row md:text-left">
           <p className="text-sm text-muted-foreground">
             © {currentYear} Paul Doros. All rights reserved.
           </p>
