@@ -1,26 +1,18 @@
 {
   "framework": "remix",
-  "buildCommand": "npx @remix-run/dev build",
-  "devCommand": "npx @remix-run/dev",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "outputDirectory": "public",
-  "git": {
-    "deploymentEnabled": false
-  },
+  "outputDirectory": "build",
   "routes": [
-    {
-      "src": "/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
-      },
-      "continue": true
-    },
-    {
-      "handle": "filesystem"
-    },
     {
       "src": "/(.*)",
       "dest": "/index.js"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
 }

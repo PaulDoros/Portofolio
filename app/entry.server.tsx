@@ -20,6 +20,11 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
+  // Log the URL that's causing issues in production
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`Handling request for: ${request.url}`);
+  }
+
   return isbot(request.headers.get('user-agent'))
     ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
     : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext);
