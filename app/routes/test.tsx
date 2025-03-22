@@ -43,11 +43,11 @@ import { AnimatedPortfolio } from '~/components/portfolios/animated-portfolio';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Paul Ionut Doros | Frontend Developer' },
+    { title: 'Paul Ionut Doros | Portfolio Comparison' },
     {
       name: 'description',
       content:
-        'Professional portfolio of Paul Ionut Doros, Frontend Developer with expertise in React, Remix, and modern web technologies',
+        "Compare classic and animated versions of Paul Ionut Doros's frontend developer portfolio",
     },
   ];
 };
@@ -56,7 +56,7 @@ export const loader = async () => {
   return json({});
 };
 
-export default function Index() {
+export default function TestPage() {
   const [showAdultWarning, setShowAdultWarning] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [pendingSiteName, setPendingSiteName] = useState<string>('');
@@ -79,40 +79,49 @@ export default function Index() {
     }
   };
 
+  // Always render both portfolios but control visibility with CSS
   return (
     <>
-      {showComparison ? (
-        // Comparison view with split screen
-        <div className="relative w-full">
-          {/* Full width container for both portfolios */}
-          <div className="relative w-full">
-            {/* Classic portfolio with mask to show only left half */}
-            <div className="w-full">
-              <div
-                style={{
+      <div className="relative w-full">
+        <div
+          className="classic-portfolio"
+          style={{
+            display: 'block',
+            visibility: !showComparison && activeView !== 'classic' ? 'hidden' : 'visible',
+            ...(showComparison
+              ? {
                   WebkitMaskImage:
                     'linear-gradient(to right, black 0%, black 50%, transparent 50%, transparent 100%)',
                   maskImage:
                     'linear-gradient(to right, black 0%, black 50%, transparent 50%, transparent 100%)',
-                }}
-              >
-                <ClassicPortfolio onAdultLinkClick={handleAdultLinkClick} />
-              </div>
-            </div>
+                }
+              : {}),
+          }}
+        >
+          <ClassicPortfolio key="classic" onAdultLinkClick={handleAdultLinkClick} />
+        </div>
 
-            {/* Animated portfolio with mask to show only right half */}
-            <div
-              className="absolute left-0 top-0 w-full"
-              style={{
-                WebkitMaskImage:
-                  'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
-                maskImage:
-                  'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
-              }}
-            >
-              <AnimatedPortfolio onAdultLinkClick={handleAdultLinkClick} />
-            </div>
+        <div
+          className={`animated-portfolio ${showComparison ? 'absolute left-0 top-0 w-full' : ''}`}
+          style={{
+            display: 'block',
+            visibility: !showComparison && activeView !== 'animated' ? 'hidden' : 'visible',
+            ...(showComparison
+              ? {
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
+                  maskImage:
+                    'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
+                }
+              : {}),
+          }}
+        >
+          <AnimatedPortfolio key="animated" onAdultLinkClick={handleAdultLinkClick} />
+        </div>
 
+        {/* Only render comparison UI when in comparison mode */}
+        {showComparison && (
+          <>
             {/* Divider line */}
             <div className="fixed bottom-0 left-1/2 top-0 z-10 w-1 bg-white shadow-lg" />
 
@@ -131,14 +140,9 @@ export default function Index() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      ) : // Single view based on activeView
-      activeView === 'classic' ? (
-        <ClassicPortfolio onAdultLinkClick={handleAdultLinkClick} />
-      ) : (
-        <AnimatedPortfolio onAdultLinkClick={handleAdultLinkClick} />
-      )}
+          </>
+        )}
+      </div>
 
       {/* Style change button - fixed at bottom */}
       <div className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 transform">
