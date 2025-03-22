@@ -35,7 +35,7 @@ import {
 } from '~/components/ui/card';
 import { Progress } from '~/components/ui/progress';
 import { Separator } from '~/components/ui/separator';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Import the separated portfolio components
 import { ClassicPortfolio } from '~/components/portfolios/classic-portfolio';
@@ -79,7 +79,6 @@ export default function TestPage() {
     }
   };
 
-  // Always render both portfolios but control visibility with CSS
   return (
     <>
       <div className="relative w-full">
@@ -88,6 +87,8 @@ export default function TestPage() {
           style={{
             display: 'block',
             visibility: !showComparison && activeView !== 'classic' ? 'hidden' : 'visible',
+            opacity: !showComparison && activeView !== 'classic' ? 0 : 1,
+            transition: 'opacity 0.3s ease',
             ...(showComparison
               ? {
                   WebkitMaskImage:
@@ -106,6 +107,8 @@ export default function TestPage() {
           style={{
             display: 'block',
             visibility: !showComparison && activeView !== 'animated' ? 'hidden' : 'visible',
+            opacity: !showComparison && activeView !== 'animated' ? 0 : 1,
+            transition: 'opacity 0.3s ease',
             ...(showComparison
               ? {
                   WebkitMaskImage:
