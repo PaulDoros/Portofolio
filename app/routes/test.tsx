@@ -82,53 +82,36 @@ export default function Index() {
   return (
     <>
       {showComparison ? (
-        // Comparison view with split screen
+        // Comparison view using a simpler approach with flexbox and overflow hidden
         <div className="relative w-full">
-          {/* Full width container for both portfolios */}
-          <div className="relative w-full">
-            {/* Classic portfolio with mask to show only left half */}
-            <div className="w-full">
-              <div
-                style={{
-                  WebkitMaskImage:
-                    'linear-gradient(to right, black 0%, black 50%, transparent 50%, transparent 100%)',
-                  maskImage:
-                    'linear-gradient(to right, black 0%, black 50%, transparent 50%, transparent 100%)',
-                }}
-              >
+          <div className="relative flex w-full">
+            {/* Left side - Classic */}
+            <div className="w-1/2 overflow-hidden border-r border-white">
+              <div className="w-[200%]">
                 <ClassicPortfolio onAdultLinkClick={handleAdultLinkClick} />
               </div>
             </div>
 
-            {/* Animated portfolio with mask to show only right half */}
-            <div
-              className="absolute left-0 top-0 w-full"
-              style={{
-                WebkitMaskImage:
-                  'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
-                maskImage:
-                  'linear-gradient(to right, transparent 0%, transparent 50%, black 50%, black 100%)',
-              }}
-            >
-              <AnimatedPortfolio onAdultLinkClick={handleAdultLinkClick} />
+            {/* Right side - Animated */}
+            <div className="w-1/2 overflow-hidden">
+              <div className="-ml-full w-[200%]">
+                <AnimatedPortfolio onAdultLinkClick={handleAdultLinkClick} />
+              </div>
             </div>
+          </div>
 
-            {/* Divider line */}
-            <div className="fixed bottom-0 left-1/2 top-0 z-10 w-1 bg-white shadow-lg" />
-
-            {/* Labels */}
-            <div className="pointer-events-none fixed inset-0 z-20">
-              <div className="flex h-full">
-                <div className="flex w-1/2 items-center justify-center">
-                  <span className="rounded-lg border-2 border-white bg-black/10 px-8 py-4 text-3xl font-bold text-white shadow-lg backdrop-blur-sm">
-                    CLASSIC
-                  </span>
-                </div>
-                <div className="flex w-1/2 items-center justify-center">
-                  <span className="rounded-lg border-2 border-white bg-black/10 px-8 py-4 text-3xl font-bold text-white shadow-lg backdrop-blur-sm">
-                    ANIMATED
-                  </span>
-                </div>
+          {/* Labels */}
+          <div className="pointer-events-none fixed inset-0 z-20">
+            <div className="flex h-full">
+              <div className="flex w-1/2 items-center justify-center">
+                <span className="rounded-lg border-2 border-white bg-black/10 px-8 py-4 text-3xl font-bold text-white shadow-lg backdrop-blur-sm">
+                  CLASSIC
+                </span>
+              </div>
+              <div className="flex w-1/2 items-center justify-center">
+                <span className="rounded-lg border-2 border-white bg-black/10 px-8 py-4 text-3xl font-bold text-white shadow-lg backdrop-blur-sm">
+                  ANIMATED
+                </span>
               </div>
             </div>
           </div>
