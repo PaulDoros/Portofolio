@@ -6,20 +6,23 @@
   "outputDirectory": "build",
   "routes": [
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "dest": "/public/favicon.ico"
     },
     {
       "src": "/images/(.*)",
-      "dest": "/images/$1"
+      "dest": "/public/images/$1"
     },
     {
       "src": "/resume.pdf",
-      "dest": "/resume.pdf"
+      "dest": "/public/resume.pdf"
     },
     {
       "src": "/img.png",
-      "dest": "/img.png"
+      "dest": "/public/img.png"
     },
     {
       "src": "/(.*)",
