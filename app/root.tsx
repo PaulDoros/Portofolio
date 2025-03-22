@@ -43,6 +43,7 @@ export function useAnimationMode() {
   return context;
 }
 
+// This script runs before your app to prevent theme flashing
 function ThemeInit() {
   const themeScript = `
     (function() {
@@ -87,7 +88,6 @@ export default function App() {
           content="Professional portfolio showcasing my projects, skills, and experience"
         />
         <meta name="keywords" content="portfolio, developer, web development, projects" />
-        <link rel="icon" href="/favicon.ico" />
         <ThemeInit />
         <Meta />
         <Links />

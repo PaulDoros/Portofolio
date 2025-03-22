@@ -9,10 +9,6 @@
   },
   "routes": [
     {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
       "src": "/(.*)",
       "headers": {
         "cache-control": "public, max-age=0, must-revalidate"
@@ -24,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/index.js"
     }
   ]
 }
