@@ -1,7 +1,7 @@
 {
   "framework": "remix",
-  "buildCommand": "npx @remix-run/dev build",
-  "devCommand": "npx @remix-run/dev",
   "installCommand": "npm install",
-  "outputDirectory": "build"
+  "buildCommand": "remix build",
+  "outputDirectory": "public",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

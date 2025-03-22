@@ -1,7 +1,8 @@
-import { createRequestHandler } from '@vercel/remix';
+import { createRequestHandler } from '@remix-run/node';
 import * as build from '@remix-run/dev/server-build';
 
-console.log('[Remix Server] Starting server handler...');
+// Log startup
+console.log('Starting Remix server...');
 
 export default createRequestHandler({
   build,
