@@ -1,5 +1,5 @@
 import { createRequestHandler } from '@vercel/remix';
-import * as build from './build/index.js';
+import * as build from '@remix-run/dev/server-build';
 
 export default createRequestHandler({
   build,
