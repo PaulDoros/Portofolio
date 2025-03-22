@@ -10,6 +10,18 @@ import {
 import { useRef } from 'react';
 import { cn } from '~/lib/utils';
 
+// Define proper component types
+type ButtonProps = {
+  borderRadius?: string;
+  children: React.ReactNode;
+  as?: React.ElementType;
+  containerClassName?: string;
+  borderClassName?: string;
+  duration?: number;
+  className?: string;
+  [key: string]: unknown;
+};
+
 export function Button({
   borderRadius = '1.75rem',
   children,
@@ -19,16 +31,7 @@ export function Button({
   duration,
   className,
   ...otherProps
-}: {
-  borderRadius?: string;
-  children: React.ReactNode;
-  as?: any;
-  containerClassName?: string;
-  borderClassName?: string;
-  duration?: number;
-  className?: string;
-  [key: string]: any;
-}) {
+}: ButtonProps) {
   return (
     <Component
       className={cn(
@@ -66,32 +69,61 @@ export function Button({
   );
 }
 
+// Define proper MovingBorder types
+type MovingBorderProps = {
+  children: React.ReactNode;
+  duration?: number;
+  rx?: string;
+  ry?: string;
+  [key: string]: unknown;
+};
+
+// Define types for the methods we need
+type PathMethods = {
+  getTotalLength(): number;
+  getPointAtLength(length: number): { x: number; y: number };
+};
+
 export const MovingBorder = ({
   children,
   duration = 2000,
   rx,
   ry,
   ...otherProps
-}: {
-  children: React.ReactNode;
-  duration?: number;
-  rx?: string;
-  ry?: string;
-  [key: string]: any;
-}) => {
-  const pathRef = useRef<any>();
+}: MovingBorderProps) => {
+  // We use Element and then cast later
+  const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame(time => {
-    const length = pathRef.current?.getTotalLength();
-    if (length) {
-      const pxPerMillisecond = length / duration;
-      progress.set((time * pxPerMillisecond) % length);
+    const path = pathRef.current;
+    if (path) {
+      // Cast to our required methods
+      const length = (path as unknown as PathMethods).getTotalLength();
+      if (length) {
+        const pxPerMillisecond = length / duration;
+        progress.set((time * pxPerMillisecond) % length);
+      }
     }
   });
 
-  const x = useTransform(progress, val => pathRef.current?.getPointAtLength(val).x);
-  const y = useTransform(progress, val => pathRef.current?.getPointAtLength(val).y);
+  const x = useTransform(progress, val => {
+    const path = pathRef.current;
+    if (path) {
+      // Cast to our required methods
+      return (path as unknown as PathMethods).getPointAtLength(val).x;
+    }
+    return 0;
+  });
+
+  const y = useTransform(progress, val => {
+    const path = pathRef.current;
+    if (path) {
+      // Cast to our required methods
+      return (path as unknown as PathMethods).getPointAtLength(val).y;
+    }
+    return 0;
+  });
 
   const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
 
