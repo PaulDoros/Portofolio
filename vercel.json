@@ -3,20 +3,17 @@
   "buildCommand": "npx @remix-run/dev build",
   "devCommand": "npx @remix-run/dev",
   "installCommand": "npm install",
-  "outputDirectory": "build",
-  "public": true,
+  "outputDirectory": "public",
   "routes": [
     {
-      "src": "/build/(.*)",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "src": "/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate"
+      },
       "continue": true
     },
     {
       "handle": "filesystem"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
     },
     {
       "src": "/(.*)",
