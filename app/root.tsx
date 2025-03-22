@@ -43,7 +43,6 @@ export function useAnimationMode() {
   return context;
 }
 
-// This script runs before your app to prevent theme flashing
 function ThemeInit() {
   const themeScript = `
     (function() {
