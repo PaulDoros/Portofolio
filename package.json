@@ -6,6 +6,7 @@
   "scripts": {
     "prebuild": "node ./scripts/replace-env.js",
     "build": "npx @remix-run/dev build",
+    "vercel-build": "node ./scripts/vercel-build.js",
     "predev": "node ./scripts/replace-env.js",
     "dev": "npx @remix-run/dev",
     "start": "npx @remix-run/serve ./build/index.js --port 3000",
