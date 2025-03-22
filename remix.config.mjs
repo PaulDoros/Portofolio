@@ -3,6 +3,9 @@ export default {
   cacheDirectory: './node_modules/.cache/remix',
   ignoredRouteFiles: ['**/.*'],
   serverModuleFormat: 'esm',
+  server: './server.js',
+  serverBuildPath: 'build/index.js',
+  serverPlatform: 'node',
   future: {
     v3_fetcherPersist: true,
     v3_lazyRouteDiscovery: true,
