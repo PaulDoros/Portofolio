@@ -18,11 +18,20 @@ export default defineConfig({
     transformer: 'lightningcss',
   },
   optimizeDeps: {
-    include: ['tailwindcss'],
+    include: ['tailwindcss', 'react', 'react-dom', 'framer-motion'],
   },
   resolve: {
     alias: {
       '~': '/app',
     },
+  },
+  build: {
+    rollupOptions: {
+      // Make sure to bundle React at build time
+      external: [],
+    },
+  },
+  esbuild: {
+    jsxInject: `import React from 'react'`,
   },
 });
