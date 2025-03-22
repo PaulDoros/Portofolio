@@ -13,5 +13,5 @@ export default {
   },
   serverBuildPath: 'api/index.js',
   serverPlatform: 'node',
-  serverDependenciesToBundle: [/^remix-utils.*/, /^framer-motion.*/],
+  serverDependenciesToBundle: [/^remix-utils.*/, /^framer-motion.*/, 'react', 'react-dom'],
 };

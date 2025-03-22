@@ -1,13 +1,20 @@
 {
   "framework": "remix",
-  "buildCommand": "npx @remix-run/dev build",
-  "devCommand": "npx @remix-run/dev",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": "public",
   "git": {
     "deploymentEnabled": false
   },
   "routes": [
+    {
+      "src": "/build/(.+)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
     {
       "src": "/favicon.ico",
       "dest": "/favicon.ico"
