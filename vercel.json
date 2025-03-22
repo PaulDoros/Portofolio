@@ -6,6 +6,22 @@
   "outputDirectory": "build",
   "routes": [
     {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/resume.pdf",
+      "dest": "/resume.pdf"
+    },
+    {
+      "src": "/img.png",
+      "dest": "/img.png"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.js",
       "headers": {

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [
+    "/_assets/*",
+    "/_vercel/*",
+    "/build/*",
+    "/favicon.ico",
+    "/images/*",
+    "/resume.pdf",
+    "/img.png"
+  ]
+} 

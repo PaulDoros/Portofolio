@@ -19,6 +19,7 @@ import tailwindStyles from './tailwind.css';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
+  { rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
 
