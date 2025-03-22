@@ -1,14 +1,14 @@
 {
   "framework": "remix",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
+  "buildCommand": "npx @remix-run/dev build",
+  "devCommand": "npx @remix-run/dev",
   "installCommand": "npm install",
-  "outputDirectory": "build",
+  "outputDirectory": "public",
   "routes": [
     {
-      "src": "/build/(.*)",
+      "src": "/(.*)",
       "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
+        "cache-control": "public, max-age=0, must-revalidate"
       },
       "continue": true
     },
@@ -16,29 +16,8 @@
       "handle": "filesystem"
     },
     {
-      "src": "/favicon.ico",
-      "dest": "/public/favicon.ico"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/public/images/$1"
-    },
-    {
-      "src": "/resume.pdf",
-      "dest": "/public/resume.pdf"
-    },
-    {
-      "src": "/img.png",
-      "dest": "/public/img.png"
-    },
-    {
       "src": "/(.*)",
       "dest": "/index.js"
     }
-  ],
-  "git": {
-    "deploymentEnabled": {
-      "main": true
-    }
-  }
+  ]
 }
