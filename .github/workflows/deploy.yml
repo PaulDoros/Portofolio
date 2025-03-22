@@ -81,7 +81,7 @@ jobs:
       - name: 📥 Install Vercel CLI
         run: npm install --global vercel@latest
 
-      - name: ⚙️ Verify Vercel token
+      - name: Check Vercel Credentials
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
             echo "Error: VERCEL_TOKEN is not set"
@@ -99,18 +99,22 @@ jobs:
           else
             echo "VERCEL_PROJECT_ID is set"
           fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: 🔄 Pull Vercel Environment Information
+      - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      - name: 🏗️ Build Project Artifacts
+      - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      - name: 🚀 Deploy Project Artifacts to Vercel
+      - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
