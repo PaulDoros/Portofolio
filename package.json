@@ -11,7 +11,8 @@
     "start": "remix-serve ./build/index.js",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,json}\"",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "postinstall": "remix setup node"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
