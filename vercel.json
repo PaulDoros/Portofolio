@@ -1,17 +1,13 @@
 {
   "framework": "remix",
-  "buildCommand": "npm run vercel-build",
+  "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "outputDirectory": "build",
   "installCommand": "npm install",
+  "outputDirectory": "public",
   "rewrites": [
     {
-      "source": "/assets/(.*)",
-      "destination": "/assets/$1"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/index.js"
+      "destination": "/index.html"
     }
   ]
 }
