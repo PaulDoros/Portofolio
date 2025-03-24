@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "src": "^/favicon.ico$",
+      "dest": "/favicon.ico"
+    },
+    { 
+      "handle": "filesystem" 
+    },
+    { 
+      "src": "/.*", 
+      "dest": "/index.js" 
+    }
+  ]
+} 

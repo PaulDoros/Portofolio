@@ -20,6 +20,15 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
+  // Enhanced logging for Vercel deployment debugging
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`[Remix Server] Handling request for: ${request.url}`);
+    console.log(`[Remix Server] Response status code: ${responseStatusCode}`);
+    console.log(
+      `[Remix Server] Available routes: ${Object.keys(remixContext.routeModules).join(', ')}`
+    );
+  }
+
   return isbot(request.headers.get('user-agent'))
     ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext)
     : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext);
