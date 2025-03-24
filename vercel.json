@@ -1,8 +1,5 @@
 {
-  "framework": "remix",
-  "buildCommand": "npm run vercel-build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "outputDirectory": "public/build",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "version": 2,
+  "builds": [{ "src": "package.json", "use": "@vercel/remix" }],
+  "routes": [{ "src": "/(.*)", "dest": "/" }]
 }
