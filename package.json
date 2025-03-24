@@ -6,9 +6,10 @@
   "scripts": {
     "prebuild": "node ./scripts/replace-env.js",
     "build": "npx @remix-run/dev build",
+    "vercel-build": "node ./scripts/vercel-build.js",
     "predev": "node ./scripts/replace-env.js",
     "dev": "npx @remix-run/dev",
-    "start": "remix-serve ./build/index.js --port 3000",
+    "start": "npx @remix-run/serve ./build/index.js --port 3000",
     "typecheck": "tsc -b",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
@@ -29,22 +30,17 @@
     "@remix-run/serve": "^2.8.1",
     "@tailwindcss/vite": "^4.0.14",
     "@vercel/remix": "^2.15.3",
-    "autoprefixer": "^10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "express": "^4.21.2",
     "framer-motion": "^11.18.2",
     "isbot": "^4.1.0",
-    "lightningcss": "^1.29.3",
     "lucide-react": "^0.344.0",
-    "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
-    "vite": "^5.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
@@ -52,6 +48,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "autoprefixer": "^10.4.17",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.2",
     "eslint": "^8.38.0",
@@ -61,11 +58,14 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "kill-port": "^2.0.1",
+    "lightningcss": "^1.29.3",
+    "postcss": "^8.4.35",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.1.6"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18.0.0"
   }
 }
