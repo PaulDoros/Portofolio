@@ -4,13 +4,14 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "prebuild": "node ./scripts/replace-env.js",
+    "dev": "remix dev",
     "build": "remix build",
-    "dev": "npx @remix-run/dev",
-    "start": "npx @remix-run/serve ./build/index.js --port 3000",
-    "typecheck": "tsc -b",
+    "start": "remix-serve build",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepare": "husky install",
+    "postinstall": "remix setup node"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
