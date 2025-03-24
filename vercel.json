@@ -6,6 +6,10 @@
   "installCommand": "npm install",
   "rewrites": [
     {
+      "source": "/assets/(.*)",
+      "destination": "/assets/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.js"
     }

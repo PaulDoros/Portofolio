@@ -6,12 +6,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
-    vercelPreset(),
-    tailwindcss(),
     remix({
       ignoredRouteFiles: ['**/.*'],
       serverModuleFormat: 'esm',
     }),
+    vercelPreset(),
+    tailwindcss(),
     tsconfigPaths(),
   ],
   css: {
@@ -24,5 +24,17 @@ export default defineConfig({
     alias: {
       '~': '/app',
     },
+  },
+  publicDir: 'public',
+  build: {
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name].[hash][extname]',
+      },
+    },
+  },
+  server: {
+    port: 3000,
   },
 });
