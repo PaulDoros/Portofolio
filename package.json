@@ -10,7 +10,6 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prepare": "husky install",
     "postinstall": "remix setup node"
   },
   "dependencies": {
