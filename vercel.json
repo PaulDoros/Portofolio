@@ -3,5 +3,11 @@
   "buildCommand": "npm run vercel-build",
   "devCommand": "npm run dev",
   "outputDirectory": "build",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "installCommand": "npm install",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.js"
+    }
+  ]
 }
