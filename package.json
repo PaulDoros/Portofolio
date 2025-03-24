@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "node ./scripts/replace-env.js",
-    "build": "npx @remix-run/dev build",
-    "predev": "node ./scripts/replace-env.js",
+    "build": "remix build",
     "dev": "npx @remix-run/dev",
     "start": "npx @remix-run/serve ./build/index.js --port 3000",
     "typecheck": "tsc -b",
