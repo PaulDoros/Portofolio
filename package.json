@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "prebuild": "node ./scripts/replace-env.js",
-    "build": "remix build",
+    "build": "npx @remix-run/dev build",
     "predev": "node ./scripts/replace-env.js",
-    "dev": "remix dev",
-    "start": "remix-serve ./build/index.js --port 3000",
+    "dev": "npx @remix-run/dev",
+    "start": "npx @remix-run/serve ./build/index.js --port 3000",
     "typecheck": "tsc -b",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
