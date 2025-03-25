@@ -41,26 +41,14 @@ export default defineConfig({
     alias: {
       '~': '/app',
     },
-    dedupe: [
-      '@radix-ui/react-slot',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-hover-card',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-tabs',
-      'react',
-      'react-dom',
-    ],
   },
   build: {
-    sourcemap: process.env.NODE_ENV === 'development',
+    // Turn off sourcemaps in production to prevent message channel issues
+    sourcemap: false,
+    minify: true,
+    cssMinify: true,
     rollupOptions: {
-      output: {
-        sourcemapExcludeSources: true,
-      },
       external: [
-        '@radix-ui/react-separator',
         /^@radix-ui\/.*/,
         'class-variance-authority',
         'clsx',
@@ -70,18 +58,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: [
-      '@radix-ui/react-slot',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-hover-card',
-      '@radix-ui/react-progress',
-      '@radix-ui/react-separator',
-      '@radix-ui/react-tabs',
-      'class-variance-authority',
-      'clsx',
-      'tailwind-merge',
-      'tailwindcss-animate',
-    ],
+    include: ['tailwindcss', 'simplex-noise'],
   },
 });

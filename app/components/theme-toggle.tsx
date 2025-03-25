@@ -1,28 +1,10 @@
 import { Moon, Sun } from 'lucide-react';
-import { useState, useEffect } from 'react';
 
 import { useTheme } from '~/components/theme-provider';
 import { Button } from '~/components/ui/button';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Once mounted, we can show the toggle
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <div className="h-9 w-16" />; // Empty placeholder with same dimensions
-  }
-
-  const resolvedTheme =
-    theme === 'system'
-      ? typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-      : theme;
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
   return (
     <Button
