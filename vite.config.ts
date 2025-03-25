@@ -41,6 +41,17 @@ export default defineConfig({
     alias: {
       '~': '/app',
     },
+    dedupe: [
+      '@radix-ui/react-slot',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-hover-card',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-tabs',
+      'react',
+      'react-dom',
+    ],
   },
   build: {
     sourcemap: process.env.NODE_ENV === 'development',
@@ -59,6 +70,18 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['tailwindcss', 'simplex-noise'],
+    include: [
+      '@radix-ui/react-slot',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-hover-card',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-tabs',
+      'class-variance-authority',
+      'clsx',
+      'tailwind-merge',
+      'tailwindcss-animate',
+    ],
   },
 });
