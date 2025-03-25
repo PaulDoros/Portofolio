@@ -48,13 +48,23 @@ export default defineConfig({
     minify: true,
     cssMinify: true,
     rollupOptions: {
-      external: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
+      external: [
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+        'tailwindcss-animate',
+        /^@radix-ui\/.*/,
+      ],
     },
   },
   optimizeDeps: {
     include: [
       'tailwindcss',
       'simplex-noise',
+      'class-variance-authority',
+      'clsx',
+      'tailwind-merge',
+      'tailwindcss-animate',
       '@radix-ui/react-slot',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
