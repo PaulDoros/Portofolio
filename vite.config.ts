@@ -48,7 +48,12 @@ export default defineConfig({
     minify: true,
     cssMinify: true,
     rollupOptions: {
-      external: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
+      output: {
+        format: 'es',
+        entryFileNames: '[name]-[hash].js',
+        chunkFileNames: '[name]-[hash].js',
+        assetFileNames: '[name]-[hash][extname]',
+      },
     },
   },
   optimizeDeps: {
