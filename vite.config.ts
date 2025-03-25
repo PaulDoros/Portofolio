@@ -40,7 +40,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': '/app',
-      '@radix-ui/react-slot': '@radix-ui/react-slot/dist/index.js',
     },
   },
   build: {
@@ -49,16 +48,10 @@ export default defineConfig({
     minify: true,
     cssMinify: true,
     rollupOptions: {
-      external: [
-        /^@radix-ui\/.*/,
-        'class-variance-authority',
-        'clsx',
-        'tailwind-merge',
-        'tailwindcss-animate',
-      ],
+      external: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
     },
   },
   optimizeDeps: {
-    include: ['tailwindcss', 'simplex-noise'],
+    include: ['tailwindcss', 'simplex-noise', '@radix-ui/react-slot'],
   },
 });
