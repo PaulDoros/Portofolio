@@ -1,5 +1,3 @@
-'use client';
-import React from 'react';
 import { Compare } from '~/components/ui/compare';
 import { Badge } from '~/components/ui/badge';
 import { ClassicHero } from '~/components/sections/classic-hero';

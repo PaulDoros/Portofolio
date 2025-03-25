@@ -37,17 +37,28 @@ export default defineConfig({
   css: {
     postcss: './postcss.config.cjs',
   },
-  optimizeDeps: {
-    include: ['tailwindcss', 'simplex-noise'],
-  },
   resolve: {
     alias: {
       '~': '/app',
     },
   },
   build: {
+    sourcemap: process.env.NODE_ENV === 'development',
     rollupOptions: {
-      external: ['simplex-noise'],
+      output: {
+        sourcemapExcludeSources: true,
+      },
+      external: [
+        '@radix-ui/react-separator',
+        /^@radix-ui\/.*/,
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+        'tailwindcss-animate',
+      ],
     },
+  },
+  optimizeDeps: {
+    include: ['tailwindcss', 'simplex-noise'],
   },
 });
