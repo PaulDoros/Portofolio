@@ -40,6 +40,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~': '/app',
+      '@radix-ui/react-slot': '@radix-ui/react-slot/dist/index.js',
     },
   },
   build: {
