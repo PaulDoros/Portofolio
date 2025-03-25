@@ -3,7 +3,11 @@ import animatePlugin from 'tailwindcss-animate';
 
 export default {
   darkMode: ['class', 'class'],
-  content: ['./app/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './app/**/*.{js,jsx,ts,tsx}',
+    './app/components/**/*.{js,jsx,ts,tsx}',
+    './app/routes/**/*.{js,jsx,ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,

@@ -1,9 +1,5 @@
-import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction } from '@remix-run/node';
-import { json } from '@remix-run/node';
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -14,15 +10,11 @@ import {
 
 import { ThemeProvider } from './components/theme-provider';
 import type { Theme } from './components/theme-provider';
-import tailwindStyles from './tailwind.css';
 
-export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: tailwindStyles },
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
-];
+import styles from './tailwind.css?url';
 
-export const loader = async () => {
-  return json({});
+export const links = () => {
+  return [{ rel: 'stylesheet', href: styles }];
 };
 
 function getInitialTheme(): Theme {
@@ -68,7 +60,6 @@ export default function App() {
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
