@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState, useMemo } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from 'react';
 
-export type Theme = "dark" | "light" | "system";
+export type Theme = 'dark' | 'light' | 'system';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -15,36 +15,31 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: 'system',
   setTheme: () => null,
-  resolvedTheme: "system",
+  resolvedTheme: 'system',
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
-  storageKey = "theme",
+  defaultTheme = 'light',
+  storageKey = 'theme',
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       try {
         const stored = window.localStorage.getItem(storageKey) as Theme;
-        if (
-          stored &&
-          (stored === "light" || stored === "dark" || stored === "system")
-        ) {
+        if (stored && (stored === 'light' || stored === 'dark')) {
           return stored;
         }
 
-        const systemPreference = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches
-          ? "dark"
-          : "light";
-        return defaultTheme === "system" ? systemPreference : defaultTheme;
+        const systemPreference = window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'light'
+          : 'dark';
+        return defaultTheme === 'system' ? systemPreference : defaultTheme;
       } catch {
         return defaultTheme;
       }
@@ -54,11 +49,10 @@ export function ThemeProvider({
   });
 
   const resolvedTheme = useMemo(() => {
-    if (theme === "system" && typeof window !== "undefined") {
-      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    if (theme === 'system' && typeof window !== 'undefined') {
+      const systemPreference = window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark';
       return systemPreference;
     }
 
@@ -68,13 +62,12 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove("light", "dark");
+    root.classList.remove('light', 'dark');
 
-    if (resolvedTheme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
+    if (resolvedTheme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark';
 
       root.classList.add(systemTheme);
       return;
@@ -106,15 +99,14 @@ export function ThemeProvider({
 export function useTheme() {
   const context = useContext(ThemeProviderContext);
 
-  if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
+  if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
 
   return {
     theme: context.theme,
     setTheme: context.setTheme,
     resolvedTheme: context.resolvedTheme,
     // Helper functions
-    isLight: context.resolvedTheme === "light",
-    isDark: context.resolvedTheme === "dark",
+    isLight: context.resolvedTheme === 'light',
+    isDark: context.resolvedTheme === 'dark',
   };
 }

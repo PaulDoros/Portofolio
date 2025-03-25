@@ -18,6 +18,7 @@ import { Progress } from '~/components/ui/progress';
 import { Separator } from '~/components/ui/separator';
 import { Layout } from '../layout/layout';
 import { AnimatedHero } from '../sections/animated-hero';
+import { ClientOnly } from '~/utils/client-only';
 
 interface AnimatedPortfolioProps {
   onAdultLinkClick: (url: string, siteName: string) => (e: React.MouseEvent) => void;
@@ -146,15 +147,17 @@ export function AnimatedPortfolio({ onAdultLinkClick }: AnimatedPortfolioProps) 
                       Code
                     </a>
                   </Button>
-                  <Button size="sm" asChild>
-                    <a
-                      href="https://chat.kink.ai"
-                      onClick={onAdultLinkClick('https://chat.kink.ai', 'Kinky AI Chat')}
-                      className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      Demo
-                    </a>
-                  </Button>
+                  <ClientOnly>
+                    <Button size="sm" asChild>
+                      <a
+                        href="https://chat.kink.ai"
+                        onClick={onAdultLinkClick('https://chat.kink.ai', 'Kinky AI Chat')}
+                        className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        Demo
+                      </a>
+                    </Button>
+                  </ClientOnly>
                 </CardFooter>
               </Card>
 
@@ -203,15 +206,17 @@ export function AnimatedPortfolio({ onAdultLinkClick }: AnimatedPortfolioProps) 
                       Code
                     </a>
                   </Button>
-                  <Button size="sm" asChild>
-                    <a
-                      href="https://kinkyclips.com"
-                      onClick={onAdultLinkClick('https://kinkyclips.com', 'KinkyClips')}
-                      className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      Demo
-                    </a>
-                  </Button>
+                  <ClientOnly>
+                    <Button size="sm" asChild>
+                      <a
+                        href="https://kinkyclips.com"
+                        onClick={onAdultLinkClick('https://kinkyclips.com', 'KinkyClips')}
+                        className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        Demo
+                      </a>
+                    </Button>
+                  </ClientOnly>
                 </CardFooter>
               </Card>
             </div>

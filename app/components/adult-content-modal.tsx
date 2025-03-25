@@ -23,7 +23,12 @@ export function AdultContentModal({
   siteName,
 }: AdultContentModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={open => {
+        if (!open) onClose();
+      }}
+    >
       <DialogContent
         className="overflow-hidden border-0 p-0 sm:max-w-[425px]"
         onPointerDownOutside={onClose}
