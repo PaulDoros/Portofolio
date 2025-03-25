@@ -48,13 +48,7 @@ export default defineConfig({
     minify: true,
     cssMinify: true,
     rollupOptions: {
-      external: [
-        'class-variance-authority',
-        'clsx',
-        'tailwind-merge',
-        'tailwindcss-animate',
-        /^@radix-ui\/.*/,
-      ],
+      external: ['class-variance-authority', 'clsx', 'tailwind-merge', 'tailwindcss-animate'],
     },
   },
   optimizeDeps: {
