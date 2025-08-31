@@ -1,9 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 
-type ClientOnlyProps = {
+interface ClientOnlyProps {
   children: ReactNode;
   fallback?: ReactNode;
-};
+}
 
 /**
  * Client-only component that renders only on the client side, not during SSR.
