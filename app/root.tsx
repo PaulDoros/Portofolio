@@ -53,8 +53,13 @@ export default function App() {
   return (
     <Document>
       <ThemeProvider>
-        <div className="relative flex min-h-screen flex-col">
-          <div className="flex-1">
+        <div className="relative flex min-h-screen flex-col overflow-x-hidden">
+          {/* Global Theme-Aware Background */}
+          <div className="fixed inset-0 -z-50">
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 dark:from-slate-950 dark:via-blue-950/30 dark:to-indigo-950/30" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.05),transparent_50%)]" />
+          </div>
+          <div className="relative z-0 flex-1">
             <Outlet />
           </div>
         </div>

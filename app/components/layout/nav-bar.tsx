@@ -31,8 +31,10 @@ export function NavBar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/90 shadow-sm backdrop-blur-md' : 'bg-transparent'
+      className={`fixed left-0 right-0 top-0 z-50 w-full border-b transition-all duration-300 ${
+        isScrolled
+          ? 'border-border bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60'
+          : 'border-transparent bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 py-4">

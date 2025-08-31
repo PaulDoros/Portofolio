@@ -1,5 +1,6 @@
 import { Link } from '@remix-run/react';
 import { Github, Mail, ExternalLink, Download } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -23,6 +24,63 @@ interface ClassicPortfolioProps {
   onAdultLinkClick: (url: string, siteName: string) => (e: React.MouseEvent) => void;
 }
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+  hover: {
+    y: -8,
+    scale: 1.02,
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: 'easeOut',
+    },
+  },
+};
+
 export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
   return (
     <Layout>
@@ -31,78 +89,96 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
         <ClassicAbout />
 
         {/* Projects Section */}
-        <section id="projects" className="py-20">
+        <motion.section
+          id="projects"
+          className="py-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <div className="container mx-auto px-4">
-            <div className="mb-16 flex flex-col items-center text-center">
+            <motion.div
+              className="mb-16 flex flex-col items-center text-center"
+              variants={itemVariants}
+            >
               <Badge className="mb-4">My Work</Badge>
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">Featured Projects</h2>
               <Separator className="mb-6 w-24" />
               <p className="max-w-2xl text-muted-foreground">
                 A collection of my recent projects demonstrating my skills and capabilities.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <motion.div
+              className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
               {/* Project 1 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
-                <div className="relative aspect-video bg-muted">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/images/devjourney.png"
-                      alt="Dev Journey Project Screenshot"
-                      className="h-full w-full object-cover"
-                    />
+              <motion.div variants={cardVariants} whileHover="hover">
+                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+                  <div className="relative aspect-video bg-muted">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src="/images/devjourney.png"
+                        alt="Dev Journey Project Screenshot"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
-                <CardHeader>
-                  <CardTitle>Dev Journey</CardTitle>
-                  <CardDescription>Personal learning and portfolio website</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    A comprehensive learning platform that combines portfolio showcasing with
-                    interactive learning features. Built with modern web technologies and a focus on
-                    user engagement.
-                  </p>
-                  <div className="mb-4 space-y-2">
-                    <h4 className="text-sm font-medium">Key Features:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• User authentication and profile management</li>
-                      <li>• Interactive learning modules and progress tracking</li>
-                      <li>• Gamification system with achievements and badges</li>
-                      <li>• Responsive design with dark/light mode</li>
-                      <li>• Dynamic UI components and animations</li>
-                    </ul>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Badge variant="secondary">Remix</Badge>
-                    <Badge variant="secondary">React</Badge>
-                    <Badge variant="secondary">TypeScript</Badge>
-                    <Badge variant="secondary">Tailwind CSS</Badge>
-                    <Badge variant="secondary">Prisma</Badge>
-                    <Badge variant="secondary">PostgreSQL</Badge>
-                  </div>
-                </CardContent>
-                <CardFooter className="mt-auto flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                      Code
-                    </a>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <a
-                      href="https://dev-journey-five.vercel.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Demo
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
+                  <CardHeader>
+                    <CardTitle>Dev Journey</CardTitle>
+                    <CardDescription>Personal learning and portfolio website</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      A comprehensive learning platform that combines portfolio showcasing with
+                      interactive learning features. Built with modern web technologies and a focus
+                      on user engagement.
+                    </p>
+                    <div className="mb-4 space-y-2">
+                      <h4 className="text-sm font-medium">Key Features:</h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li>• User authentication and profile management</li>
+                        <li>• Interactive learning modules and progress tracking</li>
+                        <li>• Gamification system with achievements and badges</li>
+                        <li>• Responsive design with dark/light mode</li>
+                        <li>• Dynamic UI components and animations</li>
+                      </ul>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge variant="secondary">Remix</Badge>
+                      <Badge variant="secondary">React</Badge>
+                      <Badge variant="secondary">TypeScript</Badge>
+                      <Badge variant="secondary">Tailwind CSS</Badge>
+                      <Badge variant="secondary">Prisma</Badge>
+                      <Badge variant="secondary">PostgreSQL</Badge>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="mt-auto flex justify-between">
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        Code
+                      </a>
+                    </Button>
+                    <Button size="sm" asChild>
+                      <a
+                        href="https://dev-journey-five.vercel.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Demo
+                      </a>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
 
               {/* Project 2 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+              {/* <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
                 <div className="relative aspect-video bg-muted">
                   <div className="absolute inset-0 flex items-center justify-center blur-xl">
                     <img
@@ -158,10 +234,10 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     </Button>
                   </ClientOnly>
                 </CardFooter>
-              </Card>
+              </Card> */}
 
               {/* Project 3 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+              {/* <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
                 <div className="relative aspect-video bg-muted">
                   <div className="absolute inset-0 flex items-center justify-center blur-xl">
                     <img
@@ -217,103 +293,473 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     </Button>
                   </ClientOnly>
                 </CardFooter>
-              </Card>
-            </div>
+              </Card> */}
 
-            <div className="mt-12 flex justify-center">
+              {/* Project 4 - NetPageCraft */}
+              <motion.div variants={cardVariants} whileHover="hover">
+                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+                  <div className="relative aspect-video bg-muted">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src="/images/netpagecraft.png"
+                        alt="NetPageCraft Dashboard Screenshot"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <CardHeader>
+                    <CardTitle>NetPageCraft</CardTitle>
+                    <CardDescription>Website Builder Platform with QR Menus</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      A comprehensive no-code website builder platform that enables businesses to
+                      create professional websites, QR menus, and digital experiences in seconds.
+                      Built as a solo project with enterprise-level features and modern tech stack.
+                    </p>
+                    <div className="mb-4 space-y-2">
+                      <h4 className="text-sm font-medium">Key Features:</h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li>• Advanced drag-and-drop website builder with live preview</li>
+                        <li>• Multi-user admin dashboard with role-based permissions</li>
+                        <li>• Super admin panel for platform management and analytics</li>
+                        <li>• Real-time user analytics and customer engagement tracking</li>
+                        <li>• Stripe payment integration and subscription management</li>
+                        <li>• Redis caching for high-performance data handling</li>
+                        <li>• 24+ premium themes with dark/light mode support</li>
+                        <li>• QR menu generation with dynamic content management</li>
+                        <li>• SEO optimization tools and mobile-first responsive design</li>
+                        <li>• Advanced media management with image optimization</li>
+                      </ul>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge variant="secondary">React Router 7</Badge>
+                      <Badge variant="secondary">Radix UI</Badge>
+                      <Badge variant="secondary">Supabase</Badge>
+                      <Badge variant="secondary">TypeScript</Badge>
+                      <Badge variant="secondary">Tailwind CSS</Badge>
+                      <Badge variant="secondary">Framer Motion</Badge>
+                      <Badge variant="secondary">Stripe</Badge>
+                      <Badge variant="secondary">Redis</Badge>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="mt-auto flex justify-between">
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        Code
+                      </a>
+                    </Button>
+                    <Button size="sm" asChild>
+                      <a
+                        href="https://www.netpagecraft.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Demo
+                      </a>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+
+              {/* Project 5 - Neon Pulse Events */}
+              <motion.div variants={cardVariants} whileHover="hover">
+                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+                  <div className="relative aspect-video bg-muted">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src="/images/vounder.png"
+                        alt="Neon Pulse Events Website Screenshot"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <CardHeader>
+                    <CardTitle>Neon Pulse Events</CardTitle>
+                    <CardDescription>Event Management & Registration Platform</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      A modern event management platform designed for underground music events and
+                      cultural gatherings. Features user registration, event details, and an
+                      immersive visual experience with responsive design.
+                    </p>
+                    <div className="mb-4 space-y-2">
+                      <h4 className="text-sm font-medium">Key Features:</h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li>• Event registration and management system</li>
+                        <li>• User authentication and approval workflow</li>
+                        <li>• Interactive event posters and location mapping</li>
+                        <li>• Responsive design optimized for mobile devices</li>
+                        <li>• Modern UI/UX with underground aesthetic</li>
+                        <li>• Contact forms and event information display</li>
+                      </ul>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge variant="secondary">TypeScript</Badge>
+                      <Badge variant="secondary">React.js</Badge>
+                      <Badge variant="secondary">Next.js</Badge>
+                      <Badge variant="secondary">Tailwind CSS</Badge>
+                      <Badge variant="secondary">Responsive Design</Badge>
+                      <Badge variant="secondary">Event Management</Badge>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="mt-auto flex justify-between">
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                        Code
+                      </a>
+                    </Button>
+                    <Button size="sm" asChild>
+                      <a
+                        href="https://events.vounder.network"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Demo
+                      </a>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="mt-12 flex justify-center"
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
               <Button variant="outline" asChild>
                 <Link to="/projects">View All Projects</Link>
               </Button>
-            </div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Skills Section */}
-        <section id="skills" className="bg-muted/50 py-20">
+        <motion.section
+          id="skills"
+          className="bg-muted/50 py-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <div className="container mx-auto px-4">
-            <div className="mb-16 flex flex-col items-center text-center">
+            <motion.div
+              className="mb-16 flex flex-col items-center text-center"
+              variants={itemVariants}
+            >
               <Badge className="mb-4">Expertise</Badge>
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">My Skills</h2>
               <Separator className="mb-6 w-24" />
               <p className="max-w-2xl text-muted-foreground">
                 A comprehensive overview of my technical skills and proficiencies.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-              <div>
+            <motion.div
+              className="grid grid-cols-1 gap-12 md:grid-cols-2"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <motion.div variants={itemVariants}>
                 <h3 className="mb-6 text-xl font-semibold">Frontend Development</h3>
                 <div className="space-y-6">
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">React/Remix</span>
-                      <span>95%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={95} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">TypeScript</span>
-                      <span>90%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.9 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={90} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">Tailwind CSS</span>
-                      <span>85%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.0 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={85} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.5, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">React Native</span>
-                      <span>85%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.1 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={85} className="h-2" />
-                  </div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.6, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <h3 className="mb-6 text-xl font-semibold">Additional Skills</h3>
                 <div className="space-y-6">
-                  <div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">UI/UX Implementation</span>
-                      <span>90%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={90} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">Animations & Effects</span>
-                      <span>85%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.9 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={85} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">State Management</span>
-                      <span>80%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.0 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={80} className="h-2" />
-                  </div>
-                  <div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.5, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="mb-2 flex justify-between">
                       <span className="font-medium">Performance Optimization</span>
-                      <span>85%</span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.1 }}
+                        viewport={{ once: true }}
+                      >
+                        100%
+                      </motion.span>
                     </div>
-                    <Progress value={85} className="h-2" />
-                  </div>
+                    <motion.div
+                      className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.div
+                        className="h-full rounded-full bg-primary"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: '100%' }}
+                        transition={{ duration: 1.2, delay: 0.6, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                      />
+                    </motion.div>
+                  </motion.div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            <div className="mt-16">
+            <motion.div
+              className="mt-16"
+              variants={itemVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
               <h3 className="mb-6 text-center text-xl font-semibold">Technologies I Work With</h3>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                <div className="space-y-4">
+              <motion.div
+                className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+              >
+                <motion.div className="space-y-4" variants={itemVariants}>
                   <h4 className="font-medium">Frontend</h4>
                   <div className="flex flex-wrap gap-2">
                     <Badge className="px-4 py-2">JavaScript</Badge>
@@ -325,8 +771,8 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     <Badge className="px-4 py-2">Vue.js</Badge>
                     <Badge className="px-4 py-2">Tailwind CSS</Badge>
                   </div>
-                </div>
-                <div className="space-y-4">
+                </motion.div>
+                <motion.div className="space-y-4" variants={itemVariants}>
                   <h4 className="font-medium">UI/UX</h4>
                   <div className="flex flex-wrap gap-2">
                     <Badge className="px-4 py-2">Framer Motion</Badge>
@@ -336,8 +782,8 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     <Badge className="px-4 py-2">SASS</Badge>
                     <Badge className="px-4 py-2">Styled Components</Badge>
                   </div>
-                </div>
-                <div className="space-y-4">
+                </motion.div>
+                <motion.div className="space-y-4" variants={itemVariants}>
                   <h4 className="font-medium">State & Data</h4>
                   <div className="flex flex-wrap gap-2">
                     <Badge className="px-4 py-2">Zustand</Badge>
@@ -347,8 +793,8 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     <Badge className="px-4 py-2">WebSockets</Badge>
                     <Badge className="px-4 py-2">REST APIs</Badge>
                   </div>
-                </div>
-                <div className="space-y-4">
+                </motion.div>
+                <motion.div className="space-y-4" variants={itemVariants}>
                   <h4 className="font-medium">Tools & DevOps</h4>
                   <div className="flex flex-wrap gap-2">
                     <Badge className="px-4 py-2">Git</Badge>
@@ -358,31 +804,55 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                     <Badge className="px-4 py-2">AWS Lambda</Badge>
                     <Badge className="px-4 py-2">Jira</Badge>
                   </div>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20">
+        <motion.section
+          id="contact"
+          className="py-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <div className="container mx-auto px-4">
-            <div className="mb-16 flex flex-col items-center text-center">
+            <motion.div
+              className="mb-16 flex flex-col items-center text-center"
+              variants={itemVariants}
+            >
               <Badge className="mb-4">Get In Touch</Badge>
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">Contact Me</h2>
               <Separator className="mb-6 w-24" />
               <p className="max-w-2xl text-muted-foreground">
                 Have a project in mind or just want to say hello? Feel free to reach out!
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-              <ContactForm />
+            <motion.div
+              className="grid grid-cols-1 gap-12 md:grid-cols-2"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <motion.div variants={itemVariants}>
+                <ContactForm />
+              </motion.div>
 
-              <div>
+              <motion.div variants={itemVariants}>
                 <h3 className="mb-6 text-xl font-semibold">Contact Information</h3>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
+                  <motion.div
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="rounded-full bg-primary/10 p-3">
                       <Mail className="h-5 w-5 text-primary" />
                     </div>
@@ -390,8 +860,14 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                       <h4 className="font-medium">Email</h4>
                       <p className="text-muted-foreground">dorospaul26@gmail.com</p>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-4">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="rounded-full bg-primary/10 p-3">
                       <Github className="h-5 w-5 text-primary" />
                     </div>
@@ -406,8 +882,14 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                         github.com/PaulDoros
                       </a>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-4">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="rounded-full bg-primary/10 p-3">
                       <svg
                         className="h-5 w-5 text-primary"
@@ -435,8 +917,14 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                         www.linkedin.com/in/paul-doros-3468a2177
                       </a>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-4">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="rounded-full bg-primary/10 p-3">
                       <svg
                         className="h-5 w-5 text-primary"
@@ -457,8 +945,14 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                       <h4 className="font-medium">Location</h4>
                       <p className="text-muted-foreground">Sibiu, Romania</p>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-4">
+                  </motion.div>
+                  <motion.div
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     <div className="rounded-full bg-primary/10 p-3">
                       <svg
                         className="h-5 w-5 text-primary"
@@ -477,10 +971,16 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                       <h4 className="font-medium">Phone</h4>
                       <p className="text-muted-foreground">+40 756 436 531</p>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
 
-                <div className="mt-12">
+                <motion.div
+                  className="mt-12"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <h3 className="mb-6 text-xl font-semibold">Available For</h3>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-2">
@@ -500,11 +1000,11 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
                       <span>Remote work</span>
                     </li>
                   </ul>
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
       </div>
     </Layout>
   );
