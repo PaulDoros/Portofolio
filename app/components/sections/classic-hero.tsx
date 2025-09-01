@@ -1,12 +1,14 @@
 import { Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { BackgroundPaths } from '~/components/ui/background-paths';
 
-function FloatingPaths({ position }: { position: number }) {
-  const paths = Array.from({ length: 36 }, (_, i) => ({
+function FloatingPaths({ position, isMobile }: { position: number; isMobile?: boolean }) {
+  const pathCount = isMobile ? 12 : 36; // Reduce paths on mobile
+  const paths = Array.from({ length: pathCount }, (_, i) => ({
     id: i,
     d: `M-${380 - i * 5 * position} -${189 + i * 6}C-${
       380 - i * 5 * position
@@ -56,17 +58,38 @@ export function ClassicHero() {
   const title = 'Paul Ionut Doros';
   const words = title.split(' ');
 
-  return (
-    <section id="hero" className="relative flex  items-center justify-center overflow-hidden">
-      {/* Background Paths Animation */}
-      <div className="absolute inset-0 -z-10">
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
-      </div>
+  // Check if mobile for performance optimization
+  const [isMobile, setIsMobile] = useState(false);
 
-      {/* Original Background Effects (more subtle) */}
-      <div className="bg-grid-small-black/[0.02] absolute inset-0 -z-20" />
-      <div className="absolute inset-0 -z-20 bg-gradient-to-b from-background/40 via-background/80 to-background" />
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+    >
+      {/* Background Paths Animation - Conditionally render for mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 -z-10">
+          <FloatingPaths position={1} isMobile={isMobile} />
+          <FloatingPaths position={-1} isMobile={isMobile} />
+        </div>
+      )}
+
+      {/* Background Effects - Static on mobile for better performance */}
+      <div
+        className={`absolute inset-0 -z-20 ${isMobile ? 'bg-gradient-to-b from-background via-background/95 to-background' : 'bg-grid-small-black/[0.02]'}`}
+      />
+      {!isMobile && (
+        <div className="absolute inset-0 -z-20 bg-gradient-to-b from-background/40 via-background/80 to-background" />
+      )}
 
       <div className="container relative z-10 mx-auto flex flex-col items-center justify-center px-4 py-20 text-center md:py-32">
         <motion.div
@@ -84,13 +107,19 @@ export function ClassicHero() {
               {word.split('').map((letter, letterIndex) => (
                 <motion.span
                   key={`${wordIndex}-${letterIndex}`}
-                  initial={{ y: 50, opacity: 0 }}
+                  initial={{ y: isMobile ? 20 : 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
-                    delay: wordIndex * 0.1 + letterIndex * 0.05,
+                    delay: isMobile
+                      ? wordIndex * 0.05 + letterIndex * 0.02
+                      : wordIndex * 0.1 + letterIndex * 0.05,
                     type: 'spring',
-                    stiffness: 100,
-                    damping: 10,
+                    stiffness: isMobile ? 200 : 100,
+                    damping: isMobile ? 15 : 10,
+                  }}
+                  style={{
+                    transform: 'translateZ(0)',
+                    willChange: 'transform',
                   }}
                   className="inline-block bg-gradient-to-r from-foreground 
                     to-foreground/80 bg-clip-text text-transparent"
@@ -104,18 +133,26 @@ export function ClassicHero() {
 
         <motion.p
           className="mb-2 text-2xl font-medium"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.3 : 0.5 }}
+          style={{
+            transform: 'translateZ(0)',
+            willChange: 'transform',
+          }}
         >
           Frontend Developer
         </motion.p>
 
         <motion.p
           className="mb-10 max-w-2xl text-xl text-muted-foreground"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.4 : 0.7 }}
+          style={{
+            transform: 'translateZ(0)',
+            willChange: 'transform',
+          }}
         >
           I build modern, responsive web applications with React, Remix, and TypeScript. Let&apos;s
           work together to bring your ideas to life.
@@ -123,9 +160,13 @@ export function ClassicHero() {
 
         <motion.div
           className="flex flex-wrap justify-center gap-4"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
+          transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.5 : 0.9 }}
+          style={{
+            transform: 'translateZ(0)',
+            willChange: 'transform',
+          }}
         >
           <Button asChild size="lg" className="group">
             <a href="/#contact">

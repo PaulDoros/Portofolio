@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react';
 import { Github, Mail, ExternalLink, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
@@ -24,64 +25,77 @@ interface ClassicPortfolioProps {
   onAdultLinkClick: (url: string, siteName: string) => (e: React.MouseEvent) => void;
 }
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    transition: {
-      duration: 0.2,
-      ease: 'easeInOut',
-    },
-  },
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: 'easeOut',
-    },
-  },
-};
-
 export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile for performance optimization
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Animation variants - responsive to mobile
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: isMobile ? 0.05 : 0.1,
+        delayChildren: isMobile ? 0.1 : 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: isMobile ? 10 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: isMobile ? 0.3 : 0.6,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: isMobile ? 0.95 : 0.9, y: isMobile ? 10 : 20 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: isMobile ? 0.25 : 0.5,
+        ease: 'easeOut',
+      },
+    },
+    hover: isMobile
+      ? {}
+      : {
+          y: -8,
+          scale: 1.02,
+          transition: {
+            duration: 0.2,
+            ease: 'easeInOut',
+          },
+        },
+  };
+
+  const sectionVariants = {
+    hidden: { opacity: 0, y: isMobile ? 20 : 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: isMobile ? 0.4 : 0.8,
+        ease: 'easeOut',
+      },
+    },
+  };
   return (
     <Layout>
       <div className="classic-version">
@@ -95,7 +109,15 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{
+            once: true,
+            amount: isMobile ? 0.1 : 0.3,
+            margin: isMobile ? '-20px' : '-50px',
+          }}
+          style={{
+            transform: 'translateZ(0)',
+            willChange: 'transform',
+          }}
         >
           <div className="container mx-auto px-4">
             <motion.div
@@ -118,8 +140,15 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
               viewport={{ once: true, amount: 0.2 }}
             >
               {/* Project 1 */}
-              <motion.div variants={cardVariants} whileHover="hover">
-                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+              <motion.div
+                variants={cardVariants}
+                whileHover={isMobile ? '' : 'hover'}
+                style={{
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
+                }}
+              >
+                <Card className="flex h-full flex-col overflow-hidden bg-background/95 backdrop-blur-sm transition-shadow hover:shadow-lg">
                   <div className="relative aspect-video bg-muted">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img
@@ -296,8 +325,15 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
               </Card> */}
 
               {/* Project 4 - NetPageCraft */}
-              <motion.div variants={cardVariants} whileHover="hover">
-                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+              <motion.div
+                variants={cardVariants}
+                whileHover={isMobile ? '' : 'hover'}
+                style={{
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
+                }}
+              >
+                <Card className="flex h-full flex-col overflow-hidden bg-background/95 backdrop-blur-sm transition-shadow hover:shadow-lg">
                   <div className="relative aspect-video bg-muted">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img
@@ -363,8 +399,15 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
               </motion.div>
 
               {/* Project 5 - Neon Pulse Events */}
-              <motion.div variants={cardVariants} whileHover="hover">
-                <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
+              <motion.div
+                variants={cardVariants}
+                whileHover={isMobile ? '' : 'hover'}
+                style={{
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
+                }}
+              >
+                <Card className="flex h-full flex-col overflow-hidden bg-background/95 backdrop-blur-sm transition-shadow hover:shadow-lg">
                   <div className="relative aspect-video bg-muted">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <img

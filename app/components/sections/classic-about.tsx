@@ -17,47 +17,41 @@ export function ClassicAbout() {
 
         <div className="flex flex-col items-center justify-center gap-12">
           <div className="relative h-64 w-64">
-            {/* Neumorphic outer container */}
+            {/* Neumorphic card container - mobile optimized */}
             <div
-              className="p- relative h-full w-full rounded-3xl
-                          bg-background
-                          shadow-[8px_8px_16px_#bebebe,-8px_-8px_16px_#ffffff]
-                          dark:bg-slate-900
-                          dark:shadow-[8px_8px_16px_#0f172a,-8px_-8px_16px_#1e293b]"
+              className="relative h-full w-full rounded-3xl bg-gradient-to-br
+                          from-gray-100 to-gray-200 p-0
+                          shadow-[8px_8px_16px_rgba(163,163,163,0.2),-4px_-4px_8px_rgba(255,255,255,0.6)]
+                          dark:from-gray-800
+                          dark:to-gray-900 dark:shadow-[8px_8px_16px_rgba(0,0,0,0.3),-4px_-4px_8px_rgba(255,255,255,0.03)]
+                          md:shadow-[12px_12px_24px_rgba(163,163,163,0.3),-12px_-12px_24px_rgba(255,255,255,0.8)]
+                          dark:md:shadow-[12px_12px_24px_rgba(0,0,0,0.4),-12px_-12px_24px_rgba(255,255,255,0.05)]"
             >
-              {/* Inner neumorphic frame */}
+              {/* Inner inset frame for image */}
               <div
                 className="relative h-full w-full overflow-hidden rounded-2xl
-                            bg-gradient-to-br from-slate-50 to-slate-100
-                            shadow-[inset_4px_4px_8px_#d1d5db,inset_-4px_-4px_8px_#ffffff] dark:from-slate-800
-                            dark:to-slate-900
-                            dark:shadow-[inset_4px_4px_8px_#0f172a,inset_-4px_-4px_8px_#334155]"
+                            bg-gradient-to-br from-gray-200 to-gray-300
+                            shadow-[inset_4px_4px_8px_rgba(163,163,163,0.3),inset_-4px_-4px_8px_rgba(255,255,255,0.7)]
+                            dark:from-gray-700
+                            dark:to-gray-800 dark:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.05)]
+                            md:shadow-[inset_8px_8px_16px_rgba(163,163,163,0.4),inset_-8px_-8px_16px_rgba(255,255,255,0.9)]
+                            dark:md:shadow-[inset_8px_8px_16px_rgba(0,0,0,0.5),inset_-8px_-8px_16px_rgba(255,255,255,0.08)]"
               >
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-primary/5" />
-
                 {/* Image container */}
-                <div className="relative h-full w-full overflow-hidden rounded-xl">
+                <div className="relative m-1 h-full w-full overflow-hidden rounded-xl">
                   <img
                     src="/img.png"
                     alt="Paul Ionut Doros"
-                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.02] md:hover:scale-105"
                   />
 
-                  {/* Subtle inner glow */}
+                  {/* Subtle overlay for depth */}
                   <div
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-t from-transparent via-transparent
-                                to-white/5 dark:to-white/10"
+                    className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-black/5
+                                via-transparent to-white/10 dark:from-black/20 dark:to-white/5"
                   />
                 </div>
               </div>
-
-              {/* Subtle highlight on the outer frame */}
-              <div
-                className="pointer-events-none absolute left-2 right-2 top-2 h-8
-                            rounded-t-2xl bg-gradient-to-b from-white/20
-                            to-transparent dark:from-white/10"
-              />
             </div>
           </div>
 

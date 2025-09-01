@@ -4,12 +4,23 @@ import { useEffect, useState } from 'react';
 export function ScrollingEffects() {
   const { scrollYProgress } = useScroll();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Smooth scroll progress
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Smooth scroll progress - reduced smoothing for mobile
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
+    stiffness: isMobile ? 200 : 100,
+    damping: isMobile ? 40 : 30,
+    restDelta: isMobile ? 0.01 : 0.001,
   });
 
   // Transform values based on scroll
@@ -19,15 +30,17 @@ export function ScrollingEffects() {
   const rotate = useTransform(smoothProgress, [0, 1], [0, 360]);
   const scale = useTransform(smoothProgress, [0, 0.5, 1], [1, 1.2, 0.8]);
 
-  // Mouse tracking
+  // Mouse tracking - disabled on mobile for performance
   useEffect(() => {
+    if (isMobile) return;
+
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
     window.addEventListener('mousemove', updateMousePosition);
     return () => window.removeEventListener('mousemove', updateMousePosition);
-  }, []);
+  }, [isMobile]);
 
   // Mouse parallax transforms
   const mouseX =
@@ -35,22 +48,33 @@ export function ScrollingEffects() {
   const mouseY =
     (mousePosition.y - (typeof window !== 'undefined' ? window.innerHeight : 0) / 2) * 0.01;
 
+  // Completely disable all effects on mobile for performance
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <>
-      {/* Scroll Progress Indicator - Positioned below nav */}
+      {/* Scroll Progress Indicator - Desktop only */}
       <motion.div
         className="fixed left-0 right-0 top-[67px] z-40 h-1 origin-left bg-gradient-to-r from-blue-500/80 via-purple-500/80 to-pink-500/80"
-        style={{ scaleX: smoothProgress }}
+        style={{
+          scaleX: smoothProgress,
+          transform: 'translateZ(0)', // GPU acceleration
+          willChange: 'transform',
+        }}
       />
 
-      {/* Background Geometric Shapes - Theme Aware */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+      {/* Background Geometric Shapes - Desktop only */}
+      <div
+        className="pointer-events-none fixed inset-0 overflow-hidden"
+        style={{ transform: 'translateZ(0)' }}
+      >
         {/* Floating Orbs with Parallax */}
         <motion.div
           className="dark:from-blue-400/3 dark:to-purple-400/3 absolute h-64 w-64 rounded-full bg-gradient-to-r from-blue-500/5 to-purple-500/5 blur-3xl"
           style={{
             x: mouseX * 20,
-            y: mouseY * 20,
             y: y1,
             left: '10%',
             top: '20%',
@@ -70,7 +94,6 @@ export function ScrollingEffects() {
           className="dark:from-emerald-400/3 dark:to-cyan-400/3 absolute h-96 w-96 rounded-full bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 blur-3xl"
           style={{
             x: mouseX * -15,
-            y: mouseY * -15,
             y: y2,
             right: '15%',
             top: '40%',
@@ -91,7 +114,6 @@ export function ScrollingEffects() {
           className="dark:from-pink-400/3 dark:to-orange-400/3 absolute h-48 w-48 rounded-full bg-gradient-to-r from-pink-500/5 to-orange-500/5 blur-3xl"
           style={{
             x: mouseX * 10,
-            y: mouseY * 10,
             y: y3,
             left: '60%',
             bottom: '20%',
@@ -314,7 +336,7 @@ export function ScrollingEffects() {
         />
       </div>
 
-      {/* Mouse Follower */}
+      {/* Mouse Follower - Desktop only */}
       <motion.div
         className="pointer-events-none fixed z-40 h-4 w-4 rounded-full bg-blue-500/20 mix-blend-difference dark:bg-blue-400/10"
         animate={{
