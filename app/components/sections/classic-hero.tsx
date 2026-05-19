@@ -141,7 +141,7 @@ export function ClassicHero() {
             willChange: 'transform',
           }}
         >
-          Frontend Developer
+          Full-Stack Developer
         </motion.p>
 
         <motion.p
@@ -174,7 +174,7 @@ export function ClassicHero() {
             </a>
           </Button>
           <Button variant="outline" size="lg" asChild className="group">
-            <a href="/resume.pdf" download>
+            <a href="/resume.md" download>
               <Download className="mr-2 h-4 w-4 transition-transform group-hover:translate-y-0.5" />
               Download Resume
             </a>

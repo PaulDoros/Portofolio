@@ -25,7 +25,7 @@ export function AnimatedHero() {
             borderRadius="1.75rem"
             className="flex flex-row items-center justify-center border-neutral-200 bg-white p-2 text-black dark:border-slate-800 dark:bg-slate-900 dark:text-white"
           >
-            <a href="/resume.pdf" download>
+            <a href="/resume.md" download>
               Download Resume
             </a>
           </Button>

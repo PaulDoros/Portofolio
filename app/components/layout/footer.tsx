@@ -22,7 +22,7 @@ export function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <h3 className="mb-4 text-lg font-semibold">Paul Doros</h3>
             <p className="max-w-xs text-muted-foreground">
-              Frontend Developer specializing in React, Remix, and modern web technologies.
+              Full-Stack Developer specializing in React, Remix, and modern web technologies.
             </p>
             <div className="mt-4 flex items-center gap-3">
               <Button variant="ghost" size="icon" aria-label="GitHub" asChild>
