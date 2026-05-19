@@ -9,11 +9,11 @@ import { ClassicPortfolio } from '~/components/portfolios/classic-portfolio';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Paul Ionut Doros | Frontend Developer' },
+    { title: 'Paul Ionut Doros | Full-Stack Developer' },
     {
       name: 'description',
       content:
-        'Professional portfolio of Paul Ionut Doros, Frontend Developer with expertise in React, Remix, and modern web technologies',
+        'Professional portfolio of Paul Ionut Doros, Full-Stack Developer with expertise in React, Remix, and modern web technologies',
     },
   ];
 };

@@ -21,7 +21,7 @@ export const meta: MetaFunction = () => {
     { title: 'Projects | Paul Ionut Doros' },
     {
       name: 'description',
-      content: 'A showcase of my development projects and work as a Frontend Developer',
+      content: 'A showcase of my development projects and work as a Full-Stack Developer',
     },
   ];
 };
@@ -49,6 +49,37 @@ export default function Projects() {
 
   // This could be loaded from a backend source in a real application
   const projects = [
+    {
+      id: 0,
+      title: 'ADHISTLY',
+      image: '/images/ai.png',
+      description: 'Full-stack AI SaaS platform for NPF/NDD support',
+      content:
+        'A production-ready AI SaaS platform for families of children with NPF/NDD-related support needs. Built independently from scratch with AI coaching, personalized recommendations, structured support articles, checklists, tutorials, subscriptions, analytics, admin tooling, and secure account management.',
+      keyFeatures: [
+        'RAG-based AI coaching assistant Ly with embeddings, vector search, semantic article retrieval, reranking, profile-aware prompting, streaming responses, voice input, and contextual article recommendations',
+        'AI safeguards for clarification-before-recommendation, need-based option selection, article disambiguation, relevance ranking, result limits, safety messaging, and low-confidence fallback questions',
+        'AI infrastructure across Supabase Edge Functions for chat, embeddings, recommendations, context summaries, speech-to-text, text-to-speech, prompt management, quota tracking, and provider abstraction',
+        'Admin AI operations layer with prompt settings, model comparison, chat testing, usage analytics, content generation, recommendation scoring, legal/content monitoring, bug reports, and debugging tools',
+        'Personalized recommendations using child profiles, diagnosis data, symptoms, age, municipality, onboarding answers, saved/hidden preferences, interaction history, and conversation context',
+        'Full SaaS flows for authentication, onboarding, multi-child profiles, dynamic checklists, sharing/import, calendar actions, PWA/mobile support, Stripe subscriptions, Resend emails, PostHog analytics, RLS security, and staging/production deployments',
+      ],
+      technologies: [
+        'React',
+        'TypeScript',
+        'Supabase',
+        'PostgreSQL',
+        'Vector Search',
+        'Edge Functions',
+        'Stripe',
+        'Resend',
+        'PostHog',
+        'Vercel',
+        'AI/RAG',
+      ],
+      demoUrl: 'https://adhistly.se',
+      isAdult: false,
+    },
     {
       id: 1,
       title: 'NetPageCraft',
@@ -318,13 +349,17 @@ export default function Projects() {
                     ))}
                   </div>
                 </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={project.codeUrl} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" />
-                      Code
-                    </a>
-                  </Button>
+                <CardFooter
+                  className={project.codeUrl ? 'flex justify-between' : 'flex justify-end'}
+                >
+                  {project.codeUrl ? (
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={project.codeUrl} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" />
+                        Code
+                      </a>
+                    </Button>
+                  ) : null}
                   <Button
                     size="sm"
                     asChild

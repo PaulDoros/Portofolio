@@ -104,7 +104,7 @@ export function NavBar() {
                     <div className="px-4">
                       <Button variant="outline" asChild className="w-full">
                         <a
-                          href="/resume.pdf"
+                          href="/resume.md"
                           download
                           className="flex items-center justify-center gap-2"
                         >

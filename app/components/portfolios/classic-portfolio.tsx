@@ -139,6 +139,75 @@ export function ClassicPortfolio({ onAdultLinkClick }: ClassicPortfolioProps) {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
             >
+              {/* Project 0 */}
+              <motion.div
+                variants={cardVariants}
+                whileHover={isMobile ? '' : 'hover'}
+                style={{
+                  transform: 'translateZ(0)',
+                  willChange: 'transform',
+                }}
+              >
+                <Card className="flex h-full flex-col overflow-hidden bg-background/95 backdrop-blur-sm transition-shadow hover:shadow-lg">
+                  <div className="relative aspect-video bg-muted">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <img
+                        src="/images/ai.png"
+                        alt="ADHISTLY AI SaaS platform screenshot"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <CardHeader>
+                    <CardTitle>ADHISTLY</CardTitle>
+                    <CardDescription>
+                      Full-stack AI SaaS platform for NPF/NDD support
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      Independently designed and built ADHISTLY from scratch as a production-ready
+                      AI SaaS platform for families of children with NPF/NDD-related needs.
+                    </p>
+                    <div className="mb-4 space-y-2">
+                      <h4 className="text-sm font-medium">Key Features:</h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        <li>
+                          • RAG assistant with embeddings, vector search, and semantic retrieval
+                        </li>
+                        <li>• AI safeguards, clarification flows, and low-confidence fallbacks</li>
+                        <li>
+                          • Admin AI operations for prompts, testing, analytics, and debugging
+                        </li>
+                        <li>
+                          • Personalized recommendations, checklists, tutorials, and resource
+                          matching
+                        </li>
+                        <li>
+                          • Stripe, Resend, PostHog, i18n, PWA, Supabase Auth, RLS, and Edge
+                          Functions
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge variant="secondary">React</Badge>
+                      <Badge variant="secondary">TypeScript</Badge>
+                      <Badge variant="secondary">Supabase</Badge>
+                      <Badge variant="secondary">PostgreSQL</Badge>
+                      <Badge variant="secondary">Vector Search</Badge>
+                      <Badge variant="secondary">AI/RAG</Badge>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="mt-auto flex justify-end">
+                    <Button size="sm" asChild>
+                      <a href="https://adhistly.se" target="_blank" rel="noopener noreferrer">
+                        Visit ADHISTLY
+                      </a>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+
               {/* Project 1 */}
               <motion.div
                 variants={cardVariants}
