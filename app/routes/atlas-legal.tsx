@@ -5,20 +5,26 @@ import {
   ArrowRight,
   BadgeCheck,
   Briefcase,
-  Building2,
+  FileSearch,
   FileText,
+  Fingerprint,
   Gavel,
   Landmark,
+  LockKeyhole,
+  Network,
+  PanelLeft,
   Scale,
+  ScrollText,
   ShieldCheck,
-  Sparkles,
 } from 'lucide-react';
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { Observer } from 'gsap/Observer';
 import { Physics2DPlugin } from 'gsap/Physics2DPlugin';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -31,7 +37,9 @@ if (typeof window !== 'undefined') {
     SplitText,
     Observer,
     InertiaPlugin,
-    Physics2DPlugin
+    Physics2DPlugin,
+    ScrambleTextPlugin,
+    DrawSVGPlugin
   );
 }
 
@@ -40,7 +48,7 @@ export const meta: MetaFunction = () => [
   {
     name: 'description',
     content:
-      'A refined Atlas Legal professional services showcase built with GSAP ScrollSmoother, ScrollTrigger, SplitText, Observer, Inertia, and Physics2D.',
+      'A legal dossier showcase built with GSAP ScrollSmoother, ScrollTrigger, SplitText, ScrambleText, DrawSVG, Observer, Inertia, and Physics2D.',
   },
 ];
 
@@ -49,8 +57,8 @@ const practiceAreas = [
     id: 'corporate',
     title: 'Corporate Counsel',
     detail: 'Outside general counsel, transaction review, governance, and risk posture.',
-    stat: '18 active boards',
-    icon: Building2,
+    stat: '18 board advisories',
+    icon: Briefcase,
   },
   {
     id: 'disputes',
@@ -73,6 +81,14 @@ const proofItems = [
   ['$2.4B', 'client assets guided'],
   ['18', 'board advisories'],
   ['96%', 'consult clarity score'],
+  ['48h', 'brief turnaround'],
+];
+
+const briefStages = [
+  ['Intake', 'Facts separated from interpretation before a recommendation is made.'],
+  ['Evidence', 'Risk, documents, counterparties, and timeline are mapped as a working dossier.'],
+  ['Strategy', 'The attorney path becomes a clear set of decisions and next actions.'],
+  ['Consult', 'The static request surface shows intent without collecting confidential details.'],
 ];
 
 const attorneys = [
@@ -91,18 +107,19 @@ export default function AtlasLegalRoute() {
 
       if (reduceMotion) {
         gsap.set(
-          '.atlas-reveal, .atlas-proof-card, .atlas-attorney, .atlas-consult, .atlas-hero-card',
+          '.atlas-reveal, .atlas-proof-card, .atlas-attorney, .atlas-consult, .atlas-dossier, .atlas-stage-card',
           {
             autoAlpha: 1,
             y: 0,
             x: 0,
             scale: 1,
+            rotate: 0,
           }
         );
         return;
       }
 
-      const split = SplitText.create('.atlas-headline', {
+      const split = SplitText.create('.atlas-dossier-title', {
         type: 'lines, words',
         mask: 'lines',
         autoSplit: true,
@@ -110,9 +127,9 @@ export default function AtlasLegalRoute() {
         onSplit(self) {
           return gsap.from(self.words, {
             autoAlpha: 0,
-            yPercent: 100,
-            duration: 0.78,
-            stagger: 0.035,
+            yPercent: 110,
+            duration: 0.82,
+            stagger: 0.034,
             ease: 'power3.out',
           });
         },
@@ -134,10 +151,41 @@ export default function AtlasLegalRoute() {
       });
 
       intro
-        .from('.atlas-kicker', { autoAlpha: 0, y: 18 })
-        .from('.atlas-copy', { autoAlpha: 0, y: 18 }, '<0.28')
-        .from('.atlas-hero-card', { autoAlpha: 0, x: 28, scale: 0.96 }, '<0.08')
-        .from('.atlas-practice-button', { autoAlpha: 0, y: 16, stagger: 0.08 }, '<0.16');
+        .from('.atlas-index-row', { autoAlpha: 0, x: -18, stagger: 0.07 })
+        .from('.atlas-dossier', { autoAlpha: 0, y: 30, rotate: -1.2 }, '<0.12')
+        .from('.atlas-live-panel', { autoAlpha: 0, x: 26, scale: 0.96 }, '<0.16')
+        .to(
+          '.atlas-classified',
+          {
+            duration: 1.1,
+            scrambleText: { text: 'CONFIDENTIAL MATTER', chars: 'upperCase' },
+          } as gsap.TweenVars,
+          '<0.2'
+        )
+        .from(
+          '.atlas-brief-line',
+          { drawSVG: '0% 0%', duration: 0.9, stagger: 0.08 } as gsap.TweenVars,
+          '<0.16'
+        );
+
+      const dossierTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.atlas-dossier-pin',
+          start: 'top top',
+          end: '+=1500',
+          scrub: 0.8,
+          pin: true,
+        },
+      });
+
+      dossierTimeline
+        .to('.atlas-stage-card', { xPercent: -112, stagger: 0.18, ease: 'none' })
+        .to(
+          '.atlas-case-line',
+          { drawSVG: '0% 100%', stagger: 0.08, ease: 'none' } as gsap.TweenVars,
+          0
+        )
+        .to('.atlas-dossier-seal', { rotate: 32, scale: 1.05, ease: 'none' }, 0);
 
       ScrollTrigger.batch('.atlas-reveal', {
         start: 'top 82%',
@@ -148,19 +196,6 @@ export default function AtlasLegalRoute() {
             { autoAlpha: 0, y: 30 },
             { autoAlpha: 1, y: 0, duration: 0.72, stagger: 0.08, ease: 'power3.out' }
           );
-        },
-      });
-
-      gsap.from('.atlas-proof-card', {
-        autoAlpha: 0,
-        y: 26,
-        stagger: 0.08,
-        duration: 0.68,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.atlas-proof-grid',
-          start: 'top 78%',
-          once: true,
         },
       });
 
@@ -179,9 +214,9 @@ export default function AtlasLegalRoute() {
           const active = index === activePractice;
           panel.classList.toggle('is-active', active);
           gsap.to(panel, {
-            autoAlpha: active ? 1 : 0.35,
-            scale: active ? 1 : 0.96,
-            y: active ? 0 : 10,
+            autoAlpha: active ? 1 : 0.28,
+            scale: active ? 1 : 0.94,
+            y: active ? 0 : 14,
             duration: 0.36,
             ease: 'power2.out',
             overwrite: true,
@@ -190,7 +225,7 @@ export default function AtlasLegalRoute() {
       };
 
       const practiceObserver = Observer.create({
-        target: q('.atlas-practice-stage')[0],
+        target: '.atlas-practice-deck',
         type: 'wheel,touch,pointer',
         tolerance: 24,
         onDown: () => setPractice(activePractice + 1),
@@ -227,7 +262,7 @@ export default function AtlasLegalRoute() {
               inertia: {
                 x: {
                   velocity: 'auto',
-                  min: -280,
+                  min: -360,
                   max: 0,
                 },
               },
@@ -243,14 +278,14 @@ export default function AtlasLegalRoute() {
           {
             autoAlpha: 0,
             scale: 1,
-            duration: 2.4,
+            duration: 2.3,
             repeat: -1,
-            repeatDelay: 1.4 + index * 0.24,
-            delay: index * 0.18,
+            repeatDelay: 1.2 + index * 0.2,
+            delay: index * 0.16,
             physics2D: {
-              velocity: 38 + index * 8,
-              angle: -68 + index * 16,
-              gravity: 18,
+              velocity: 36 + index * 7,
+              angle: -70 + index * 14,
+              gravity: 16,
               friction: 0.12,
             },
           }
@@ -274,34 +309,32 @@ export default function AtlasLegalRoute() {
   );
 
   return (
-    <main ref={containerRef} className="min-h-screen overflow-hidden bg-[#0D1016] text-[#F6F0E5]">
+    <main ref={containerRef} className="min-h-screen overflow-hidden bg-[#0C0D10] text-[#F6F0E5]">
       <div className="atlas-smooth-wrapper">
         <div className="atlas-smooth-content">
-          <section className="relative min-h-screen overflow-hidden bg-[#11151D]">
+          <section className="relative min-h-screen overflow-hidden bg-[#0C0D10]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_18%,rgba(231,194,125,0.13),transparent_28%),linear-gradient(135deg,#0C0D10,#151923_58%,#0C0D10)]" />
             <img
-              src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=2200&q=80"
-              alt="Atlas Legal boardroom"
-              className="absolute inset-0 h-full w-full object-cover opacity-[0.28]"
+              src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1800&q=80"
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover opacity-[0.12] mix-blend-luminosity"
               data-speed="0.92"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(13,16,22,0.98),rgba(13,16,22,0.82)_48%,rgba(167,139,250,0.12))]" />
-            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#0D1016] to-transparent" />
-            <div className="pointer-events-none absolute right-[12%] top-[28%] h-28 w-28 rounded-full border border-[#E7C27D]/15" />
             {[0, 1, 2, 3, 4, 5].map(index => (
               <span
                 key={index}
                 className="atlas-particle pointer-events-none absolute h-2 w-2 rounded-full bg-[#E7C27D]"
                 style={{
-                  left: `${64 + index * 4}%`,
-                  top: `${44 + (index % 3) * 6}%`,
+                  left: `${58 + index * 5}%`,
+                  top: `${35 + (index % 3) * 8}%`,
                 }}
               />
             ))}
 
-            <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+            <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
               <Link
                 to="/pantheon-demo"
-                className="inline-flex items-center gap-2 rounded-full border border-[#E7C27D]/20 bg-white/[0.06] px-3 py-2 text-xs uppercase tracking-[0.18em] text-[#E7C27D] backdrop-blur transition hover:-translate-y-0.5 hover:border-[#E7C27D]/50 motion-reduce:hover:translate-y-0"
+                className="inline-flex items-center gap-2 rounded-full border border-[#E7C27D]/20 bg-white/[0.05] px-3 py-2 text-xs uppercase tracking-[0.18em] text-[#E7C27D] backdrop-blur transition hover:-translate-y-0.5 hover:border-[#E7C27D]/50 motion-reduce:hover:translate-y-0"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Pantheon
@@ -318,142 +351,206 @@ export default function AtlasLegalRoute() {
               </a>
             </header>
 
-            <div className="pb-18 relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-10 px-4 pt-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_28rem] lg:px-8">
-              <div>
-                <div className="atlas-kicker mb-5 inline-flex items-center gap-2 rounded-full border border-[#E7C27D]/25 bg-[#E7C27D]/10 px-3 py-2 text-xs uppercase tracking-[0.22em] text-[#F7DCA3]">
-                  <Sparkles className="h-4 w-4" />
-                  Evidence-led counsel
+            <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl gap-5 px-4 pb-10 pt-4 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)_22rem] lg:px-8">
+              <aside className="hidden flex-col gap-3 lg:flex">
+                <div className="atlas-index-row border-[#E7C27D]/16 rounded-[1.2rem] border bg-white/[0.05] p-4">
+                  <PanelLeft className="mb-4 h-5 w-5 text-[#E7C27D]" />
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-[#AFA795]">
+                    Matter index
+                  </div>
                 </div>
-                <h1 className="atlas-headline max-w-5xl text-5xl font-black leading-[0.94] tracking-tight text-white sm:text-7xl lg:text-8xl">
+                {['Facts', 'Risk', 'Evidence', 'Counsel'].map((item, index) => (
+                  <div
+                    key={item}
+                    className="atlas-index-row rounded-[1.2rem] border border-white/10 bg-white/[0.04] p-4"
+                  >
+                    <div className="text-xs uppercase tracking-[0.2em] text-[#E7C27D]">
+                      0{index + 1}
+                    </div>
+                    <div className="mt-2 font-bold">{item}</div>
+                  </div>
+                ))}
+              </aside>
+
+              <article className="atlas-dossier relative overflow-hidden rounded-[2rem] border border-[#D8C6A5] bg-[#F2ECE1] p-6 text-[#11151D] shadow-[0_34px_120px_rgba(0,0,0,0.36)] lg:p-9">
+                <div className="absolute right-8 top-8 rounded-full border border-[#7A5B16]/25 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-[#7A5B16]">
+                  <span className="atlas-classified">Classified</span>
+                </div>
+                <div className="mb-10 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#11151D] text-[#E7C27D]">
+                  <Fingerprint className="h-7 w-7" />
+                </div>
+                <p className="text-xs uppercase tracking-[0.26em] text-[#7A5B16]">
+                  Dossier website, not a generic hero
+                </p>
+                <h1 className="atlas-dossier-title mt-4 max-w-4xl text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl">
                   Clear counsel for consequential decisions.
                 </h1>
-                <p className="atlas-copy text-[#D8CBB8]/76 mt-6 max-w-2xl text-base leading-8 sm:text-lg">
-                  Atlas Legal presents practice areas, attorney authority, case evidence, and a
-                  serious consultation path with restrained GSAP motion.
+                <p className="mt-6 max-w-2xl text-base leading-8 text-[#5C5143]">
+                  Atlas Legal is staged as a working brief: matter index, evidence rail, practice
+                  navigator, and a restrained consultation request.
                 </p>
-                <div className="atlas-copy mt-8 flex flex-wrap gap-3">
-                  <a
-                    href="#practice"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#E7C27D] px-6 py-3 font-bold text-[#11151D] shadow-[0_22px_60px_rgba(231,194,125,0.22)] transition hover:-translate-y-1 hover:bg-[#F7DCA3] motion-reduce:hover:translate-y-0"
-                  >
-                    Practice areas
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="#consult"
-                    className="border-white/12 inline-flex items-center gap-2 rounded-full border bg-white/[0.06] px-6 py-3 font-semibold text-[#F6F0E5] transition hover:-translate-y-1 hover:border-[#E7C27D]/35 hover:bg-white/[0.1] motion-reduce:hover:translate-y-0"
-                  >
-                    Confidential consult
-                  </a>
-                </div>
-              </div>
-
-              <aside className="atlas-hero-card border-[#E7C27D]/16 bg-[#141A24]/84 rounded-[2rem] border p-5 shadow-[0_32px_110px_rgba(0,0,0,0.44)] backdrop-blur-xl">
-                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.22em] text-[#E7C27D]/70">
-                        Strategy brief
-                      </p>
-                      <h2 className="mt-2 text-3xl font-black">Corporate Counsel</h2>
-                    </div>
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E7C27D] text-[#11151D]">
-                      <Briefcase className="h-7 w-7" />
-                    </div>
-                  </div>
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    {[
-                      ['48h', 'brief turnaround'],
-                      ['18', 'board advisories'],
-                      ['$2.4B', 'assets guided'],
-                      ['96%', 'clarity score'],
-                    ].map(([value, label]) => (
-                      <div
-                        key={label}
-                        className="rounded-2xl border border-white/10 bg-white/[0.05] p-3"
-                      >
-                        <div className="text-xl font-black">{value}</div>
-                        <div className="text-white/42 mt-1 text-[10px] uppercase tracking-[0.18em]">
-                          {label}
-                        </div>
+                <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                  {proofItems.slice(0, 3).map(([value, label]) => (
+                    <div
+                      key={label}
+                      className="rounded-2xl border border-[#D2C5AE] bg-white/55 p-4"
+                    >
+                      <div className="text-2xl font-black">{value}</div>
+                      <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[#7A6A54]">
+                        {label}
                       </div>
-                    ))}
+                    </div>
+                  ))}
+                </div>
+                <svg className="mt-10 h-20 w-full" viewBox="0 0 520 80" aria-hidden="true">
+                  <path
+                    className="atlas-brief-line"
+                    d="M4 58 C 82 12, 140 68, 212 34 S 356 18, 512 48"
+                    fill="none"
+                    stroke="#7A5B16"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    className="atlas-brief-line"
+                    d="M18 70 C 122 40, 190 78, 286 46 S 412 38, 502 18"
+                    fill="none"
+                    stroke="#11151D"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    opacity="0.42"
+                  />
+                </svg>
+              </article>
+
+              <aside className="atlas-live-panel border-[#E7C27D]/16 bg-[#141A24]/88 rounded-[2rem] border p-5 shadow-[0_32px_110px_rgba(0,0,0,0.42)] backdrop-blur-xl">
+                <div className="mb-5 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#E7C27D]/70">
+                      Strategy brief
+                    </p>
+                    <h2 className="mt-2 text-2xl font-black">Corporate Counsel</h2>
                   </div>
+                  <LockKeyhole className="h-7 w-7 text-[#E7C27D]" />
+                </div>
+                <div className="grid gap-3">
+                  {practiceAreas.map((practice, index) => (
+                    <button
+                      key={practice.id}
+                      type="button"
+                      aria-pressed={index === 0 ? 'true' : 'false'}
+                      className={`atlas-practice-button rounded-[1.1rem] border px-4 py-4 text-left transition ${
+                        index === 0 ? 'is-active' : ''
+                      }`}
+                    >
+                      <practice.icon className="mb-3 h-5 w-5" />
+                      <span className="block text-sm font-black">{practice.title}</span>
+                      <span className="mt-1 block text-xs opacity-70">{practice.stat}</span>
+                    </button>
+                  ))}
                 </div>
               </aside>
             </div>
           </section>
 
-          <section className="atlas-proof-grid mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {proofItems.map(([value, label]) => (
-                <div
-                  key={label}
-                  className="atlas-proof-card border-[#E7C27D]/12 rounded-[1.25rem] border bg-[#141A24] p-5"
-                >
-                  <div className="text-3xl font-black text-[#E7C27D]">{value}</div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.18em] text-[#AFA795]">
-                    {label}
-                  </div>
+          <section className="atlas-dossier-pin relative min-h-screen overflow-hidden bg-[#11151D] px-4 py-20 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-10 grid gap-4 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-end">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]">
+                    Pinned case strategy
+                  </p>
+                  <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+                    Scroll through the legal work like a brief.
+                  </h2>
                 </div>
-              ))}
+                <p className="text-sm leading-7 text-[#AFA795]">
+                  GSAP pins this section and draws the case lines while cards move horizontally.
+                </p>
+              </div>
+
+              <div className="border-[#E7C27D]/14 relative overflow-hidden rounded-[1.6rem] border bg-[#0C0D10] p-5">
+                <div className="atlas-dossier-seal absolute right-8 top-8 flex h-24 w-24 items-center justify-center rounded-full border border-[#E7C27D]/25 text-[#E7C27D]">
+                  <Scale className="h-10 w-10" />
+                </div>
+                <svg
+                  className="absolute inset-0 h-full w-full opacity-50"
+                  viewBox="0 0 900 380"
+                  aria-hidden="true"
+                >
+                  <path
+                    className="atlas-case-line"
+                    d="M80 260 C 210 90, 354 300, 480 160 S 702 72, 836 214"
+                    fill="none"
+                    stroke="#E7C27D"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    className="atlas-case-line"
+                    d="M64 310 C 238 230, 312 96, 512 236 S 704 292, 852 126"
+                    fill="none"
+                    stroke="#A78BFA"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    opacity="0.6"
+                  />
+                </svg>
+                <div className="relative flex min-h-[24rem] gap-5">
+                  {briefStages.map(([title, detail], index) => (
+                    <article
+                      key={title}
+                      className="atlas-stage-card w-[24rem] shrink-0 rounded-[1.35rem] border border-white/10 bg-white/[0.06] p-5"
+                    >
+                      <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E7C27D] text-[#11151D]">
+                        {index === 0 ? (
+                          <FileSearch className="h-6 w-6" />
+                        ) : index === 1 ? (
+                          <Network className="h-6 w-6" />
+                        ) : index === 2 ? (
+                          <ScrollText className="h-6 w-6" />
+                        ) : (
+                          <Scale className="h-6 w-6" />
+                        )}
+                      </div>
+                      <div className="text-xs uppercase tracking-[0.22em] text-[#E7C27D]/70">
+                        Stage {index + 1}
+                      </div>
+                      <h3 className="mt-2 text-3xl font-black">{title}</h3>
+                      <p className="mt-4 text-sm leading-7 text-[#AFA795]">{detail}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
-          <section
-            id="practice"
-            className="atlas-practice-stage mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8"
-          >
+          <section className="atlas-practice-deck mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="atlas-reveal mb-8 max-w-3xl">
-              <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]">Practice areas</p>
-              <h2 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
-                Navigate the matter by direction, evidence, and urgency.
+              <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]">Practice deck</p>
+              <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+                Wheel, swipe, or click to change counsel paths.
               </h2>
-              <p className="mt-4 text-sm leading-7 text-[#AFA795]">
-                Wheel, swipe, or click inside this stage. GSAP Observer changes the active legal
-                path without turning the page into a modal.
-              </p>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]">
-              <div className="grid gap-3">
-                {practiceAreas.map((practice, index) => (
-                  <button
-                    key={practice.id}
-                    type="button"
-                    aria-pressed={index === 0 ? 'true' : 'false'}
-                    className={`atlas-practice-button rounded-[1.15rem] border px-4 py-4 text-left transition ${
-                      index === 0 ? 'is-active' : ''
-                    }`}
-                  >
-                    <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.18em]">
-                      <practice.icon className="h-4 w-4" />
-                      {practice.stat}
-                    </span>
-                    <span className="block text-lg font-black">{practice.title}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-3">
-                {practiceAreas.map((practice, index) => (
-                  <article
-                    key={practice.id}
-                    className={`atlas-case-panel border-[#E7C27D]/12 rounded-[1.45rem] border bg-[#141A24] p-5 ${
-                      index === 0 ? 'is-active' : ''
-                    }`}
-                  >
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E7C27D] text-[#11151D]">
-                      <practice.icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-2xl font-black">{practice.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-[#AFA795]">{practice.detail}</p>
-                    <div className="mt-5 inline-flex rounded-full border border-[#E7C27D]/20 bg-[#E7C27D]/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#F7DCA3]">
-                      {practice.stat}
-                    </div>
-                  </article>
-                ))}
-              </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {practiceAreas.map((practice, index) => (
+                <article
+                  key={practice.id}
+                  className={`atlas-case-panel border-[#E7C27D]/12 rounded-[1.45rem] border bg-[#141A24] p-5 ${
+                    index === 0 ? 'is-active' : ''
+                  }`}
+                >
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E7C27D] text-[#11151D]">
+                    <practice.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-2xl font-black">{practice.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#AFA795]">{practice.detail}</p>
+                  <div className="mt-5 inline-flex rounded-full border border-[#E7C27D]/20 bg-[#E7C27D]/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#F7DCA3]">
+                    {practice.stat}
+                  </div>
+                </article>
+              ))}
             </div>
           </section>
 
@@ -465,31 +562,26 @@ export default function AtlasLegalRoute() {
                     Matter evidence
                   </p>
                   <h2 className="mt-2 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
-                    Proof stays structured, draggable, and serious.
+                    Proof moves like an evidence rail, not a stats grid.
                   </h2>
                 </div>
                 <p className="text-sm leading-7 text-[#5C5143]">
-                  The proof rail uses Observer and InertiaPlugin so touch or pointer movement glides
-                  into place without fake content submission.
+                  Observer and InertiaPlugin give the rail a touch-friendly glide.
                 </p>
               </div>
 
               <div className="atlas-proof-rail overflow-hidden rounded-[1.45rem] border border-[#CDBFAD] bg-white p-4">
                 <div className="atlas-proof-track flex w-max gap-4">
-                  {[
-                    ['Governance map', 'Board conflicts reduced before diligence'],
-                    ['Dispute brief', 'Evidence sequence ready before mediation'],
-                    ['Succession plan', 'Private client transfer path clarified'],
-                    ['M&A review', 'Risk issues surfaced before term sheet'],
-                    ['Operating model', 'Counsel path consolidated across teams'],
-                  ].map(([title, text]) => (
+                  {proofItems.map(([value, label]) => (
                     <article
-                      key={title}
-                      className="w-72 shrink-0 rounded-[1.15rem] border border-[#E3D8C7] bg-[#F8F5EF] p-5"
+                      key={label}
+                      className="atlas-proof-card w-72 shrink-0 rounded-[1.15rem] border border-[#E3D8C7] bg-[#F8F5EF] p-5"
                     >
                       <FileText className="mb-5 h-6 w-6 text-[#7A5B16]" />
-                      <h3 className="text-xl font-black">{title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-[#5C5143]">{text}</p>
+                      <div className="text-3xl font-black">{value}</div>
+                      <p className="mt-2 text-sm font-bold uppercase tracking-[0.16em] text-[#5C5143]">
+                        {label}
+                      </p>
                     </article>
                   ))}
                 </div>
@@ -532,10 +624,6 @@ export default function AtlasLegalRoute() {
                 <h2 className="mt-2 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
                   Direct enough for urgency, restrained enough for trust.
                 </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-[#AFA795]">
-                  This route is static. The consultation surface demonstrates conversion intent
-                  without collecting confidential information.
-                </p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-3">
                   {[
                     { Icon: ShieldCheck, label: 'Confidential' },

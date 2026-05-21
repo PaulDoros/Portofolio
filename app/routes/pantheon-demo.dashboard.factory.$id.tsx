@@ -405,36 +405,39 @@ function getImplementationProof(template: DemoForgeTemplate) {
 
   if (template.id === 'summit-realty') {
     return {
-      stack: 'Motion + layoutId + scroll-linked values + Motion MCP CSS spring',
+      stack: 'Motion + Reorder + useAnimate + useMotionTemplate + shared layout',
       route: 'app/routes/summit-realty.tsx',
-      code: `const { scrollYProgress } = useScroll({ target: heroRef })
-const heroImageY = useTransform(heroProgress, [0, 1], ["0%", "14%"])
+      code: `const spotlight = useMotionTemplate\`radial-gradient(680px circle at \${x}px \${y}px, ...)\`
+const [mapScope, animate] = useAnimate()
 
-<LayoutGroup>
-  <motion.button layoutId={\`summit-image-\${listing.id}\`} />
-  <AnimatePresence mode="wait">...</AnimatePresence>
-</LayoutGroup>`,
+<Reorder.Group values={priorities} onReorder={setPriorities}>
+  <PriorityItem />
+</Reorder.Group>
+
+<motion.article layoutId={\`summit-image-\${selectedListing.id}\`} />`,
     };
   }
 
   if (template.id === 'novadent-clinic') {
     return {
-      stack: 'GSAP + SplitText + ScrollTrigger + Flip',
+      stack: 'GSAP + pinned ScrollTrigger + SplitText + Flip + Observer + Draggable/Inertia',
       route: 'app/routes/novadent-clinic.tsx',
-      code: `const split = SplitText.create(".nova-headline", { type: "lines, words" })
-ScrollTrigger.batch(".nova-reveal", { start: "top 82%", once: true })
+      code: `const journey = gsap.timeline({
+  scrollTrigger: { trigger: ".nova-journey-pin", pin: true, scrub: 0.8 }
+})
 
-const state = Flip.getState(".nova-service-tab, .nova-service-card")
-Flip.from(state, { duration: 0.48, nested: true })`,
+Observer.create({ target: ".nova-service-orbit", onLeft: next, onRight: prev })
+Draggable.create(".nova-comfort-knob", { type: "x", bounds: ".nova-comfort-track", inertia: true })`,
     };
   }
 
   if (template.id === 'atlas-legal') {
     return {
-      stack: 'GSAP + ScrollSmoother + Observer + InertiaPlugin + Physics2D',
+      stack: 'GSAP + ScrollSmoother + ScrambleText + DrawSVG + Observer + Inertia + Physics2D',
       route: 'app/routes/atlas-legal.tsx',
       code: `ScrollSmoother.create({ wrapper, content, smooth: 0.75, effects: true })
-Observer.create({ target: ".atlas-practice-stage", onDown: next, onUp: prev })
+gsap.to(".atlas-classified", { scrambleText: { text: "CONFIDENTIAL MATTER" } })
+gsap.from(".atlas-brief-line", { drawSVG: "0% 0%" })
 InertiaPlugin.track(proofTrack, "x")
 gsap.to(".atlas-particle", { physics2D: { velocity: 42, angle: -60 } })`,
     };
