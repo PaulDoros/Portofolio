@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="JANUS DEPLOY sigil">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="68%">
+      <stop offset="0%" stop-color="#F97316" stop-opacity="0.42"/>
+      <stop offset="70%" stop-color="#1E293B" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#020617"/>
+  <rect x="28" y="28" width="456" height="456" rx="92" fill="url(#bg)" stroke="#F97316" stroke-opacity="0.52" stroke-width="4"/>
+  <circle cx="256" cy="238" r="156" fill="none" stroke="#F8E7A1" stroke-opacity="0.78" stroke-width="8"/>
+  <circle cx="256" cy="238" r="108" fill="#020617" fill-opacity="0.38" stroke="#F97316" stroke-opacity="0.7" stroke-width="4"/>
+  <text x="256" y="250" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="118" font-weight="900" fill="#F8FAFC" filter="url(#glow)">⟠</text>
+  <text x="256" y="426" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#F8FAFC" letter-spacing="3">JANUS DEPLOY</text>
+</svg>

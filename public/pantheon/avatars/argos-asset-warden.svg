@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="768" viewBox="0 0 768 768" role="img" aria-label="ARGOS ASSETS avatar">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.95"/>
+      <stop offset="52%" stop-color="#164E63" stop-opacity="0.96"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8E7A1"/>
+      <stop offset="0.5" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="768" height="768" rx="160" fill="#020617"/>
+  <rect x="24" y="24" width="720" height="720" rx="136" fill="url(#halo)"/>
+  <path d="M126 578 C226 516 298 520 384 578 C470 520 542 516 642 578" fill="none" stroke="#22D3EE" stroke-width="10" stroke-opacity="0.36"/>
+  <circle cx="384" cy="342" r="214" fill="none" stroke="url(#ring)" stroke-width="12" opacity="0.88"/>
+  <circle cx="384" cy="342" r="158" fill="#020617" fill-opacity="0.32" stroke="white" stroke-opacity="0.10"/>
+  <text x="384" y="348" text-anchor="middle" dominant-baseline="middle" font-size="154" filter="url(#glow)">🔎</text>
+  <text x="384" y="612" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800" fill="#F8FAFC" letter-spacing="4">ARGOS ASSETS</text>
+  <text x="384" y="660" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#22D3EE" letter-spacing="8">PANTHEON LANE</text>
+</svg>
