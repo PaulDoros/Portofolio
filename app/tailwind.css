@@ -243,6 +243,19 @@
       box-shadow var(--summit-duration-premium-spring) var(--summit-ease-premium-spring);
   }
 
+  .summit-save-button {
+    border-color: rgba(19, 34, 31, 0.12);
+    background: #f5f4ee;
+    color: #13221f;
+  }
+
+  .summit-save-button.is-active {
+    border-color: rgba(15, 118, 110, 0.32);
+    background: #d6e9e7;
+    color: #0f766e;
+    box-shadow: 0 14px 34px rgba(15, 118, 110, 0.14);
+  }
+
   .nova-service-tab {
     border-color: rgba(16, 35, 33, 0.1);
     background: rgba(255, 255, 255, 0.74);
@@ -267,6 +280,24 @@
     opacity: 1;
   }
 
+  .nova-symptom-button {
+    border-color: rgba(16, 35, 33, 0.1);
+    background: #ffffff;
+    color: #102321;
+    box-shadow: 0 16px 44px rgba(16, 35, 33, 0.05);
+  }
+
+  .nova-symptom-button.is-active {
+    border-color: rgba(15, 118, 110, 0.34);
+    background: #102321;
+    color: #ffffff;
+    box-shadow: 0 22px 66px rgba(16, 35, 33, 0.18);
+  }
+
+  .nova-symptom-button.is-active span:last-child {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
   .atlas-practice-button {
     border-color: rgba(231, 194, 125, 0.12);
     background: rgba(20, 26, 36, 0.82);
@@ -288,6 +319,36 @@
   .atlas-case-panel.is-active {
     border-color: rgba(231, 194, 125, 0.38);
     opacity: 1;
+  }
+
+  .atlas-risk-token,
+  .atlas-risk-panel {
+    border-color: rgba(231, 194, 125, 0.12);
+    background: rgba(20, 26, 36, 0.72);
+    color: #f6f0e5;
+    transform-origin: center;
+  }
+
+  .atlas-risk-token {
+    color: #afa795;
+  }
+
+  .atlas-risk-token.is-active {
+    border-color: rgba(231, 194, 125, 0.42);
+    background: rgba(231, 194, 125, 0.12);
+    color: #f7dca3;
+    box-shadow: 0 20px 62px rgba(0, 0, 0, 0.22);
+  }
+
+  .atlas-risk-panel {
+    opacity: 0.42;
+  }
+
+  .atlas-risk-panel.is-active {
+    border-color: rgba(231, 194, 125, 0.42);
+    background: #141a24;
+    opacity: 1;
+    box-shadow: 0 24px 78px rgba(0, 0, 0, 0.24);
   }
 
   .lightning-strike {

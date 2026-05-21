@@ -4,8 +4,12 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
+  Bookmark,
   Building2,
   CalendarDays,
+  Calculator,
+  Clock3,
+  Compass,
   Crosshair,
   GripVertical,
   Home,
@@ -62,6 +66,10 @@ const listings = [
     baths: '2.5 bath',
     size: '2,140 sqft',
     tag: 'Skyline terrace',
+    priceValue: 1180,
+    score: 94,
+    commute: '16m downtown',
+    tourWindow: '10:15 AM',
     pin: [68, 24],
     image:
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
@@ -76,6 +84,10 @@ const listings = [
     baths: '3 bath',
     size: '2,480 sqft',
     tag: 'Courtyard living',
+    priceValue: 820,
+    score: 89,
+    commute: '23m downtown',
+    tourWindow: '11:40 AM',
     pin: [28, 54],
     image:
       'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
@@ -90,6 +102,10 @@ const listings = [
     baths: '3.5 bath',
     size: '2,920 sqft',
     tag: 'Waterfront light',
+    priceValue: 1420,
+    score: 97,
+    commute: '19m downtown',
+    tourWindow: '1:05 PM',
     pin: [76, 70],
     image:
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
@@ -115,6 +131,12 @@ const initialPriorities = [
   'Strong schools',
   'Light-filled kitchen',
   'Fast commute',
+];
+
+const tourSignals = [
+  ['Route density', '3 homes / 2.8 miles'],
+  ['Best school fit', 'Westerly Village'],
+  ['Fastest close', 'Northline District'],
 ];
 
 function PriorityItem({ item }: { item: string }) {
@@ -144,6 +166,9 @@ export default function SummitRealtyRoute() {
   const heroRef = useRef<HTMLElement | null>(null);
   const [selectedListing, setSelectedListing] = useState(listings[0]);
   const [priorities, setPriorities] = useState(initialPriorities);
+  const [tourOrder, setTourOrder] = useState(listings);
+  const [savedListingIds, setSavedListingIds] = useState([listings[0].id]);
+  const [budget, setBudget] = useState(1120);
   const reduceMotion = useReducedMotion();
   const [mapScope, animate] = useAnimate();
 
@@ -167,6 +192,17 @@ export default function SummitRealtyRoute() {
     stiffness: 80,
     damping: 18,
   });
+  const savedListings = listings.filter(listing => savedListingIds.includes(listing.id));
+  const savedActive = savedListingIds.includes(selectedListing.id);
+  const budgetProgress = ((budget - 700) / 850) * 100;
+  const selectedBudgetDelta = budget - selectedListing.priceValue;
+  const monthlySignal = Math.round((budget * 5.65) / 10) * 10;
+
+  const toggleSavedListing = (listingId: string) => {
+    setSavedListingIds(current =>
+      current.includes(listingId) ? current.filter(id => id !== listingId) : [...current, listingId]
+    );
+  };
 
   useEffect(() => {
     if (reduceMotion || !mapScope.current) return;
@@ -381,6 +417,28 @@ export default function SummitRealtyRoute() {
                             )
                           )}
                         </div>
+                        <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                          <motion.button
+                            type="button"
+                            layout
+                            onClick={() => toggleSavedListing(selectedListing.id)}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.97 }}
+                            className={`summit-save-button inline-flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-black transition ${
+                              savedActive ? 'is-active' : ''
+                            }`}
+                          >
+                            <Bookmark className="h-4 w-4" />
+                            {savedActive ? 'Saved' : 'Save'}
+                          </motion.button>
+                          <a
+                            href="#tour-plan"
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#13221F] px-4 py-3 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#0F766E] motion-reduce:hover:translate-y-0"
+                          >
+                            Compare
+                            <ArrowRight className="h-4 w-4" />
+                          </a>
+                        </div>
                       </div>
                     </motion.article>
                   </AnimatePresence>
@@ -409,6 +467,237 @@ export default function SummitRealtyRoute() {
               </motion.div>
             ))}
           </div>
+        </section>
+
+        <section id="tour-plan" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mb-10 grid gap-4 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-end">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#0F766E]">
+                Dynamic buyer simulator
+              </p>
+              <h2 className="mt-2 max-w-4xl text-4xl font-black tracking-tight sm:text-6xl">
+                Save homes, reorder a tour, and see the budget story change.
+              </h2>
+            </div>
+            <p className="text-sm leading-7 text-[#5F6B66]">
+              The page stays showcase-only, but the interface behaves like a real client workspace:
+              Motion handles the layout changes, drag affordance, and saved-state transitions.
+            </p>
+          </div>
+
+          <LayoutGroup>
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+              <motion.div
+                layout
+                className="rounded-[1.65rem] border border-[#D9D0BF] bg-white p-5 shadow-[0_22px_70px_rgba(19,34,31,0.08)]"
+              >
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.22em] text-[#0F766E]">
+                      Affordability lens
+                    </p>
+                    <h3 className="mt-2 text-3xl font-black">{selectedListing.name}</h3>
+                  </div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#13221F] text-sky-200">
+                    <Calculator className="h-6 w-6" />
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {[
+                    ['Match score', `${selectedListing.score}%`],
+                    ['Commute', selectedListing.commute],
+                    ['Tour window', selectedListing.tourWindow],
+                  ].map(([label, value]) => (
+                    <motion.div
+                      key={label}
+                      layout
+                      className="rounded-2xl border border-[#D9D0BF] bg-[#F8F5EF] p-4"
+                    >
+                      <div className="text-[10px] uppercase tracking-[0.18em] text-[#7A847F]">
+                        {label}
+                      </div>
+                      <div className="mt-2 text-xl font-black text-[#13221F]">{value}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <label className="mt-6 block">
+                  <span className="mb-3 flex items-center justify-between gap-3 text-sm font-black">
+                    Buyer ceiling
+                    <span className="rounded-full bg-[#E8E1D2] px-3 py-1 text-[#0F766E]">
+                      ${(budget / 1000).toFixed(2)}M
+                    </span>
+                  </span>
+                  <div
+                    className="relative h-5 cursor-pointer rounded-full bg-[#E8E1D2]"
+                    onPointerDown={event => {
+                      const rect = event.currentTarget.getBoundingClientRect();
+                      const next = 700 + ((event.clientX - rect.left) / rect.width) * 850;
+                      setBudget(Math.round(next / 10) * 10);
+                    }}
+                  >
+                    <input
+                      type="range"
+                      min="700"
+                      max="1550"
+                      value={budget}
+                      onChange={event => setBudget(Number(event.target.value))}
+                      aria-label="Buyer budget ceiling"
+                      className="absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0"
+                    />
+                    <motion.div
+                      layout
+                      className="absolute inset-y-0 left-0 rounded-full bg-[#0F766E]"
+                      style={{ width: `${Math.min(100, Math.max(0, budgetProgress))}%` }}
+                    />
+                    <motion.div
+                      layout
+                      className="absolute top-1/2 h-9 w-9 -translate-y-1/2 rounded-full border-4 border-white bg-[#13221F] shadow-[0_12px_28px_rgba(19,34,31,0.24)]"
+                      style={{
+                        left: `calc(${Math.min(100, Math.max(0, budgetProgress))}% - 18px)`,
+                      }}
+                    />
+                  </div>
+                </label>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-[#D9D0BF] bg-[#F5F4EE] p-4">
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#7A847F]">
+                      <Compass className="h-4 w-4 text-[#0F766E]" />
+                      Selected delta
+                    </div>
+                    <div className="mt-2 text-2xl font-black">
+                      {selectedBudgetDelta >= 0 ? '+' : '-'}$
+                      {Math.abs(selectedBudgetDelta).toLocaleString()}K
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-[#5F6B66]">
+                      Compared with the active budget ceiling.
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-[#D9D0BF] bg-[#F5F4EE] p-4">
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-[#7A847F]">
+                      <Clock3 className="h-4 w-4 text-[#0F766E]" />
+                      Payment signal
+                    </div>
+                    <div className="mt-2 text-2xl font-black">${monthlySignal}/mo</div>
+                    <p className="mt-2 text-sm leading-6 text-[#5F6B66]">
+                      Simulated only, useful for showing calculator UX.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <div className="grid gap-5">
+                <motion.div
+                  layout
+                  className="rounded-[1.65rem] border border-[#D9D0BF] bg-[#13221F] p-5 text-white shadow-[0_22px_70px_rgba(19,34,31,0.14)]"
+                >
+                  <div className="mb-5 flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.22em] text-sky-200">
+                        Drag tour order
+                      </p>
+                      <h3 className="mt-2 text-3xl font-black">Saturday route</h3>
+                    </div>
+                    <MapPin className="h-7 w-7 text-sky-200" />
+                  </div>
+                  <Reorder.Group
+                    axis="y"
+                    values={tourOrder}
+                    onReorder={setTourOrder}
+                    className="grid gap-3"
+                  >
+                    {tourOrder.map((listing, index) => (
+                      <Reorder.Item
+                        key={listing.id}
+                        value={listing}
+                        whileDrag={{ scale: 1.02, zIndex: 2 }}
+                        className="grid cursor-grab gap-3 rounded-2xl border border-white/10 bg-white/[0.08] p-4 active:cursor-grabbing sm:grid-cols-[3rem_minmax(0,1fr)_6.5rem] sm:items-center"
+                      >
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#13221F]">
+                          <span className="text-sm font-black">0{index + 1}</span>
+                        </div>
+                        <div>
+                          <h4 className="font-black">{listing.name}</h4>
+                          <p className="mt-1 text-sm text-white/55">
+                            {listing.area} · {listing.commute}
+                          </p>
+                        </div>
+                        <div className="bg-black/22 rounded-xl px-3 py-2 text-center text-sm font-black text-sky-200">
+                          {listing.tourWindow}
+                        </div>
+                      </Reorder.Item>
+                    ))}
+                  </Reorder.Group>
+                </motion.div>
+
+                <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_16rem]">
+                  <motion.div
+                    layout
+                    className="rounded-[1.35rem] border border-[#D9D0BF] bg-white p-4"
+                  >
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-xs uppercase tracking-[0.2em] text-[#0F766E]">
+                        Saved shortlist
+                      </p>
+                      <span className="rounded-full bg-[#E8E1D2] px-3 py-1 text-xs font-black">
+                        {savedListings.length}
+                      </span>
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {savedListings.length > 0 ? (
+                        <div className="grid gap-2">
+                          {savedListings.map(listing => (
+                            <motion.button
+                              key={listing.id}
+                              type="button"
+                              layout
+                              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                              onClick={() => setSelectedListing(listing)}
+                              className="flex items-center justify-between rounded-2xl bg-[#F5F4EE] px-3 py-3 text-left text-sm font-black"
+                            >
+                              <span>{listing.name}</span>
+                              <span className="text-[#0F766E]">{listing.price}</span>
+                            </motion.button>
+                          ))}
+                        </div>
+                      ) : (
+                        <motion.p
+                          key="empty"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="text-sm leading-6 text-[#5F6B66]"
+                        >
+                          Save listings from the map to populate the shortlist.
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  <div className="rounded-[1.35rem] border border-[#D9D0BF] bg-white p-4">
+                    <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#0F766E]">
+                      <Sparkles className="h-4 w-4" />
+                      Signals
+                    </div>
+                    <div className="grid gap-2">
+                      {tourSignals.map(([label, value]) => (
+                        <div key={label} className="rounded-2xl bg-[#F5F4EE] p-3">
+                          <div className="text-[10px] uppercase tracking-[0.18em] text-[#7A847F]">
+                            {label}
+                          </div>
+                          <div className="mt-1 text-sm font-black">{value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </LayoutGroup>
         </section>
 
         <section id="listings" className="bg-[#13221F] px-4 py-20 text-white sm:px-6 lg:px-8">

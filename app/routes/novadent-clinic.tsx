@@ -1,6 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import {
+  Activity,
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
@@ -8,15 +9,18 @@ import {
   CheckCircle2,
   CircleDot,
   ClipboardCheck,
+  ClipboardList,
+  Gauge,
   HeartPulse,
   MousePointer2,
+  ScanLine,
   ShieldCheck,
   Smile,
   Sparkles,
   Star,
   Stethoscope,
 } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Draggable } from 'gsap/Draggable';
@@ -78,8 +82,50 @@ const careSteps = [
   ['Request', 'Demonstrate appointment intent without booking real care.'],
 ];
 
+const symptomPaths = [
+  {
+    id: 'sensitivity',
+    label: 'Cold sensitivity',
+    headline: 'Sensitivity pathway',
+    detail:
+      'A lightweight diagnostic route for patients who need reassurance before committing to a visit.',
+    urgency: 'Low urgency',
+    duration: '45 min',
+    accent: '#2DD4BF',
+    steps: ['Bite and enamel review', 'Gumline check', 'Care plan with home guidance'],
+  },
+  {
+    id: 'alignment',
+    label: 'Smile alignment',
+    headline: 'Cosmetic planning route',
+    detail: 'A consult-first flow for patients comparing whitening, veneers, and aligner planning.',
+    urgency: 'Planned consult',
+    duration: '60 min',
+    accent: '#60A5FA',
+    steps: ['Photo scan preview', 'Shade and symmetry goals', 'Treatment timeline estimate'],
+  },
+  {
+    id: 'urgent',
+    label: 'Pain or swelling',
+    headline: 'Urgent triage route',
+    detail:
+      'A fast path that separates emergency signals from issues that can wait for a planned visit.',
+    urgency: 'Priority review',
+    duration: '24h hold',
+    accent: '#F59E0B',
+    steps: ['Pain location map', 'Risk questions', 'Priority appointment recommendation'],
+  },
+];
+
+const calendarPreview = [
+  ['Today', 'Triage call', '2 windows'],
+  ['48h', 'Diagnostic visit', '4 windows'],
+  ['7d', 'Treatment plan', '3 windows'],
+];
+
 export default function NovaDentClinicRoute() {
   const containerRef = useRef<HTMLElement | null>(null);
+  const [activePath, setActivePath] = useState(symptomPaths[0]);
 
   useGSAP(
     () => {
@@ -87,7 +133,7 @@ export default function NovaDentClinicRoute() {
 
       if (reduceMotion) {
         gsap.set(
-          '.nova-reveal, .nova-service-card, .nova-review, .nova-appointment, .nova-checkin-card, .nova-stage-card',
+          '.nova-reveal, .nova-service-card, .nova-review, .nova-appointment, .nova-checkin-card, .nova-stage-card, .nova-triage-shell, .nova-triage-option, .nova-day-card',
           {
             autoAlpha: 1,
             y: 0,
@@ -152,6 +198,18 @@ export default function NovaDentClinicRoute() {
             batch,
             { autoAlpha: 0, y: 32 },
             { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }
+          );
+        },
+      });
+
+      ScrollTrigger.batch('.nova-triage-option, .nova-day-card', {
+        start: 'top 84%',
+        once: true,
+        onEnter: batch => {
+          gsap.fromTo(
+            batch,
+            { autoAlpha: 0, y: 28, rotate: -0.6 },
+            { autoAlpha: 1, y: 0, rotate: 0, duration: 0.68, stagger: 0.07, ease: 'power3.out' }
           );
         },
       });
@@ -229,6 +287,26 @@ export default function NovaDentClinicRoute() {
       };
     },
     { scope: containerRef }
+  );
+
+  useGSAP(
+    () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion) return;
+
+      gsap.fromTo(
+        '.nova-triage-plan',
+        { autoAlpha: 0, y: 20, scale: 0.985 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.46, ease: 'power3.out' }
+      );
+      gsap.fromTo(
+        '.nova-plan-step',
+        { autoAlpha: 0, x: -14 },
+        { autoAlpha: 1, x: 0, duration: 0.38, stagger: 0.055, ease: 'power2.out' }
+      );
+    },
+    { scope: containerRef, dependencies: [activePath.id], revertOnUpdate: true }
   );
 
   return (
@@ -463,6 +541,122 @@ export default function NovaDentClinicRoute() {
               Draggable and InertiaPlugin make the comfort control feel physical without submitting
               health data.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="triage" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="nova-reveal mb-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-[#0F766E]">
+              Guided treatment simulator
+            </p>
+            <h2 className="mt-2 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl">
+              The site reacts to the patient&apos;s concern before the request step.
+            </h2>
+          </div>
+          <p className="text-sm leading-7 text-[#48615D]">
+            This is still a static showcase, but the triage experience feels like a real clinic
+            product: no health data is submitted and every pathway is hardcoded.
+          </p>
+        </div>
+
+        <div className="nova-triage-shell grid gap-5 lg:grid-cols-[22rem_minmax(0,1fr)]">
+          <div className="grid gap-3">
+            {symptomPaths.map(path => {
+              const active = activePath.id === path.id;
+
+              return (
+                <button
+                  key={path.id}
+                  type="button"
+                  aria-pressed={active ? 'true' : 'false'}
+                  onClick={() => setActivePath(path)}
+                  className={`nova-symptom-button nova-triage-option rounded-[1.25rem] border p-4 text-left transition ${
+                    active ? 'is-active' : ''
+                  }`}
+                >
+                  <span
+                    className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl text-[#102321]"
+                    style={{ backgroundColor: path.accent }}
+                  >
+                    {path.id === 'urgent' ? (
+                      <Activity className="h-5 w-5" />
+                    ) : path.id === 'alignment' ? (
+                      <ScanLine className="h-5 w-5" />
+                    ) : (
+                      <Gauge className="h-5 w-5" />
+                    )}
+                  </span>
+                  <span className="block text-lg font-black">{path.label}</span>
+                  <span className="mt-2 block text-sm leading-6 text-[#48615D]">
+                    {path.urgency} · {path.duration}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="grid gap-5">
+            <article className="nova-triage-plan overflow-hidden rounded-[1.75rem] border border-[#D3E7E3] bg-white shadow-[0_24px_85px_rgba(16,35,33,0.10)]">
+              <div
+                className="grid gap-5 p-5 md:grid-cols-[minmax(0,1fr)_15rem]"
+                style={{
+                  background: `linear-gradient(135deg, ${activePath.accent}1F, rgba(255,255,255,0) 54%)`,
+                }}
+              >
+                <div>
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#102321]/10 bg-white/75 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[#0F766E]">
+                    <ClipboardList className="h-4 w-4" />
+                    Simulated care plan
+                  </div>
+                  <h3 className="text-3xl font-black tracking-tight">{activePath.headline}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#48615D]">{activePath.detail}</p>
+                </div>
+
+                <div className="rounded-[1.25rem] border border-[#D3E7E3] bg-[#F7FBFA] p-4">
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-[#71908B]">
+                    Visit signal
+                  </div>
+                  <div className="mt-2 text-3xl font-black" style={{ color: activePath.accent }}>
+                    {activePath.duration}
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-[#48615D]">{activePath.urgency}</p>
+                </div>
+              </div>
+
+              <div className="grid gap-3 border-t border-[#D3E7E3] p-5 md:grid-cols-3">
+                {activePath.steps.map((step, index) => (
+                  <div key={step} className="nova-plan-step rounded-2xl bg-[#F7FBFA] p-4">
+                    <div
+                      className="mb-3 flex h-8 w-8 items-center justify-center rounded-full text-xs font-black text-[#102321]"
+                      style={{ backgroundColor: activePath.accent }}
+                    >
+                      {index + 1}
+                    </div>
+                    <p className="text-sm font-bold leading-6">{step}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <div className="grid gap-3 md:grid-cols-3">
+              {calendarPreview.map(([day, label, windows], index) => (
+                <article
+                  key={day}
+                  className="nova-day-card rounded-[1.25rem] border border-[#D3E7E3] bg-white p-4 shadow-[0_16px_45px_rgba(16,35,33,0.05)]"
+                >
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-[#102321] px-3 py-1 text-xs font-black text-white">
+                      {day}
+                    </span>
+                    <span className="text-sm font-black text-[#0F766E]">0{index + 1}</span>
+                  </div>
+                  <h4 className="text-lg font-black">{label}</h4>
+                  <p className="mt-2 text-sm leading-6 text-[#48615D]">{windows}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>

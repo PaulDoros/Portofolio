@@ -4,7 +4,9 @@ import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
+  BarChart3,
   Briefcase,
+  FileWarning,
   FileSearch,
   FileText,
   Fingerprint,
@@ -14,13 +16,17 @@ import {
   Network,
   PanelLeft,
   Scale,
+  ScanLine,
   ScrollText,
+  ShieldAlert,
   ShieldCheck,
+  UserCheck,
 } from 'lucide-react';
 import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+import { Flip } from 'gsap/Flip';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { Observer } from 'gsap/Observer';
 import { Physics2DPlugin } from 'gsap/Physics2DPlugin';
@@ -34,6 +40,7 @@ if (typeof window !== 'undefined') {
     useGSAP,
     ScrollTrigger,
     ScrollSmoother,
+    Flip,
     SplitText,
     Observer,
     InertiaPlugin,
@@ -97,6 +104,36 @@ const attorneys = [
   ['Nadia Vale', 'Private client strategy', '19 years'],
 ];
 
+const riskMatrix = [
+  {
+    id: 'governance',
+    label: 'Governance',
+    level: 'Elevated',
+    score: '74',
+    issue: 'Board approvals and delegation gaps need to be cleaned before a financing event.',
+    action: 'Prepare consent package, authority memo, and officer certificate checklist.',
+    icon: BarChart3,
+  },
+  {
+    id: 'evidence',
+    label: 'Evidence',
+    level: 'Contested',
+    score: '61',
+    issue: 'Key communications exist across email, SMS, and shared drives with weak chronology.',
+    action: 'Build a privilege-aware timeline and isolate documents for counsel review.',
+    icon: ScanLine,
+  },
+  {
+    id: 'exposure',
+    label: 'Exposure',
+    level: 'High',
+    score: '88',
+    issue: 'Contract language creates meaningful fee-shifting and injunctive risk.',
+    action: 'Model settlement posture, preservation duties, and early motion leverage.',
+    icon: ShieldAlert,
+  },
+];
+
 export default function AtlasLegalRoute() {
   const containerRef = useRef<HTMLElement | null>(null);
 
@@ -107,7 +144,7 @@ export default function AtlasLegalRoute() {
 
       if (reduceMotion) {
         gsap.set(
-          '.atlas-reveal, .atlas-proof-card, .atlas-attorney, .atlas-consult, .atlas-dossier, .atlas-stage-card',
+          '.atlas-reveal, .atlas-proof-card, .atlas-attorney, .atlas-consult, .atlas-dossier, .atlas-stage-card, .atlas-risk-token, .atlas-risk-panel',
           {
             autoAlpha: 1,
             y: 0,
@@ -240,6 +277,66 @@ export default function AtlasLegalRoute() {
         return () => button.removeEventListener('click', onClick);
       });
 
+      const riskButtons = gsap.utils.toArray<HTMLButtonElement>('.atlas-risk-token');
+      const riskPanels = gsap.utils.toArray<HTMLElement>('.atlas-risk-panel');
+      const riskDeck = q('.atlas-risk-matrix')[0];
+      let activeRisk = 0;
+      let riskObserver: Observer | null = null;
+
+      const setRisk = (nextIndex: number) => {
+        if (!riskButtons.length || !riskPanels.length) return;
+
+        activeRisk = gsap.utils.wrap(0, riskPanels.length, nextIndex);
+        const state = Flip.getState([...riskButtons, ...riskPanels]);
+
+        riskButtons.forEach((button, index) => {
+          const active = index === activeRisk;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        riskPanels.forEach((panel, index) => {
+          panel.classList.toggle('is-active', index === activeRisk);
+        });
+
+        Flip.from(state, {
+          duration: 0.52,
+          ease: 'power3.inOut',
+          nested: true,
+          scale: true,
+        });
+
+        gsap.fromTo(
+          riskPanels[activeRisk].querySelectorAll('.atlas-risk-line'),
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            transformOrigin: 'left center',
+            duration: 0.46,
+            stagger: 0.08,
+            ease: 'power2.out',
+          }
+        );
+      };
+
+      const removeRiskListeners = riskButtons.map((button, index) => {
+        const onClick = () => setRisk(index);
+        button.addEventListener('click', onClick);
+        return () => button.removeEventListener('click', onClick);
+      });
+
+      if (riskDeck && riskButtons.length) {
+        riskObserver = Observer.create({
+          target: riskDeck,
+          type: 'wheel,touch,pointer',
+          tolerance: 20,
+          onDown: () => setRisk(activeRisk + 1),
+          onUp: () => setRisk(activeRisk - 1),
+          onLeft: () => setRisk(activeRisk + 1),
+          onRight: () => setRisk(activeRisk - 1),
+        });
+      }
+
       const proofTrack = q('.atlas-proof-track')[0];
       let proofObserver: Observer | null = null;
 
@@ -293,16 +390,19 @@ export default function AtlasLegalRoute() {
       });
 
       setPractice(0);
+      setRisk(0);
 
       return () => {
         split.revert();
         smoother?.kill();
         practiceObserver.kill();
+        riskObserver?.kill();
         proofObserver?.kill();
         if (proofTrack) {
           InertiaPlugin.untrack(proofTrack, 'x');
         }
         removeButtonListeners.forEach(remove => remove());
+        removeRiskListeners.forEach(remove => remove());
       };
     },
     { scope: containerRef }
@@ -551,6 +651,90 @@ export default function AtlasLegalRoute() {
                   </div>
                 </article>
               ))}
+            </div>
+          </section>
+
+          <section
+            id="risk-matrix"
+            className="atlas-risk-matrix bg-[#0F1118] px-4 py-20 sm:px-6 lg:px-8"
+          >
+            <div className="mx-auto max-w-7xl">
+              <div className="atlas-reveal mb-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_28rem] lg:items-end">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]">
+                    Interactive risk matrix
+                  </p>
+                  <h2 className="mt-2 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl">
+                    Counsel can change the matter lens without leaving the page.
+                  </h2>
+                </div>
+                <p className="text-sm leading-7 text-[#AFA795]">
+                  GSAP Observer powers wheel and swipe changes while Flip preserves spatial context
+                  between the risk tokens and analysis panels.
+                </p>
+              </div>
+
+              <div className="grid gap-5 lg:grid-cols-[20rem_minmax(0,1fr)]">
+                <div className="grid gap-3">
+                  {riskMatrix.map((risk, index) => (
+                    <button
+                      key={risk.id}
+                      type="button"
+                      aria-pressed={index === 0 ? 'true' : 'false'}
+                      className={`atlas-risk-token rounded-[1.25rem] border p-4 text-left transition ${
+                        index === 0 ? 'is-active' : ''
+                      }`}
+                    >
+                      <risk.icon className="mb-5 h-6 w-6" />
+                      <span className="block text-xl font-black">{risk.label}</span>
+                      <span className="mt-2 block text-sm text-[#AFA795]">
+                        {risk.level} · score {risk.score}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  {riskMatrix.map((risk, index) => (
+                    <article
+                      key={risk.id}
+                      className={`atlas-risk-panel rounded-[1.45rem] border p-5 ${
+                        index === 0 ? 'is-active' : ''
+                      }`}
+                    >
+                      <div className="mb-5 flex items-center justify-between gap-4">
+                        <div>
+                          <div className="text-xs uppercase tracking-[0.2em] text-[#E7C27D]/70">
+                            {risk.level}
+                          </div>
+                          <h3 className="mt-2 text-2xl font-black">{risk.label} review</h3>
+                        </div>
+                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E7C27D] text-[#11151D]">
+                          {risk.id === 'governance' ? (
+                            <UserCheck className="h-7 w-7" />
+                          ) : risk.id === 'evidence' ? (
+                            <FileWarning className="h-7 w-7" />
+                          ) : (
+                            <ShieldAlert className="h-7 w-7" />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mb-5 h-2 overflow-hidden rounded-full bg-white/10">
+                        <div
+                          className="atlas-risk-line h-full rounded-full bg-[#E7C27D]"
+                          style={{ width: `${risk.score}%` }}
+                        />
+                      </div>
+                      <p className="text-sm leading-7 text-[#AFA795]">{risk.issue}</p>
+                      <div className="atlas-risk-line mt-5 h-px w-full bg-[#E7C27D]/35" />
+                      <p className="mt-5 text-sm font-bold leading-7 text-[#F6F0E5]">
+                        {risk.action}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
