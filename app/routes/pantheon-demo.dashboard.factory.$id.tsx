@@ -403,6 +403,43 @@ function getImplementationProof(template: DemoForgeTemplate) {
     };
   }
 
+  if (template.id === 'summit-realty') {
+    return {
+      stack: 'Motion + layoutId + scroll-linked values + Motion MCP CSS spring',
+      route: 'app/routes/summit-realty.tsx',
+      code: `const { scrollYProgress } = useScroll({ target: heroRef })
+const heroImageY = useTransform(heroProgress, [0, 1], ["0%", "14%"])
+
+<LayoutGroup>
+  <motion.button layoutId={\`summit-image-\${listing.id}\`} />
+  <AnimatePresence mode="wait">...</AnimatePresence>
+</LayoutGroup>`,
+    };
+  }
+
+  if (template.id === 'novadent-clinic') {
+    return {
+      stack: 'GSAP + SplitText + ScrollTrigger + Flip',
+      route: 'app/routes/novadent-clinic.tsx',
+      code: `const split = SplitText.create(".nova-headline", { type: "lines, words" })
+ScrollTrigger.batch(".nova-reveal", { start: "top 82%", once: true })
+
+const state = Flip.getState(".nova-service-tab, .nova-service-card")
+Flip.from(state, { duration: 0.48, nested: true })`,
+    };
+  }
+
+  if (template.id === 'atlas-legal') {
+    return {
+      stack: 'GSAP + ScrollSmoother + Observer + InertiaPlugin + Physics2D',
+      route: 'app/routes/atlas-legal.tsx',
+      code: `ScrollSmoother.create({ wrapper, content, smooth: 0.75, effects: true })
+Observer.create({ target: ".atlas-practice-stage", onDown: next, onUp: prev })
+InertiaPlugin.track(proofTrack, "x")
+gsap.to(".atlas-particle", { physics2D: { velocity: 42, angle: -60 } })`,
+    };
+  }
+
   return null;
 }
 

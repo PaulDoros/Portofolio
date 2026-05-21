@@ -59,6 +59,24 @@
       1.0007344255242556,
       1
     );
+    --summit-duration-premium-spring: 450ms;
+    --summit-ease-premium-spring: linear(
+      0,
+      0.10110368308566797,
+      0.29744946458258115,
+      0.4964329611958438,
+      0.6616603118995126,
+      0.7849099070465673,
+      0.8703287043213956,
+      0.9261381432480402,
+      0.9607036671918617,
+      0.9809844293559076,
+      0.9921775404693565,
+      0.9978880093501371,
+      1.0004729621600332,
+      1.0013933212568977,
+      1
+    );
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -214,6 +232,62 @@
 
   .divine-float {
     animation: pantheon-float 4s ease-in-out infinite;
+  }
+
+  .summit-motion-card {
+    transition:
+      transform var(--summit-duration-premium-spring) var(--summit-ease-premium-spring),
+      opacity var(--summit-duration-premium-spring) var(--summit-ease-premium-spring),
+      border-color var(--summit-duration-premium-spring) var(--summit-ease-premium-spring),
+      background-color var(--summit-duration-premium-spring) var(--summit-ease-premium-spring),
+      box-shadow var(--summit-duration-premium-spring) var(--summit-ease-premium-spring);
+  }
+
+  .nova-service-tab {
+    border-color: rgba(16, 35, 33, 0.1);
+    background: rgba(255, 255, 255, 0.74);
+    color: #48615d;
+  }
+
+  .nova-service-tab.is-active {
+    border-color: rgba(15, 118, 110, 0.3);
+    background: #102321;
+    color: #ffffff;
+    box-shadow: 0 16px 42px rgba(16, 35, 33, 0.14);
+  }
+
+  .nova-service-card {
+    opacity: 0.78;
+    transform-origin: center;
+  }
+
+  .nova-service-card.is-active {
+    border-color: rgba(15, 118, 110, 0.32);
+    box-shadow: 0 24px 70px rgba(16, 35, 33, 0.12);
+    opacity: 1;
+  }
+
+  .atlas-practice-button {
+    border-color: rgba(231, 194, 125, 0.12);
+    background: rgba(20, 26, 36, 0.82);
+    color: #afa795;
+  }
+
+  .atlas-practice-button.is-active {
+    border-color: rgba(231, 194, 125, 0.42);
+    background: rgba(231, 194, 125, 0.12);
+    color: #f7dca3;
+    box-shadow: 0 18px 56px rgba(0, 0, 0, 0.18);
+  }
+
+  .atlas-case-panel {
+    opacity: 0.35;
+    transform-origin: center;
+  }
+
+  .atlas-case-panel.is-active {
+    border-color: rgba(231, 194, 125, 0.38);
+    opacity: 1;
   }
 
   .lightning-strike {

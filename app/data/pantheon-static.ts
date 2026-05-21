@@ -710,7 +710,7 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     heroTitle: 'Find the address that fits the next chapter',
     heroSubtitle:
       'A listing-led real estate experience with neighborhood context, agent credibility, and smooth property discovery.',
-    previewUrl: 'https://summit-realty-demo.vercel.app',
+    previewUrl: '/summit-realty',
     metrics: [
       { label: 'Listings', value: '24' },
       { label: 'Neighborhoods', value: '7' },
@@ -740,7 +740,7 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     heroTitle: 'Calm care, brighter appointments',
     heroSubtitle:
       'A healthcare landing page balancing trust, clarity, service discovery, and frictionless appointment intent.',
-    previewUrl: 'https://novadent-clinic-demo.vercel.app',
+    previewUrl: '/novadent-clinic',
     metrics: [
       { label: 'Services', value: '12' },
       { label: 'Reviews', value: '4.9' },
@@ -770,7 +770,7 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     heroTitle: 'Clear counsel for consequential decisions',
     heroSubtitle:
       'A trust-first professional services site with evidence, attorney authority, and a focused consultation path.',
-    previewUrl: 'https://atlas-legal-demo.vercel.app',
+    previewUrl: '/atlas-legal',
     metrics: [
       { label: 'Practice areas', value: '8' },
       { label: 'Case wins', value: '42' },
@@ -831,24 +831,27 @@ export const projectVault = [
     priority: 'P2',
     status: 'active',
     path: '/data/repos/projects/summit-realty',
-    description: 'Real estate listing showcase with neighborhoods, agent trust, and lead capture.',
-    updated: 'This week',
+    description:
+      'Real Motion real estate route with listings, neighborhoods, SVG map motion, and lead capture.',
+    updated: 'Today',
   },
   {
     name: 'NovaDent Clinic',
     priority: 'P2',
     status: 'active',
     path: '/data/repos/projects/novadent-clinic',
-    description: 'Healthcare clinic website with services, reviews, and appointment intent.',
-    updated: 'This week',
+    description:
+      'Real GSAP clinic route with SplitText, ScrollTrigger, Flip service pathways, and appointment intent.',
+    updated: 'Today',
   },
   {
     name: 'Atlas Legal',
     priority: 'P2',
     status: 'active',
     path: '/data/repos/projects/atlas-legal',
-    description: 'Professional services site with practice areas, attorneys, and consultation CTA.',
-    updated: 'This week',
+    description:
+      'Real GSAP legal route with ScrollSmoother, Observer, Inertia, Physics2D, and consultation CTA.',
+    updated: 'Today',
   },
 ];
 

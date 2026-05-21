@@ -1240,7 +1240,10 @@ function ProjectVaultCard({
   const opensLivePreview =
     template?.id === 'angelica-bazar' ||
     template?.id === 'noir-table' ||
-    template?.id === 'pulsefit-studio';
+    template?.id === 'pulsefit-studio' ||
+    template?.id === 'summit-realty' ||
+    template?.id === 'novadent-clinic' ||
+    template?.id === 'atlas-legal';
 
   return (
     <motion.article
