@@ -11,7 +11,7 @@ import {
   useTransform,
   useVelocity,
 } from 'motion/react';
-import { Cursor, ScrambleText, Ticker, usePointerPosition } from 'motion-plus/react';
+import { Cursor, Ticker, usePointerPosition } from 'motion-plus/react';
 import {
   ArrowDown,
   ArrowLeft,
@@ -2628,9 +2628,7 @@ export function EditorialPortfolioHome({ onAdultLinkClick }: EditorialPortfolioH
                     08 Contact
                   </span>
                   <h2 className="mt-5 max-w-2xl text-5xl font-black leading-[0.9] tracking-normal md:text-8xl">
-                    <ScrambleText as="span" active chars="PANTHEON0123456789#$%&">
-                      Let&apos;s build the next system.
-                    </ScrambleText>
+                    <span>Let&apos;s build the next system.</span>
                   </h2>
                   <p className="mt-8 max-w-xl text-lg leading-8 text-white/60">
                     Product, automation, AI systems, game prototypes, static demos, and production
