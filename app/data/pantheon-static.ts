@@ -632,8 +632,8 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
   {
     id: 'noir-table',
     name: 'Noir Table',
-    niche: 'Restaurant landing page',
-    type: 'landing',
+    niche: 'Restaurant website',
+    type: 'web',
     status: 'planning',
     progress: 42,
     icon: '🍽️',
@@ -642,11 +642,11 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     repoLabel: 'templates/noir-table',
     agents: ['Aphrodite', 'Hermes', 'Apollo', 'TALOS'],
     description:
-      'Restaurant landing page with cinematic reservations, menu highlights, chef story, location, and private dining sections.',
+      'Restaurant website with cinematic reservations, menu categories, opening hours, gallery, location, and private dining paths.',
     command: 'simulate forge --template restaurant-motion',
     prompt:
       'Generate a cinematic restaurant website for Noir Table with reservation flow, menu highlights, chef story, wine program, and dramatic motion.',
-    taskTitle: 'Forge Noir Table restaurant landing page',
+    taskTitle: 'Forge Noir Table restaurant website',
     heroTitle: 'Dinner after dark, plated in gold',
     heroSubtitle:
       'A high-motion dining experience with reservation intent, signature dishes, and an atmospheric chef narrative.',
@@ -656,8 +656,16 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
       { label: 'Menu sections', value: '6' },
       { label: 'Motion cues', value: '14' },
     ],
-    features: ['Reservation CTA', 'Animated menu tasting', 'Chef and cellar story'],
-    motion: ['Parallax dish reveals', 'Candlelight hover states', 'Animated booking timeline'],
+    features: [
+      'Reservation flow',
+      'Menu categories with prices',
+      'Gallery, hours, and private dining',
+    ],
+    motion: [
+      'Sequenced private dining story',
+      'Parallax atmosphere gallery',
+      'Scroll-triggered menu staging',
+    ],
   },
   {
     id: 'pulsefit-studio',
@@ -687,7 +695,11 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
       { label: 'Trial CTA', value: '2-step' },
     ],
     features: ['Class schedule grid', 'Trainer profile cards', 'Membership comparison'],
-    motion: ['Pulse meter hero', 'Swipeable class cards', 'Animated pricing selector'],
+    motion: [
+      'Cursor floating booking target',
+      'Loading progress checks',
+      'Hold-to-confirm trial reserve',
+    ],
   },
   {
     id: 'summit-realty',
@@ -702,7 +714,7 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     repoLabel: 'templates/summit-realty',
     agents: ['Hermes', 'Aphrodite', 'Apollo', 'Athena'],
     description:
-      'Real estate landing page with featured listings, neighborhood cards, mortgage CTA, and agent profile storytelling.',
+      'Real estate website with listing discovery, buyer priorities, neighborhood cards, tour planning, seller valuation, and agent trust.',
     command: 'simulate forge --template real-estate-gallery',
     prompt:
       'Generate a premium real estate website for Summit Realty with listings, neighborhoods, agent trust, mortgage CTA, and motion-rich property previews.',
@@ -716,8 +728,54 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
       { label: 'Neighborhoods', value: '7' },
       { label: 'Lead paths', value: '5' },
     ],
-    features: ['Featured property rail', 'Neighborhood cards', 'Agent consultation CTA'],
-    motion: ['Map pin choreography', 'Listing card tilt', 'Mortgage CTA slide-in'],
+    features: [
+      'Map-first listing search',
+      'Buyer and seller flows',
+      'Tour planning and valuation CTA',
+    ],
+    motion: [
+      'Cursor trail velocity shortlist',
+      'Parallax neighborhood pages',
+      'Scroll velocity 3D property planes',
+    ],
+  },
+  {
+    id: 'harbor-nest-hotel',
+    name: 'Harbor Nest Hotel',
+    niche: 'Boutique hotel and guesthouse',
+    type: 'web',
+    status: 'planning',
+    progress: 33,
+    icon: '🏨',
+    accent: '#FF385C',
+    secondaryAccent: '#0066CC',
+    repoLabel: 'templates/harbor-nest-hotel',
+    agents: ['Aphrodite', 'Hermes', 'Apollo', 'Athena'],
+    description:
+      'Boutique hotel website generated from local DESIGN.md references with booking search, room rates, amenities, gallery, location, policies, attractions, and direct inquiry.',
+    command: 'simulate forge --template hotel-design-md',
+    prompt:
+      'Create a boutique hotel website using local DESIGN.md references with rooms, booking CTA, amenities, policies, gallery, location, attractions, reviews, and direct-booking conversion.',
+    taskTitle: 'Forge Harbor Nest Hotel hospitality site',
+    heroTitle: 'Wake up between the old port and the morning light',
+    heroSubtitle:
+      'A hospitality website inspired by Airbnb-style booking warmth and Apple-style photography, with real hotel pages and conversion flow.',
+    previewUrl: '/harbor-nest-hotel',
+    metrics: [
+      { label: 'Rooms', value: '12' },
+      { label: 'Rating', value: '4.9' },
+      { label: 'Booking paths', value: '6' },
+    ],
+    features: [
+      'Rooms, rates, and saved shortlist',
+      'Date and guest booking simulator',
+      'Amenities, policies, location, and attractions',
+    ],
+    motion: [
+      'DESIGN.md reference-driven visual system',
+      'Shared room selection layout',
+      'Booking progress and copy-button interactions',
+    ],
   },
   {
     id: 'novadent-clinic',
@@ -732,7 +790,7 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
     repoLabel: 'templates/novadent-clinic',
     agents: ['Athena', 'Aphrodite', 'Apollo', 'Hermes'],
     description:
-      'Clinic website with services, appointment CTA, patient testimonials, trust badges, and accessible content structure.',
+      'Clinic website with service pathways, appointment intent, doctors, insurance trust, emergency triage, reviews, and patient FAQs.',
     command: 'simulate forge --template clinic-trust',
     prompt:
       'Create a polished dental clinic website with services, appointment booking CTA, testimonials, insurance trust signals, and accessible motion.',
@@ -746,19 +804,23 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
       { label: 'Reviews', value: '4.9' },
       { label: 'Booking', value: '1 min' },
     ],
-    features: ['Appointment CTA', 'Service pathway cards', 'Trust and review badges'],
-    motion: ['Soft service reveals', 'Trust badge cascade', 'Appointment progress rail'],
+    features: [
+      'Guided appointment flow',
+      'Doctor and insurance trust',
+      'Emergency and FAQ sections',
+    ],
+    motion: ['Scroll-linked care journey', 'Flip service pathways', 'Draggable comfort control'],
   },
   {
     id: 'atlas-legal',
     name: 'Atlas Legal',
-    niche: 'Professional services',
-    type: 'landing',
+    niche: 'Legal services website',
+    type: 'web',
     status: 'planning',
     progress: 34,
     icon: '⚖️',
-    accent: '#A78BFA',
-    secondaryAccent: '#F59E0B',
+    accent: '#E7C27D',
+    secondaryAccent: '#5B6472',
     repoLabel: 'templates/atlas-legal',
     agents: ['Athena', 'Hermes', 'Thoth', 'Aphrodite'],
     description:
@@ -776,8 +838,76 @@ export const demoForgeTemplates: DemoForgeTemplate[] = [
       { label: 'Case wins', value: '42' },
       { label: 'Consult CTA', value: '3' },
     ],
-    features: ['Practice area matrix', 'Attorney profiles', 'Case result highlights'],
-    motion: ['Evidence counter reveal', 'Practice card sweep', 'Consultation drawer motion'],
+    features: ['Practice area finder', 'Attorney profiles and proof', 'Confidential intake flow'],
+    motion: ['Dossier line narrative', 'Observer-driven risk matrix', 'Inertia proof rail'],
+  },
+  {
+    id: 'ionut-love-motorcycle',
+    name: 'Ionut Love Motorcycle',
+    niche: 'Personal story and event website',
+    type: 'web',
+    status: 'completed',
+    progress: 100,
+    icon: '🏍️',
+    accent: '#EF4444',
+    secondaryAccent: '#F97316',
+    repoLabel: 'external/ionut-love-motorcycle',
+    agents: ['Aphrodite', 'Apollo', 'Hermes', 'Hephaestus'],
+    description:
+      'Live motorcycle-themed story website with emotional sections, photo-led storytelling, event details, and cinematic motion.',
+    command: 'simulate forge --template personal-event-story',
+    prompt:
+      'Create a cinematic personal story website for Ionut Love Motorcycle with timeline storytelling, photo moments, event details, gallery, and dramatic motion.',
+    taskTitle: 'Add Ionut Love Motorcycle live showcase',
+    heroTitle: 'A love story built for the open road',
+    heroSubtitle:
+      'A live deployed story site with motorcycle energy, emotional pacing, gallery moments, and event-ready structure.',
+    previewUrl: 'https://ionut-love-motorcycle.vercel.app/',
+    metrics: [
+      { label: 'Story beats', value: '8' },
+      { label: 'Gallery moments', value: '18' },
+      { label: 'Live deploy', value: '200' },
+    ],
+    features: ['Story timeline', 'Photo-led gallery', 'Event and contact details'],
+    motion: ['Cinematic scroll pacing', 'Photo reveal moments', 'Road-trip section transitions'],
+  },
+  {
+    id: 'orbitflow-os',
+    name: 'OrbitFlow OS',
+    niche: 'SaaS operations platform',
+    type: 'web',
+    status: 'planning',
+    progress: 39,
+    icon: '🛰️',
+    accent: '#22D3EE',
+    secondaryAccent: '#7C3AED',
+    repoLabel: 'templates/orbitflow-os',
+    agents: ['Apollo', 'Aphrodite', 'Hermes', 'Athena'],
+    description:
+      'Motion-powered SaaS website with feature modules, use cases, integrations, pricing, docs, support, signup intent, scroll text lines, and iOS-style app folder transitions.',
+    command: 'simulate forge --template saas-motion-platform',
+    prompt:
+      'Create a polished SaaS operations platform website for OrbitFlow OS with product modules, pricing, docs, support, integrations, signup paths, and advanced Motion examples.',
+    taskTitle: 'Forge OrbitFlow OS SaaS showcase',
+    heroTitle: 'Run product launches from one animated command space',
+    heroSubtitle:
+      'A Motion-rich SaaS template with app-folder transitions, scroll-linked text lines, product UI previews, pricing, docs, support, and conversion-ready signup paths.',
+    previewUrl: '/orbitflow-os',
+    metrics: [
+      { label: 'Workflows', value: '42' },
+      { label: 'Integrations', value: '28' },
+      { label: 'Launch score', value: '94' },
+    ],
+    features: [
+      'Feature, use-case, and pricing pages',
+      'Integration and docs directory',
+      'Support and signup conversion flows',
+    ],
+    motion: [
+      'Scroll zoom hero',
+      'Scroll-direction hidden header',
+      'iOS app folder, tabs, loading, and copy button patterns',
+    ],
   },
 ];
 
@@ -794,11 +924,14 @@ export const factoryProjects = demoForgeTemplates.map(template => ({
 
 export const templateBlueprints = [
   'Boutique ecommerce with admin-ready catalog',
-  'Cinematic restaurant landing page and reservations',
+  'Cinematic restaurant website with reservations and menu pages',
   'Fitness studio classes, trainers, and memberships',
   'Real estate listings and neighborhood lead capture',
+  'Boutique hotel rooms, amenities, policies, and direct booking',
   'Healthcare clinic appointment and trust system',
   'Professional services authority and consultation flow',
+  'Personal event story with live external deployment',
+  'SaaS operations platform with Motion Plus-inspired interactions',
 ];
 
 export const projectVault = [
@@ -836,6 +969,15 @@ export const projectVault = [
     updated: 'Today',
   },
   {
+    name: 'Harbor Nest Hotel',
+    priority: 'P2',
+    status: 'active',
+    path: '/data/repos/projects/harbor-nest-hotel',
+    description:
+      'Real Motion hotel route using local DESIGN.md references for booking, rooms, amenities, policies, and location.',
+    updated: 'Today',
+  },
+  {
     name: 'NovaDent Clinic',
     priority: 'P2',
     status: 'active',
@@ -850,7 +992,25 @@ export const projectVault = [
     status: 'active',
     path: '/data/repos/projects/atlas-legal',
     description:
-      'Real GSAP legal route with ScrollSmoother, Observer, Inertia, Physics2D, and consultation CTA.',
+      'Real GSAP legal route with ScrollTrigger, Observer, Inertia, Physics2D, and consultation CTA.',
+    updated: 'Today',
+  },
+  {
+    name: 'Ionut Love Motorcycle',
+    priority: 'P2',
+    status: 'active',
+    path: '/data/repos/projects/ionut-love-motorcycle',
+    description:
+      'Live external story showcase with motorcycle visuals, event structure, and cinematic page flow.',
+    updated: 'Today',
+  },
+  {
+    name: 'OrbitFlow OS',
+    priority: 'P1',
+    status: 'active',
+    path: '/data/repos/projects/orbitflow-os',
+    description:
+      'Real Motion SaaS route with scroll text lines, iOS-style app folder transitions, pricing, docs, support, and integrations.',
     updated: 'Today',
   },
 ];

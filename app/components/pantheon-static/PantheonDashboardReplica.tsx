@@ -1237,13 +1237,7 @@ function ProjectVaultCard({
   const priorityMeta = projectPriorityMeta[priority];
   const statusMeta = projectStatusMeta[status];
   const displayPath = project.path.replace('/data/repos/', '');
-  const opensLivePreview =
-    template?.id === 'angelica-bazar' ||
-    template?.id === 'noir-table' ||
-    template?.id === 'pulsefit-studio' ||
-    template?.id === 'summit-realty' ||
-    template?.id === 'novadent-clinic' ||
-    template?.id === 'atlas-legal';
+  const opensLivePreview = Boolean(template?.previewUrl);
 
   return (
     <motion.article

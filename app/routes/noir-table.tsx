@@ -4,18 +4,21 @@ import {
   ArrowLeft,
   ArrowRight,
   CalendarDays,
+  Camera,
+  Clock3,
   GlassWater,
   MapPin,
+  Phone,
   Sparkles,
   Utensils,
+  Users,
 } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
 
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 export const meta: MetaFunction = () => [
@@ -51,28 +54,144 @@ const dishes = [
   },
 ];
 
+const menuCategories = [
+  {
+    name: 'First plates',
+    note: 'Small courses designed for sharing before the tasting menu.',
+    items: [
+      {
+        title: 'Oyster Noir',
+        detail: 'Yuzu granite, black pearl vinegar',
+        price: '$9 ea',
+        tags: ['Raw', 'GF'],
+      },
+      {
+        title: 'Coal-Roasted Beet',
+        detail: 'Hazelnut soil, whipped chevre',
+        price: '$18',
+        tags: ['V'],
+      },
+      {
+        title: 'Duck Croquette',
+        detail: 'Cherry gastrique, bronze fennel',
+        price: '$21',
+        tags: ['Chef'],
+      },
+    ],
+  },
+  {
+    name: 'Tasting mains',
+    note: 'Signature plates built around the restaurant charcoal hearth.',
+    items: [
+      {
+        title: 'Charred Ribeye',
+        detail: 'Black garlic, marrow jus, smoked sea salt',
+        price: '$48',
+        tags: ['GF'],
+      },
+      {
+        title: 'Saffron Scallops',
+        detail: 'Citrus beurre blanc, fennel, bronze herbs',
+        price: '$36',
+        tags: ['Seafood'],
+      },
+      {
+        title: 'Wild Mushroom Mafalde',
+        detail: 'Porcini cream, aged parmesan, thyme oil',
+        price: '$29',
+        tags: ['V'],
+      },
+    ],
+  },
+  {
+    name: 'Dessert and cellar',
+    note: 'Late-service sweets and sommelier-led pairings.',
+    items: [
+      {
+        title: 'Midnight Torte',
+        detail: 'Cocoa glaze, espresso cream, salted cherry',
+        price: '$16',
+        tags: ['House'],
+      },
+      {
+        title: 'Citrus Semifreddo',
+        detail: 'Blood orange, almond lace, basil sugar',
+        price: '$14',
+        tags: ['GF'],
+      },
+      {
+        title: 'Reserve Pairing',
+        detail: 'Three pours selected from the cellar',
+        price: '$38',
+        tags: ['Wine'],
+      },
+    ],
+  },
+];
+
 const cellar = [
   ['Barolo Riserva', 'Piedmont, 2017'],
   ['Etna Bianco', 'Sicily, 2021'],
   ['Grower Champagne', 'Montagne de Reims'],
 ];
 
-const events = ['Chef counter for six', 'Private cellar dinners', 'Late-service tasting menu'];
+const reservationSteps = [
+  ['Choose night', 'Dinner Tue-Sun from 18:00 with late tables after 22:00.'],
+  ['Select room', 'Main room, chef counter, or cellar table for private groups.'],
+  ['Confirm notes', 'Dietary needs and celebration notes stay visible in the request.'],
+];
+
+const galleryMoments = [
+  {
+    title: 'Candlelit dining room',
+    image:
+      'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Chef counter',
+    image:
+      'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    title: 'Cellar service',
+    image:
+      'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=80',
+  },
+];
+
+const events = [
+  ['Chef counter for six', 'A close-up tasting menu with the kitchen team.'],
+  ['Private cellar dinners', 'Wine-led evenings for 10-18 guests below the main room.'],
+  ['Late-service tasting menu', 'A shorter after-dark menu for last seating guests.'],
+];
+
+const openingHours = [
+  ['Tue-Thu', '18:00 - 23:30'],
+  ['Fri-Sat', '18:00 - 00:30'],
+  ['Sunday', '17:30 - 22:30'],
+];
 
 export default function NoirTableRoute() {
   const containerRef = useRef<HTMLElement | null>(null);
 
-  useGSAP(
-    () => {
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    let cleanupMatchMedia: (() => void) | undefined;
+
+    const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (reduceMotion) {
-        gsap.set('.noir-reveal, .noir-dish, .noir-hero-copy, .noir-reservation', {
-          autoAlpha: 1,
-          y: 0,
-          x: 0,
-          scale: 1,
-        });
+        gsap.set(
+          '.noir-reveal, .noir-dish, .noir-menu-category, .noir-gallery-card, .noir-reservation-step, .noir-private-card, .noir-hero-copy, .noir-reservation',
+          {
+            autoAlpha: 1,
+            y: 0,
+            x: 0,
+            scale: 1,
+          }
+        );
         return;
       }
 
@@ -92,6 +211,7 @@ export default function NoirTableRoute() {
         stagger: 0.09,
         duration: 0.7,
         ease: 'power2.out',
+        force3D: true,
         delay: 0.35,
       });
 
@@ -99,31 +219,47 @@ export default function NoirTableRoute() {
         start: 'top 82%',
         once: true,
         onEnter: batch => {
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 34 },
-            { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.72, ease: 'power3.out' }
-          );
+          gsap.from(batch, {
+            y: 26,
+            stagger: 0.08,
+            duration: 0.68,
+            ease: 'power3.out',
+            force3D: true,
+            clearProps: 'transform',
+          });
+        },
+      });
+
+      ScrollTrigger.batch('.noir-menu-category, .noir-gallery-card, .noir-reservation-step', {
+        start: 'top 84%',
+        once: true,
+        onEnter: batch => {
+          gsap.from(batch, {
+            y: 30,
+            scale: 0.985,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: 'power3.out',
+            force3D: true,
+            clearProps: 'transform',
+          });
         },
       });
 
       gsap.utils.toArray<HTMLElement>('.noir-dish').forEach((dish, index) => {
-        gsap.fromTo(
-          dish,
-          { autoAlpha: 0, y: 36, rotation: index % 2 ? 1.4 : -1.4 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            rotation: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: dish,
-              start: 'top 78%',
-              once: true,
-            },
-          }
-        );
+        gsap.from(dish, {
+          y: 30,
+          rotation: index % 2 ? 1.1 : -1.1,
+          duration: 0.72,
+          ease: 'power3.out',
+          force3D: true,
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: dish,
+            start: 'top 78%',
+            once: true,
+          },
+        });
       });
 
       const parallax = gsap.timeline({
@@ -136,9 +272,43 @@ export default function NoirTableRoute() {
       });
 
       parallax.to('.noir-atmosphere-image', { yPercent: -10, scale: 1.06, ease: 'none' });
-    },
-    { scope: containerRef }
-  );
+
+      const mm = gsap.matchMedia();
+      mm.add('(min-width: 900px)', () => {
+        const privateTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.noir-private-pin',
+            start: 'top 76%',
+            end: 'bottom 38%',
+            once: true,
+          },
+        });
+
+        privateTimeline
+          .from('.noir-private-card', {
+            y: 28,
+            scale: 0.985,
+            stagger: 0.14,
+            duration: 0.68,
+            ease: 'power2.out',
+            force3D: true,
+            clearProps: 'transform',
+          })
+          .to(
+            '.noir-private-glow',
+            { xPercent: 12, scale: 1.08, duration: 0.8, ease: 'power2.out' },
+            0
+          );
+      });
+
+      cleanupMatchMedia = () => mm.revert();
+    }, containerRef);
+
+    return () => {
+      cleanupMatchMedia?.();
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <main ref={containerRef} className="min-h-screen overflow-hidden bg-[#080706] text-[#F7EFE2]">
@@ -163,6 +333,22 @@ export default function NoirTableRoute() {
             <Utensils className="h-4 w-4" />
             Noir Table
           </div>
+          <nav className="hidden items-center gap-2 rounded-full border border-[#E7C27D]/15 bg-black/30 p-1 text-xs font-bold uppercase tracking-[0.12em] text-[#D7C7AF]/70 lg:flex">
+            {[
+              ['Menu', '#menu'],
+              ['Gallery', '#gallery'],
+              ['Private', '#private'],
+              ['Hours', '#hours'],
+            ].map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                className="rounded-full px-3 py-2 transition hover:bg-[#E7C27D]/10 hover:text-[#F7DCA3]"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
           <a
             href="#reserve"
             className="hidden rounded-full bg-[#E7C27D] px-4 py-2 text-sm font-bold text-[#160A08] transition hover:-translate-y-0.5 hover:bg-[#F7DCA3] motion-reduce:hover:translate-y-0 sm:inline-flex"
@@ -262,27 +448,74 @@ export default function NoirTableRoute() {
 
       <section id="menu" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="noir-reveal mb-10 max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]/70">Signature menu</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]/70">Menu</p>
           <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
-            Courses staged like scenes.
+            A full menu structure, not a decorative food grid.
           </h2>
           <p className="text-[#D7C7AF]/72 mt-4 text-sm leading-7">
-            Menu cards use transform and opacity reveals, keeping the page smooth while preserving
-            the restaurant&apos;s theatrical tone.
+            Guests can scan courses, prices, and dietary tags before they choose the reservation
+            path. GSAP stages each category as it enters the viewport.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
+          {menuCategories.map(category => (
+            <article
+              key={category.name}
+              className="noir-menu-category border-[#E7C27D]/12 rounded-[1.6rem] border bg-[#120B09] p-5"
+            >
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-2xl font-black">{category.name}</h3>
+                  <p className="text-[#D7C7AF]/62 mt-2 text-sm leading-6">{category.note}</p>
+                </div>
+                <span className="rounded-full border border-[#E7C27D]/20 px-3 py-1 text-xs uppercase tracking-[0.16em] text-[#F7DCA3]">
+                  {category.items.length} plates
+                </span>
+              </div>
+              <div className="space-y-3">
+                {category.items.map(item => (
+                  <div
+                    key={item.title}
+                    className="rounded-[1.15rem] border border-[#E7C27D]/10 bg-black/25 p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h4 className="font-black">{item.title}</h4>
+                        <p className="text-[#D7C7AF]/64 mt-1 text-sm leading-6">{item.detail}</p>
+                      </div>
+                      <span className="shrink-0 text-sm font-black text-[#F7DCA3]">
+                        {item.price}
+                      </span>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {item.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="border-[#E7C27D]/12 rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] text-[#BFAF97]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-6 grid gap-5 md:grid-cols-3">
           {dishes.map(dish => (
             <article
               key={dish.title}
               className="noir-dish border-[#E7C27D]/12 overflow-hidden rounded-[1.6rem] border bg-[#120B09]"
             >
-              <img src={dish.image} alt={dish.title} className="h-64 w-full object-cover" />
+              <img src={dish.image} alt={dish.title} className="h-56 w-full object-cover" />
               <div className="p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h3 className="text-2xl font-black">{dish.title}</h3>
+                    <h3 className="text-xl font-black">{dish.title}</h3>
                     <p className="text-[#D7C7AF]/68 mt-2 text-sm leading-6">{dish.detail}</p>
                   </div>
                   <span className="rounded-full border border-[#E7C27D]/20 px-3 py-1 text-sm text-[#F7DCA3]">
@@ -328,30 +561,126 @@ export default function NoirTableRoute() {
         </div>
       </section>
 
-      <section id="private" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="border-[#E7C27D]/12 grid overflow-hidden rounded-[2rem] border bg-[#120B09] lg:grid-cols-[1.05fr_0.95fr]">
+      <section id="gallery" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="noir-reveal mb-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]/70">
+              Gallery and location
+            </p>
+            <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+              The atmosphere section answers real guest questions.
+            </h2>
+          </div>
+          <p className="text-sm leading-7 text-[#D7C7AF]/70">
+            Restaurant templates need proof of room, service, hours, contact, and address before a
+            reservation CTA can feel credible.
+          </p>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_24rem]">
+          <div className="grid gap-4 md:grid-cols-3">
+            {galleryMoments.map(moment => (
+              <article
+                key={moment.title}
+                className="noir-gallery-card border-[#E7C27D]/12 overflow-hidden rounded-[1.45rem] border bg-[#120B09]"
+              >
+                <img src={moment.image} alt={moment.title} className="h-64 w-full object-cover" />
+                <div className="flex items-center gap-3 p-4">
+                  <Camera className="h-5 w-5 text-[#E7C27D]" />
+                  <h3 className="font-black">{moment.title}</h3>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside
+            id="hours"
+            className="border-[#E7C27D]/12 rounded-[1.65rem] border bg-[#120B09] p-5"
+          >
+            <div className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#E7C27D]/70">
+              <Clock3 className="h-4 w-4" />
+              Opening hours
+            </div>
+            <div className="space-y-3">
+              {openingHours.map(([day, time]) => (
+                <div
+                  key={day}
+                  className="flex items-center justify-between rounded-2xl bg-black/25 px-4 py-3"
+                >
+                  <span className="font-bold">{day}</span>
+                  <span className="text-[#F7DCA3]">{time}</span>
+                </div>
+              ))}
+            </div>
+            <div className="text-[#D7C7AF]/72 mt-5 space-y-3 text-sm">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-[#E7C27D]" />
+                18 Crescent Lane, Old Town
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-[#E7C27D]" />
+                +1 555 018 2210
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section
+        id="private"
+        className="noir-private-pin relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8"
+      >
+        <div className="noir-private-glow pointer-events-none absolute left-[-12rem] top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-[#E7C27D]/10 blur-3xl" />
+        <div className="border-[#E7C27D]/12 relative mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border bg-[#120B09] lg:grid-cols-[1.05fr_0.95fr]">
           <div className="noir-reveal p-6 sm:p-8 lg:p-10">
             <p className="text-xs uppercase tracking-[0.24em] text-[#E7C27D]/70">Private dining</p>
             <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
               Special nights should not hide behind a contact form.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[#D7C7AF]/70">
-              Event paths are presented as clear productized experiences with enough detail to
-              invite an inquiry without pretending to run a live booking backend.
+              Event paths are presented as clear productized experiences with capacity, context, and
+              inquiry intent. The sequenced GSAP story gives this section a different rhythm from
+              the menu and gallery without hiding the conversion cards.
             </p>
+
+            <div className="mt-8 grid gap-3">
+              {reservationSteps.map(([title, text], index) => (
+                <div
+                  key={title}
+                  className="noir-reservation-step border-[#E7C27D]/12 rounded-[1.2rem] border bg-black/25 p-4"
+                >
+                  <div className="flex gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E7C27D] text-sm font-black text-[#160A08]">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <h3 className="font-black">{title}</h3>
+                      <p className="text-[#D7C7AF]/64 mt-1 text-sm leading-6">{text}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="border-[#E7C27D]/12 border-t p-6 sm:p-8 lg:border-l lg:border-t-0">
             <div className="space-y-3">
-              {events.map(item => (
+              {events.map(([title, detail]) => (
                 <div
-                  key={item}
-                  className="noir-reveal border-[#E7C27D]/12 rounded-[1.25rem] border bg-black/25 p-4"
+                  key={title}
+                  className="noir-private-card border-[#E7C27D]/12 rounded-[1.25rem] border bg-black/25 p-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E7C27D] text-[#160A08]">
-                      <Sparkles className="h-4 w-4" />
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E7C27D] text-[#160A08]">
+                      {title.includes('counter') ? (
+                        <Users className="h-4 w-4" />
+                      ) : (
+                        <Sparkles className="h-4 w-4" />
+                      )}
                     </span>
-                    <span className="font-bold">{item}</span>
+                    <div>
+                      <span className="font-bold">{title}</span>
+                      <p className="text-[#D7C7AF]/62 mt-1 text-sm leading-6">{detail}</p>
+                    </div>
                   </div>
                 </div>
               ))}

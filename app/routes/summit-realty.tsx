@@ -1,5 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
+import { CursorTrailVelocity, MotionCopyButton } from '~/components/showcase-motion-patterns';
 import {
   ArrowLeft,
   ArrowRight,
@@ -24,21 +25,25 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { wrap } from 'motion';
 import {
   AnimatePresence,
   LayoutGroup,
+  type MotionValue,
   MotionConfig,
   Reorder,
   motion,
   useAnimate,
   useDragControls,
+  useMotionValueEvent,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
-} from 'framer-motion';
+  useVelocity,
+} from 'motion/react';
 
 export const meta: MetaFunction = () => [
   { title: 'Summit Realty | Motion Showcase' },
@@ -138,6 +143,248 @@ const tourSignals = [
   ['Best school fit', 'Westerly Village'],
   ['Fastest close', 'Northline District'],
 ];
+
+const neighborhoodStories = [
+  {
+    title: 'Marina Ridge',
+    subtitle: 'Waterfront listings with sunset inventory alerts',
+    image:
+      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1500&q=80',
+    detail: 'Buyer pages show school radius, commute windows, and view corridors before inquiry.',
+  },
+  {
+    title: 'Northline District',
+    subtitle: 'Loft tours, transit scoring, and rental-comp context',
+    image:
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1500&q=80',
+    detail: 'Investors and first-time buyers see price bands, walkability, and tour clustering.',
+  },
+  {
+    title: 'Westerly Village',
+    subtitle: 'Family homes with courtyard living and park proximity',
+    image:
+      'https://images.unsplash.com/photo-1600607687644-c7171b42498b?auto=format&fit=crop&w=1500&q=80',
+    detail:
+      'The template supports neighborhood pages instead of flattening every listing together.',
+  },
+];
+
+const PLANE_WIDTH = 270;
+const PLANE_GAP = -58;
+const TOTAL_PROPERTY_PLANES = 18;
+
+function VelocityPropertyPlane({
+  index,
+  scrollX,
+  scrollVelocity,
+  hoveredIndex,
+  setHoveredIndex,
+}: {
+  index: number;
+  scrollX: MotionValue<number>;
+  scrollVelocity: MotionValue<number>;
+  hoveredIndex: number | null;
+  setHoveredIndex: (index: number | null) => void;
+}) {
+  const listing = listings[index % listings.length];
+  const isHovered = hoveredIndex === index;
+  const hoverOffset = useSpring(0, { stiffness: 420, damping: 28 });
+  const waveOffset = useSpring(0, { stiffness: 320, damping: 24, mass: 0.35 });
+  const planeWidth = PLANE_WIDTH + PLANE_GAP;
+  const totalWidth = planeWidth * TOTAL_PROPERTY_PLANES;
+  const startPosition = index * planeWidth;
+
+  useMotionValueEvent(scrollVelocity, 'change', velocity => {
+    const position = startPosition + scrollX.get();
+    const centered = wrap(-totalWidth / 2, totalWidth / 2, position);
+    const normalizedPosition = centered / (totalWidth / 2);
+    const wavePhase = Math.sin(normalizedPosition * Math.PI * 2);
+
+    waveOffset.set((velocity / 52) * wavePhase * 4.8);
+  });
+
+  useEffect(() => {
+    hoverOffset.set(isHovered ? -28 : 0);
+  }, [hoverOffset, isHovered]);
+
+  const transform = useTransform(() => {
+    const position = startPosition + scrollX.get();
+    const centered = wrap(-totalWidth / 2, totalWidth / 2, position);
+    const yOffset = centered * -0.24 + waveOffset.get() + hoverOffset.get();
+    const zOffset = centered * -0.88;
+
+    return `translate3d(${centered}px, ${yOffset}px, ${zOffset}px) rotateY(-44deg)`;
+  });
+
+  return (
+    <motion.article
+      className="border-white/12 absolute h-[20rem] w-[16.875rem] overflow-hidden rounded-[1.35rem] border bg-white text-[#13221F] shadow-[0_28px_70px_rgba(0,0,0,0.28)]"
+      style={{
+        transform,
+        zIndex: isHovered ? 40 : 1,
+        filter: isHovered ? 'brightness(1.08)' : 'brightness(1)',
+        transformStyle: 'preserve-3d',
+        willChange: 'transform, filter',
+      }}
+      onHoverStart={() => setHoveredIndex(index)}
+      onHoverEnd={() => setHoveredIndex(null)}
+    >
+      <img src={listing.image} alt={listing.name} className="h-44 w-full object-cover" />
+      <div className="p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="rounded-full bg-[#E8E1D2] px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#5F6B66]">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="text-lg font-black" style={{ color: listing.color }}>
+            {listing.price}
+          </span>
+        </div>
+        <h3 className="text-xl font-black">{listing.name}</h3>
+        <p className="mt-2 text-xs leading-5 text-[#5F6B66]">{listing.area}</p>
+        <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-bold text-[#44524D]">
+          <span className="rounded-xl bg-[#F5F4EE] px-2 py-2">{listing.beds}</span>
+          <span className="rounded-xl bg-[#F5F4EE] px-2 py-2">{listing.commute}</span>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function VelocityPropertyGallery() {
+  const rawScrollX = useMotionValue(0);
+  const scrollX = useSpring(rawScrollX, {
+    stiffness: 110,
+    damping: 32,
+    mass: 0.55,
+  });
+  const scrollVelocity = useVelocity(scrollX);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const delta = event.deltaX !== 0 ? event.deltaX : event.deltaY;
+      rawScrollX.set(rawScrollX.get() - delta);
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, [rawScrollX]);
+
+  const nudge = (direction: number) => {
+    rawScrollX.set(rawScrollX.get() + direction * 220);
+  };
+
+  return (
+    <motion.div
+      ref={containerRef}
+      onPan={(_, info) => {
+        rawScrollX.set(rawScrollX.get() + info.delta.x * 2.2);
+      }}
+      className="relative h-[32rem] touch-none overflow-hidden rounded-[2rem] border border-white/10 bg-[#0B1513] text-white shadow-[0_30px_90px_rgba(19,34,31,0.18)]"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:58px_58px] opacity-40" />
+      <div className="absolute left-5 top-5 z-30 max-w-sm">
+        <p className="text-xs uppercase tracking-[0.24em] text-sky-200">Motion+ example adapted</p>
+        <h2 className="mt-2 text-4xl font-black tracking-tight">
+          Scroll velocity property planes.
+        </h2>
+        <p className="text-white/62 mt-3 text-sm leading-6">
+          Wheel or drag the rail. Motion tracks velocity and turns listing cards into a 3D buyer
+          carousel instead of another static property grid.
+        </p>
+      </div>
+      <div className="absolute right-5 top-5 z-30 flex gap-2">
+        <button
+          type="button"
+          onClick={() => nudge(1)}
+          className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-white/15"
+        >
+          Prev
+        </button>
+        <button
+          type="button"
+          onClick={() => nudge(-1)}
+          className="rounded-full border border-white/10 bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-white hover:bg-white/15"
+        >
+          Next
+        </button>
+      </div>
+
+      <div
+        className="absolute inset-y-0 left-0 right-0 flex items-center justify-center pt-16 lg:left-72"
+        style={{ perspective: '1800px', perspectiveOrigin: '20% 18%' }}
+      >
+        <div
+          className="relative flex items-center justify-center"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {Array.from({ length: TOTAL_PROPERTY_PLANES }, (_, index) => (
+            <VelocityPropertyPlane
+              key={index}
+              index={index}
+              scrollX={scrollX}
+              scrollVelocity={scrollVelocity}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute bottom-5 right-5 z-30 rounded-full border border-white/10 bg-black/35 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-white/55">
+        drag / wheel to surf homes
+      </div>
+    </motion.div>
+  );
+}
+
+function NeighborhoodParallaxStory({
+  story,
+  index,
+}: {
+  story: (typeof neighborhoodStories)[number];
+  index: number;
+}) {
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ['-12%', '12%']);
+  const textY = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [28, 0, -28]);
+  const textOpacity = useTransform(scrollYProgress, [0.12, 0.32, 0.78, 0.92], [0, 1, 1, 0]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative min-h-[85vh] overflow-hidden border-t border-white/10 first:border-t-0"
+    >
+      <motion.div className="absolute inset-x-0 -top-[12%] h-[124%]" style={{ y: imageY }}>
+        <img src={story.image} alt="" className="h-full w-full object-cover" />
+      </motion.div>
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,34,31,0.92),rgba(19,34,31,0.48)_44%,rgba(19,34,31,0.72))]" />
+      <motion.div
+        className="relative z-10 mx-auto flex min-h-[85vh] max-w-7xl items-center px-4 py-20 text-white sm:px-6 lg:px-8"
+        style={{ opacity: textOpacity, y: textY }}
+      >
+        <div className="max-w-2xl">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-sky-200/80">
+            Neighborhood page {String(index + 1).padStart(2, '0')}
+          </p>
+          <h2 className="mt-3 text-5xl font-black tracking-tight sm:text-7xl">{story.title}</h2>
+          <p className="text-white/82 mt-4 text-xl font-bold">{story.subtitle}</p>
+          <p className="text-white/66 mt-5 max-w-xl text-sm leading-7">{story.detail}</p>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
 
 function PriorityItem({ item }: { item: string }) {
   const controls = useDragControls();
@@ -239,6 +486,23 @@ export default function SummitRealtyRoute() {
               <Home className="h-4 w-4" />
               Summit Realty
             </div>
+            <nav className="hidden items-center gap-2 rounded-full border border-[#13221F]/10 bg-white/70 p-1 text-xs font-bold text-[#41514D] lg:flex">
+              {[
+                ['Search', '#listings'],
+                ['Velocity', '#velocity-gallery'],
+                ['Neighborhoods', '#neighborhoods'],
+                ['Tour plan', '#tour-plan'],
+                ['Seller', '#seller'],
+              ].map(([label, href]) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="rounded-full px-3 py-2 transition hover:bg-white hover:text-[#13221F]"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
             <a
               href="#seller"
               className="summit-motion-card hidden rounded-full bg-white px-4 py-2 text-sm font-bold text-[#13221F] shadow-sm hover:-translate-y-0.5 hover:bg-sky-100 motion-reduce:hover:translate-y-0 sm:inline-flex"
@@ -446,6 +710,24 @@ export default function SummitRealtyRoute() {
               </div>
             </motion.div>
           </div>
+        </section>
+
+        <section id="velocity-gallery" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <VelocityPropertyGallery />
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+          <CursorTrailVelocity
+            eyebrow="Cursor trail velocity"
+            title="Move fast across the shortlist."
+            description="The official cursor-trail pattern is adapted into a property-memory surface: fast mouse movement drops listing snapshots with inertia so the showcase feels alive without a backend."
+            images={listings.map(listing => ({
+              label: listing.area,
+              image: listing.image,
+              color: listing.color,
+            }))}
+            className="border-white/10 bg-[#13221F] text-white shadow-[0_30px_90px_rgba(19,34,31,0.18)]"
+          />
         </section>
 
         <section className="py-18 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -700,6 +982,12 @@ export default function SummitRealtyRoute() {
           </LayoutGroup>
         </section>
 
+        <section id="neighborhoods" className="bg-[#13221F]">
+          {neighborhoodStories.map((story, index) => (
+            <NeighborhoodParallaxStory key={story.title} story={story} index={index} />
+          ))}
+        </section>
+
         <section id="listings" className="bg-[#13221F] px-4 py-20 text-white sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
             <div className="lg:sticky lg:top-10">
@@ -718,10 +1006,7 @@ export default function SummitRealtyRoute() {
               {neighborhoods.map(([name, detail, count, color], index) => (
                 <motion.article
                   key={name}
-                  initial={{ opacity: 0, x: index % 2 ? 32 : -32 }}
-                  whileInView={{ opacity: 1, x: 0 }}
                   whileHover={{ x: 8 }}
-                  viewport={{ once: true, margin: '-80px' }}
                   transition={{ ...springTransition, delay: index * 0.07 }}
                   className="summit-motion-card grid gap-5 rounded-[1.45rem] border border-white/10 bg-white/[0.06] p-5 motion-reduce:hover:translate-x-0 md:grid-cols-[12rem_minmax(0,1fr)_8rem] md:items-center"
                 >
@@ -808,6 +1093,13 @@ export default function SummitRealtyRoute() {
                 Simulate valuation request
                 <CalendarDays className="h-4 w-4" />
               </button>
+              <MotionCopyButton
+                value="https://summit-realty.example/seller-readiness"
+                copiedLabel="Tour link copied"
+                className="mt-3 w-full border-[#D9D0BF] bg-[#F5F4EE] text-[#13221F] hover:bg-sky-50"
+              >
+                Copy seller preview
+              </MotionCopyButton>
             </motion.form>
           </div>
         </section>

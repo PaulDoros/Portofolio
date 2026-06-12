@@ -19,19 +19,24 @@ export function ModeToggle() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="border-current/15 bg-current/[0.04] hover:bg-current/[0.1] gap-2 border text-current hover:text-current"
+        >
           {mode === 'classic' ? <Clock className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
-          {mode === 'classic' ? 'Classic' : 'Animated'}
+          {mode === 'classic' ? 'Classic' : 'Motion Lab'}
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="rounded-t-2xl">
+      <SheetContent side="bottom" className="rounded-t-lg">
         <SheetHeader className="text-center">
-          <SheetTitle className="text-2xl">Choose Display Mode</SheetTitle>
-          <SheetDescription>Select how you'd like to experience this portfolio</SheetDescription>
+          <SheetTitle className="text-2xl">Choose Portfolio Mode</SheetTitle>
+          <SheetDescription>Select the classic site or the cinematic local build.</SheetDescription>
         </SheetHeader>
         <div className="grid grid-cols-1 gap-6 py-8 md:grid-cols-2">
-          <div
-            className={`flex cursor-pointer flex-col items-center gap-4 rounded-xl border-2 p-6 transition-all ${
+          <button
+            type="button"
+            className={`flex cursor-pointer flex-col items-center gap-4 rounded-lg border-2 p-6 text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
               mode === 'classic'
                 ? 'border-primary bg-primary/10'
                 : 'border-muted hover:border-primary/50'
@@ -43,17 +48,18 @@ export function ModeToggle() {
             </div>
             <h3 className="text-xl font-semibold">Classic</h3>
             <p className="text-center text-sm text-muted-foreground">
-              Clean, simple design with minimal animations for a straightforward experience.
+              The clean deployed-style portfolio with familiar navigation and lighter motion.
             </p>
             {mode === 'classic' && (
               <Button size="sm" className="mt-2">
                 Currently Active
               </Button>
             )}
-          </div>
+          </button>
 
-          <div
-            className={`flex cursor-pointer flex-col items-center gap-4 rounded-xl border-2 p-6 transition-all ${
+          <button
+            type="button"
+            className={`flex cursor-pointer flex-col items-center gap-4 rounded-lg border-2 p-6 text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
               mode === 'animated'
                 ? 'border-primary bg-primary/10'
                 : 'border-muted hover:border-primary/50'
@@ -63,17 +69,17 @@ export function ModeToggle() {
             <div className="rounded-full bg-muted p-4">
               <Sparkles className="h-8 w-8" />
             </div>
-            <h3 className="text-xl font-semibold">Animated</h3>
+            <h3 className="text-xl font-semibold">Motion Lab</h3>
             <p className="text-center text-sm text-muted-foreground">
-              Enhanced design with dynamic animations and visual effects for an immersive
-              experience.
+              The new local experience with cinematic sections, scroll motion, 3D accents, and
+              stronger project storytelling.
             </p>
             {mode === 'animated' && (
               <Button size="sm" className="mt-2">
                 Currently Active
               </Button>
             )}
-          </div>
+          </button>
         </div>
         <SheetFooter className="flex-col">
           <SheetClose asChild>

@@ -1,7 +1,8 @@
 import type { MetaFunction } from '@remix-run/node';
 import { Link, useParams } from '@remix-run/react';
-import { MotionConfig, motion } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Code2, ExternalLink, Rocket, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
 import {
   demoForgeTemplates,
@@ -63,12 +64,20 @@ const previewStories: Record<
   },
   'noir-table': {
     audience: 'Dinner guests, private dining leads, and event planners',
-    lead: 'A cinematic restaurant page with reservation intent, menu drama, chef narrative, and location clarity.',
+    lead: 'A cinematic restaurant website with reservation intent, menu categories, gallery moments, private dining, opening hours, and location clarity.',
     primaryCta: 'Reserve a table',
     secondaryCta: 'Explore menu',
     showcase: ['Chef Tasting', 'Cellar Pairing', 'Private Room'],
-    sections: ['Signature dish reveal', 'Reservation strip', 'Chef and cellar story'],
-    timeline: ['Atmosphere direction chosen', 'Menu cards composed', 'Reservation path rehearsed'],
+    sections: [
+      'Menu categories with prices',
+      'Reservation simulator',
+      'Gallery, hours, and private dining',
+    ],
+    timeline: [
+      'Atmosphere direction chosen',
+      'Menu architecture composed',
+      'Reservation path rehearsed',
+    ],
   },
   'pulsefit-studio': {
     audience: 'Fitness members, trial visitors, and studio staff',
@@ -90,12 +99,12 @@ const previewStories: Record<
   },
   'novadent-clinic': {
     audience: 'Patients comparing care options and appointment availability',
-    lead: 'A calm healthcare website that balances trust, service discovery, reviews, and appointment intent.',
+    lead: 'A calm healthcare website that balances service pathways, doctors, insurance trust, emergency guidance, FAQs, reviews, and appointment intent.',
     primaryCta: 'Request appointment',
     secondaryCta: 'View services',
     showcase: ['Cosmetic Care', 'Family Dentistry', 'Emergency Visit'],
-    sections: ['Service pathway cards', 'Review proof band', 'Insurance and care notes'],
-    timeline: ['Trust signals gathered', 'Services grouped', 'Booking path softened'],
+    sections: ['Service pathway cards', 'Doctors and insurance trust', 'Emergency and FAQ notes'],
+    timeline: ['Trust signals gathered', 'Services grouped', 'Patient pathways softened'],
   },
   'atlas-legal': {
     audience: 'Professional service buyers making consequential decisions',
@@ -105,6 +114,24 @@ const previewStories: Record<
     showcase: ['Corporate Counsel', 'Dispute Strategy', 'Estate Planning'],
     sections: ['Practice matrix', 'Case result highlights', 'Attorney authority cards'],
     timeline: ['Proof points organized', 'Practice paths mapped', 'Consult drawer drafted'],
+  },
+  'ionut-love-motorcycle': {
+    audience: 'Visitors following a personal story, event details, and photo-led moments',
+    lead: 'A live motorcycle story website with emotional pacing, road-trip sections, gallery moments, and event-ready information.',
+    primaryCta: 'Open live story',
+    secondaryCta: 'View timeline',
+    showcase: ['Open Road', 'Photo Moments', 'Event Details'],
+    sections: ['Story timeline', 'Gallery route', 'Contact and event notes'],
+    timeline: ['Live site linked', 'Story beats mapped', 'External deploy added to Pantheon'],
+  },
+  'orbitflow-os': {
+    audience: 'SaaS buyers, operators, product teams, and founders comparing workflow tools',
+    lead: 'A Motion-rich SaaS site with product modules, use cases, pricing, integrations, docs, support, and signup intent.',
+    primaryCta: 'Start trial',
+    secondaryCta: 'Read docs',
+    showcase: ['App Folder', 'Scroll Lines', 'Pricing'],
+    sections: ['Product modules', 'Use-case pages', 'Integrations, pricing, docs, and support'],
+    timeline: ['Motion examples researched', 'SaaS architecture expanded', 'Preview route added to Forge'],
   },
 };
 
@@ -333,6 +360,126 @@ const showcaseContent: Record<string, ShowcaseContent> = {
     ],
     bottomStrip: ['Confidential consult', 'Evidence-led', 'Senior attorneys'],
   },
+  'ionut-love-motorcycle': {
+    nav: ['Story', 'Gallery', 'Timeline', 'Event'],
+    heroKicker: 'Live external showcase',
+    visualTitle: 'A personal story site with road-trip emotion and event clarity.',
+    visualSubtitle:
+      'The deployed preview carries a cinematic motorcycle theme with photo-led pacing and useful event information.',
+    spotlightTitle: 'Open Road',
+    spotlightMeta: 'Live Vercel preview',
+    proofTitle: 'External deploy connected',
+    proofText:
+      'Pantheon can showcase live generated work even when the project lives outside this repository.',
+    featureCards: [
+      {
+        title: 'Story timeline',
+        text: 'Narrative beats organize the page so visitors understand the relationship and event context.',
+        value: '8 beats',
+      },
+      {
+        title: 'Photo moments',
+        text: 'Gallery sections carry the atmosphere instead of relying on generic copy blocks.',
+        value: '18 shots',
+      },
+      {
+        title: 'Event-ready details',
+        text: 'The site keeps location, timing, and contact intent easy to find.',
+        value: 'Live',
+      },
+    ],
+    galleryCards: [
+      { title: 'First Ride', meta: 'Story beat', value: '01' },
+      { title: 'Golden Hour', meta: 'Gallery', value: '18' },
+      { title: 'Event Note', meta: 'Details', value: 'Live' },
+    ],
+    bottomStrip: ['Live Vercel site', 'Motorcycle story', 'Photo-led sections'],
+  },
+  'orbitflow-os': {
+    nav: ['Features', 'Use cases', 'Pricing', 'Docs'],
+    heroKicker: 'Motion SaaS system',
+    visualTitle: 'A product website with actual SaaS buying paths.',
+    visualSubtitle:
+      'Feature modules, workflow use cases, connector directory, pricing, docs, support, and signup intent are all represented.',
+    spotlightTitle: 'Command Apps',
+    spotlightMeta: 'iOS folder transition',
+    proofTitle: 'Motion Plus-informed build',
+    proofText:
+      'The route adapts Scroll Text Lines and iOS App Folder example patterns with repo-safe Motion code.',
+    featureCards: [
+      {
+        title: 'Product modules',
+        text: 'Workflow builder, integration mesh, and command center cards explain the SaaS surface clearly.',
+        value: '3 modules',
+      },
+      {
+        title: 'Conversion paths',
+        text: 'Trial, demo, docs, support, pricing, and signup intent are visible instead of implied.',
+        value: '6 paths',
+      },
+      {
+        title: 'Motion examples',
+        text: 'Scroll-linked text lines and layoutId folder transitions make the template visually distinct.',
+        value: '2 advanced',
+      },
+    ],
+    galleryCards: [
+      { title: 'Automate', meta: 'Folder app', value: 'W' },
+      { title: 'Insights', meta: 'Dashboard', value: '94' },
+      { title: 'Scale plan', meta: 'Pricing', value: '$89' },
+    ],
+    bottomStrip: ['Feature pages', 'Docs/support', 'Motion layout'],
+  },
+};
+
+const siteArchitecture: Record<
+  string,
+  {
+    pages: string[];
+    conversion: string[];
+    ownerTools: string[];
+  }
+> = {
+  'angelica-bazar': {
+    pages: ['Home', 'Collections', 'Product detail', 'Lookbook', 'Cart', 'Admin'],
+    conversion: ['Browse collection', 'Inspect product trust', 'Add to cart', 'Checkout intent'],
+    ownerTools: ['Catalog status', 'Launch checklist', 'Delivery/returns bands'],
+  },
+  'noir-table': {
+    pages: ['Home', 'Menu', 'Reservations', 'Gallery', 'Private dining', 'Contact'],
+    conversion: ['Choose date', 'Pick party size', 'Confirm dining intent', 'Request table'],
+    ownerTools: ['Opening hours', 'Dish prices/tags', 'Private event inquiry'],
+  },
+  'pulsefit-studio': {
+    pages: ['Home', 'Classes', 'Trainers', 'Memberships', 'Book trial', 'Studio details'],
+    conversion: ['Find class', 'Check coach fit', 'Compare plan', 'Book trial'],
+    ownerTools: ['Schedule board', 'Capacity status', 'Membership tiers'],
+  },
+  'summit-realty': {
+    pages: ['Home', 'Listings', 'Neighborhoods', 'Tours', 'Seller valuation', 'Agents'],
+    conversion: ['Filter homes', 'Save listing', 'Plan tour route', 'Request consult'],
+    ownerTools: ['Listing inventory', 'Buyer priorities', 'Valuation and tour CTAs'],
+  },
+  'novadent-clinic': {
+    pages: ['Home', 'Services', 'Doctors', 'Appointments', 'Insurance', 'Emergency', 'FAQ'],
+    conversion: ['Choose concern', 'Review pathway', 'Check trust cues', 'Request visit'],
+    ownerTools: ['Doctor cards', 'Insurance notes', 'Emergency triage'],
+  },
+  'atlas-legal': {
+    pages: ['Home', 'Practice areas', 'Attorneys', 'Results', 'Resources', 'Consult'],
+    conversion: ['Select practice', 'Review evidence', 'Prepare intake', 'Request consult'],
+    ownerTools: ['Practice matrix', 'Case proof', 'Confidential intake checklist'],
+  },
+  'ionut-love-motorcycle': {
+    pages: ['Home', 'Story', 'Gallery', 'Timeline', 'Event details', 'Contact'],
+    conversion: ['Enter story', 'Explore moments', 'Find event info', 'Open live site'],
+    ownerTools: ['Photo moments', 'Story beats', 'External deploy link'],
+  },
+  'orbitflow-os': {
+    pages: ['Home', 'Features', 'Use cases', 'Pricing', 'Integrations', 'Docs', 'Support', 'Signup'],
+    conversion: ['Explore modules', 'Compare plans', 'Check docs/support', 'Start trial'],
+    ownerTools: ['Workflow modules', 'Connector directory', 'Pricing tiers and support paths'],
+  },
 };
 
 function getPreviewStory(template: DemoForgeTemplate) {
@@ -378,36 +525,57 @@ function getShowcaseContent(
   );
 }
 
+function getSiteArchitecture(template: DemoForgeTemplate) {
+  return (
+    siteArchitecture[template.id] || {
+      pages: ['Home', 'Services', 'Proof', 'Contact'],
+      conversion: ['Land on offer', 'Review proof', 'Choose CTA', 'Contact owner'],
+      ownerTools: ['Content sections', 'Lead capture', 'Preview deployment'],
+    }
+  );
+}
+
 function getImplementationProof(template: DemoForgeTemplate) {
   if (template.id === 'pulsefit-studio') {
     return {
       stack: 'Motion + Motion MCP CSS spring',
       route: 'app/routes/pulsefit-studio.tsx',
-      code: `<MotionConfig reducedMotion="user" transition={springTransition}>
-  <motion.article layout whileHover={{ y: -6 }}>
-    Class booking card
-  </motion.article>
+      code: `const pageProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 24 })
+const spotlight = useMotionTemplate\`radial-gradient(520px circle at \${x}px \${y}px, ...)\`
+<MotionConfig reducedMotion="user" transition={springTransition}>
+  <motion.button layout whileTap={{ scale: 0.98 }} onClick={advanceBookingStep}>
+    Class booking state + membership selector
+  </motion.button>
 </MotionConfig>`,
     };
   }
 
   if (template.id === 'noir-table') {
     return {
-      stack: 'GSAP + useGSAP + ScrollTrigger',
+      stack: 'GSAP + React effect + gsap.context + ScrollTrigger',
       route: 'app/routes/noir-table.tsx',
-      code: `useGSAP(() => {
+      code: `useEffect(() => {
   const intro = gsap.timeline({ defaults: { ease: "power3.out" } })
   intro.from(".noir-title-line", { autoAlpha: 0, y: 44, stagger: 0.08 })
   ScrollTrigger.batch(".noir-reveal", { start: "top 82%", once: true })
-}, { scope: containerRef })`,
+  gsap.matchMedia().add("(min-width: 900px)", () => {
+    gsap.timeline({ scrollTrigger: { trigger: ".noir-private-pin", start: "top 76%" } })
+  })
+}, [])`,
     };
   }
 
   if (template.id === 'summit-realty') {
     return {
-      stack: 'Motion + Reorder + useAnimate + useMotionTemplate + shared layout',
+      stack: 'Motion + useVelocity 3D planes + Reorder + useAnimate + useMotionTemplate',
       route: 'app/routes/summit-realty.tsx',
-      code: `const spotlight = useMotionTemplate\`radial-gradient(680px circle at \${x}px \${y}px, ...)\`
+      code: `const scrollVelocity = useVelocity(scrollX)
+const transform = useTransform(() => {
+  const centered = wrap(-totalWidth / 2, totalWidth / 2, startPosition + scrollX.get())
+  return \`translate3d(\${centered}px, \${centered * -0.24}px, \${centered * -0.88}px) rotateY(-44deg)\`
+})
+
+const spotlight = useMotionTemplate\`radial-gradient(680px circle at \${x}px \${y}px, ...)\`
 const [mapScope, animate] = useAnimate()
 
 <Reorder.Group values={priorities} onReorder={setPriorities}>
@@ -420,22 +588,23 @@ const [mapScope, animate] = useAnimate()
 
   if (template.id === 'novadent-clinic') {
     return {
-      stack: 'GSAP + pinned ScrollTrigger + SplitText + Flip + Observer + Draggable/Inertia',
+      stack: 'GSAP + scroll-linked ScrollTrigger + SplitText + Flip + Observer + Draggable/Inertia',
       route: 'app/routes/novadent-clinic.tsx',
       code: `const journey = gsap.timeline({
-  scrollTrigger: { trigger: ".nova-journey-pin", pin: true, scrub: 0.8 }
+  scrollTrigger: { trigger: ".nova-journey-pin", scrub: 0.8 }
 })
 
 Observer.create({ target: ".nova-service-orbit", onLeft: next, onRight: prev })
-Draggable.create(".nova-comfort-knob", { type: "x", bounds: ".nova-comfort-track", inertia: true })`,
+Draggable.create(".nova-comfort-knob", { type: "x", bounds: ".nova-comfort-track", inertia: true })
+ScrollTrigger.batch(".nova-clinician-card, .nova-faq-card", { start: "top 84%", once: true })`,
     };
   }
 
   if (template.id === 'atlas-legal') {
     return {
-      stack: 'GSAP + ScrollSmoother + ScrambleText + DrawSVG + Observer + Inertia + Physics2D',
+      stack: 'GSAP + ScrollTrigger + ScrambleText + DrawSVG + Observer + Inertia + Physics2D',
       route: 'app/routes/atlas-legal.tsx',
-      code: `ScrollSmoother.create({ wrapper, content, smooth: 0.75, effects: true })
+      code: `gsap.timeline({ scrollTrigger: { trigger: ".atlas-dossier-pin", scrub: 0.8 } })
 gsap.to(".atlas-classified", { scrambleText: { text: "CONFIDENTIAL MATTER" } })
 gsap.from(".atlas-brief-line", { drawSVG: "0% 0%" })
 InertiaPlugin.track(proofTrack, "x")
@@ -443,7 +612,286 @@ gsap.to(".atlas-particle", { physics2D: { velocity: 42, angle: -60 } })`,
     };
   }
 
+  if (template.id === 'orbitflow-os') {
+    return {
+      stack: 'Motion + Scroll Text Lines + AnimatePresence + layoutId app folder',
+      route: 'app/routes/orbitflow-os.tsx',
+      code: `const { scrollY } = useScroll()
+const lineOffset = useTransform(scrollY, [0, 1400], ["0%", "-22%"])
+
+<AnimatePresence mode="popLayout" initial={false}>
+  <motion.div layoutId="orbit-app-1" />
+  <motion.div style={{ x: lineOffset }} />
+</AnimatePresence>`,
+    };
+  }
+
   return null;
+}
+
+function TemplateMotionScene({
+  template,
+  showcase,
+}: {
+  template: DemoForgeTemplate;
+  showcase: ShowcaseContent;
+}) {
+  const surfaceStyle = {
+    background: `linear-gradient(145deg, ${template.accent}24, rgba(255,255,255,0.045))`,
+  };
+
+  if (template.id === 'summit-realty') {
+    return (
+      <div className="relative h-56 overflow-hidden rounded-2xl border border-white/10 bg-[#07110F]">
+        <div className="absolute left-4 top-4 z-10 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-sky-100">
+          velocity planes
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center [perspective:900px]">
+          {showcase.galleryCards.map((card, index) => (
+            <motion.article
+              key={card.title}
+              initial={false}
+              animate={{
+                x: (index - 1) * 92,
+                y: index === 1 ? -12 : 18,
+                rotateY: -34,
+                rotateZ: index === 1 ? 0 : index ? 4 : -4,
+                z: index === 1 ? 80 : -40,
+              }}
+              whileHover={{ y: -24, z: 120 }}
+              transition={previewSpringTransition}
+              className="absolute h-40 w-36 rounded-[1.1rem] border border-white/10 bg-white p-3 text-[#13221F] shadow-[0_20px_50px_rgba(0,0,0,0.35)]"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div
+                className="mb-3 h-16 rounded-xl"
+                style={{
+                  background: `linear-gradient(135deg, ${template.accent}, ${template.secondaryAccent})`,
+                }}
+              />
+              <h3 className="text-sm font-black">{card.title}</h3>
+              <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-[#5F6B66]">
+                {card.value}
+              </p>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'pulsefit-studio') {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.08] p-5">
+        <div className="absolute right-4 top-4 h-24 w-24 rounded-full border border-emerald-300/20" />
+        <div className="absolute right-8 top-8 h-16 w-16 rounded-full border border-cyan-300/20" />
+        <p className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">
+          class pulse console
+        </p>
+        <div className="mt-5 grid gap-3">
+          {showcase.galleryCards.map((card, index) => (
+            <motion.div
+              key={card.title}
+              animate={{ scaleX: [0.68, 1, 0.82] }}
+              transition={{
+                duration: 2.2 + index * 0.3,
+                repeat: Infinity,
+                repeatType: 'mirror',
+                ease: 'easeInOut',
+              }}
+              className="origin-left rounded-2xl border border-white/10 bg-black/25 p-3"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-black text-white">{card.title}</span>
+                <span className="text-xs text-emerald-200">{card.value}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'noir-table') {
+    return (
+      <div className="rounded-2xl border border-[#E7C27D]/20 bg-[#120B09] p-5">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[#E7C27D]/70">
+          reservation theater
+        </p>
+        <div className="mt-5 grid gap-3">
+          {['20:30 table', 'Cellar pairing', 'Private note'].map((item, index) => (
+            <motion.div
+              key={item}
+              initial={{ x: index % 2 ? 18 : -18, opacity: 0.72 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              className="rounded-2xl border border-[#E7C27D]/15 bg-black/25 p-4"
+            >
+              <div className="flex items-center gap-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E7C27D] text-xs font-black text-[#160A08]">
+                  {index + 1}
+                </span>
+                <span className="font-bold text-[#F7DCA3]">{item}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'novadent-clinic') {
+    return (
+      <div className="rounded-2xl border border-teal-300/20 bg-teal-50 p-5 text-[#102321]">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[#0F766E]">
+          appointment pathway
+        </p>
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          {['Concern', 'Pathway', 'Request'].map((item, index) => (
+            <motion.div
+              key={item}
+              whileHover={{ y: -5 }}
+              className="rounded-2xl border border-[#D3E7E3] bg-white p-3"
+            >
+              <motion.div
+                className="mb-4 h-2 rounded-full bg-[#2DD4BF]"
+                initial={{ scaleX: 0.35 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ ...previewSpringTransition, delay: index * 0.08 }}
+                style={{ transformOrigin: 'left center' }}
+              />
+              <h3 className="text-sm font-black">{item}</h3>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'atlas-legal') {
+    return (
+      <div className="rounded-2xl border border-[#E7C27D]/20 bg-[#11151D] p-5">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-[#E7C27D]">dossier stack</p>
+        <div className="relative mt-5 h-36">
+          {showcase.galleryCards.map((card, index) => (
+            <motion.div
+              key={card.title}
+              initial={{ rotate: -4 + index * 3, y: index * 12, x: index * 18 }}
+              whileHover={{ y: index * 6 - 8, rotate: 0 }}
+              className="absolute left-0 right-0 rounded-2xl border border-[#D8C6A5]/20 bg-[#F2ECE1] p-4 text-[#11151D]"
+            >
+              <div className="text-[10px] uppercase tracking-[0.18em] text-[#7A5B16]">
+                {card.meta}
+              </div>
+              <h3 className="mt-1 font-black">{card.title}</h3>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'ionut-love-motorcycle') {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-red-300/20 bg-[#160708] p-5">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-red-200/70">road timeline</p>
+        <div className="mt-8 h-2 rounded-full bg-white/10">
+          <motion.div
+            className="h-full rounded-full bg-gradient-to-r from-red-400 via-orange-300 to-white"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.1, ease: previewEase }}
+            style={{ transformOrigin: 'left center' }}
+          />
+        </div>
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          {showcase.galleryCards.map(card => (
+            <div
+              key={card.title}
+              className="rounded-2xl border border-white/10 bg-white/[0.06] p-3"
+            >
+              <div className="text-sm font-black text-white">{card.title}</div>
+              <div className="mt-1 text-[10px] uppercase tracking-[0.14em] text-white/45">
+                {card.value}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (template.id === 'orbitflow-os') {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-cyan-200/20 bg-[#07111F] p-5">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/70">
+          motion app folder
+        </p>
+        <div className="mt-5 grid grid-cols-[1fr_1.2fr] gap-4">
+          <motion.div
+            className="rounded-[1.35rem] border border-white/10 bg-white/[0.08] p-3"
+            whileHover={{ scale: 1.03, rotate: -1 }}
+          >
+            <div className="grid grid-cols-2 gap-2">
+              {['B', 'R', 'Q', 'W'].map((item, index) => (
+                <motion.div
+                  key={item}
+                  className="flex aspect-square items-center justify-center rounded-2xl text-sm font-black text-[#07111F]"
+                  style={{
+                    background: `linear-gradient(135deg, ${index % 2 ? template.secondaryAccent : template.accent}, #F7FAFC)`,
+                  }}
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 1.6, repeat: Infinity, delay: index * 0.08 }}
+                >
+                  {item}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+          <div className="min-w-0 space-y-3">
+            {['Plan launches', 'Ship workflows', 'Support users'].map((line, index) => (
+              <motion.div
+                key={line}
+                className="w-max rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-white"
+                animate={{ x: index % 2 ? [0, -18, 0] : [0, 18, 0] }}
+                transition={{ duration: 3 + index * 0.25, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                {line}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-white/10 p-5" style={surfaceStyle}>
+      <p className="text-[10px] uppercase tracking-[0.22em] text-white/45">commerce shelf</p>
+      <div className="mt-5 grid grid-cols-3 gap-3">
+        {showcase.galleryCards.map((card, index) => (
+          <motion.article
+            key={card.title}
+            whileHover={{ y: -8, rotate: index % 2 ? 1.5 : -1.5 }}
+            className="rounded-2xl border border-white/10 bg-white/[0.06] p-3"
+          >
+            <div
+              className="mb-3 aspect-square rounded-xl"
+              style={{
+                background: `linear-gradient(135deg, ${template.accent}, ${template.secondaryAccent})`,
+              }}
+            />
+            <h3 className="text-xs font-bold text-white">{card.title}</h3>
+            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-white/45">
+              {card.value}
+            </p>
+          </motion.article>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function GeneratedWebsiteShowcase({
@@ -454,6 +902,47 @@ function GeneratedWebsiteShowcase({
   story: ReturnType<typeof getPreviewStory>;
 }) {
   const showcase = getShowcaseContent(template, story);
+  const architecture = getSiteArchitecture(template);
+  const navPanels = showcase.nav.map((label, index) => {
+    const panelSources = [
+      {
+        eyebrow: 'Site page',
+        title: `${label} page structure`,
+        items: architecture.pages.slice(index, index + 4),
+      },
+      {
+        eyebrow: 'Conversion',
+        title: `${label} user path`,
+        items: architecture.conversion,
+      },
+      {
+        eyebrow: 'Owner tools',
+        title: `${label} management surface`,
+        items: architecture.ownerTools,
+      },
+      {
+        eyebrow: 'Story section',
+        title: `${label} content plan`,
+        items: story.sections,
+      },
+    ];
+    const source = panelSources[index % panelSources.length];
+
+    return {
+      label,
+      ...source,
+      items: source.items.length ? source.items : story.timeline,
+    };
+  });
+  const [activeNavIndex, setActiveNavIndex] = useState(0);
+  const [navDirection, setNavDirection] = useState(1);
+  const activeNavPanel = navPanels[activeNavIndex] ?? navPanels[0];
+  const previewIsExternal = template.previewUrl.startsWith('http');
+
+  const selectPreviewNav = (index: number) => {
+    setNavDirection(index > activeNavIndex ? 1 : -1);
+    setActiveNavIndex(index);
+  };
 
   return (
     <motion.div
@@ -510,14 +999,34 @@ function GeneratedWebsiteShowcase({
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.16em] text-white/60">
-                {showcase.nav.map(item => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 transition hover:border-white/20 hover:bg-white/[0.08]"
-                  >
-                    {item}
-                  </span>
-                ))}
+                {navPanels.map((item, index) => {
+                  const isActive = activeNavIndex === index;
+
+                  return (
+                    <motion.button
+                      key={item.label}
+                      type="button"
+                      onClick={() => selectPreviewNav(index)}
+                      whileTap={{ scale: 0.96 }}
+                      className={`relative rounded-full border px-3 py-1.5 transition ${
+                        isActive
+                          ? 'border-transparent text-[#090B11]'
+                          : 'border-white/10 bg-white/[0.045] hover:border-white/20 hover:bg-white/[0.08]'
+                      }`}
+                      aria-pressed={isActive}
+                    >
+                      {isActive ? (
+                        <motion.span
+                          layoutId={`preview-nav-${template.id}`}
+                          className="absolute inset-0 rounded-full"
+                          style={{ backgroundColor: template.accent }}
+                          transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                        />
+                      ) : null}
+                      <span className="relative z-10">{item.label}</span>
+                    </motion.button>
+                  );
+                })}
               </div>
             </nav>
 
@@ -533,16 +1042,55 @@ function GeneratedWebsiteShowcase({
                   {showcase.visualSubtitle}
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <span
+                  <motion.a
+                    href={template.previewUrl}
+                    target={previewIsExternal ? '_blank' : undefined}
+                    rel={previewIsExternal ? 'noreferrer' : undefined}
+                    whileHover={{ y: -4 }}
+                    whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#090B11] shadow-[0_18px_42px_rgba(0,0,0,0.28)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                     style={{ backgroundColor: template.accent }}
                   >
                     {story.primaryCta}
                     <ArrowRight className="h-4 w-4" />
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-5 py-3 text-sm text-white transition hover:-translate-y-0.5 hover:bg-white/[0.09] motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                  </motion.a>
+                  <motion.button
+                    type="button"
+                    onClick={() => selectPreviewNav((activeNavIndex + 1) % navPanels.length)}
+                    whileHover={{ y: -4 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-5 py-3 text-sm text-white transition hover:bg-white/[0.09]"
+                  >
                     {story.secondaryCta}
-                  </span>
+                  </motion.button>
+                </div>
+
+                <div className="mt-6 min-h-[10rem] overflow-hidden rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <AnimatePresence mode="wait" custom={navDirection} initial={false}>
+                    <motion.div
+                      key={activeNavPanel.label}
+                      custom={navDirection}
+                      initial={{ opacity: 0, x: navDirection * 28, filter: 'blur(4px)' }}
+                      animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, x: navDirection * -28, filter: 'blur(4px)' }}
+                      transition={{ duration: 0.26, ease: previewEase }}
+                    >
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-white/45">
+                        {activeNavPanel.eyebrow}
+                      </p>
+                      <h3 className="mt-2 text-lg font-black text-white">{activeNavPanel.title}</h3>
+                      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                        {activeNavPanel.items.slice(0, 4).map(item => (
+                          <div
+                            key={item}
+                            className="rounded-xl border border-white/10 bg-white/[0.045] px-3 py-2 text-xs leading-5 text-white/68"
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -603,6 +1151,8 @@ function GeneratedWebsiteShowcase({
                     </div>
                     <p className="mt-4 text-sm leading-6 text-white/65">{showcase.visualTitle}</p>
                   </div>
+
+                  <TemplateMotionScene template={template} showcase={showcase} />
 
                   <div className="grid gap-3 sm:grid-cols-3">
                     {showcase.galleryCards.map((card, index) => (
@@ -673,6 +1223,45 @@ function GeneratedWebsiteShowcase({
                   </div>
                   <h3 className="text-sm font-semibold text-white">{card.title}</h3>
                   <p className="mt-2 text-xs leading-5 text-white/50">{card.text}</p>
+                </motion.article>
+              ))}
+            </section>
+
+            <section className="mt-8 grid gap-4 lg:grid-cols-3">
+              {[
+                ['Site map', architecture.pages],
+                ['Conversion flow', architecture.conversion],
+                ['Owner tools', architecture.ownerTools],
+              ].map(([title, items], index) => (
+                <motion.article
+                  key={title as string}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ ...previewSpringTransition, delay: index * 0.06 }}
+                  className="pantheon-premium-transition rounded-2xl border border-white/10 bg-white/[0.045] p-5"
+                >
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <h3 className="font-cinzel text-lg font-bold text-white">{title}</h3>
+                    <span
+                      className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-black text-[#090B11]"
+                      style={{
+                        backgroundColor: index % 2 ? template.secondaryAccent : template.accent,
+                      }}
+                    >
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {(items as string[]).map(item => (
+                      <div
+                        key={item}
+                        className="text-white/68 rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-xs leading-5"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
                 </motion.article>
               ))}
             </section>

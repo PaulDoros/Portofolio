@@ -1,33 +1,26 @@
 import { Link } from '@remix-run/react';
-import { Github, Mail, ExternalLink, Download } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
+import type { MouseEvent } from 'react';
 
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { ContactForm } from '~/components/contact-form';
-import { ClassicHero } from '~/components/sections/classic-hero';
 import { ClassicAbout } from '~/components/sections/classic-about';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '~/components/ui/card';
+import { ProjectCard } from '~/components/projects/project-card';
 import { Progress } from '~/components/ui/progress';
 import { Separator } from '~/components/ui/separator';
 import { Layout } from '../layout/layout';
 import { AnimatedHero } from '../sections/animated-hero';
-import { ClientOnly } from '~/utils/client-only';
+import { featuredProjects } from '~/data/portfolio-projects';
 
 interface AnimatedPortfolioProps {
-  onAdultLinkClick: (url: string, siteName: string) => (e: React.MouseEvent) => void;
+  onAdultLinkClick: (url: string, siteName: string) => (e: MouseEvent) => void;
 }
 
 export function AnimatedPortfolio({ onAdultLinkClick }: AnimatedPortfolioProps) {
   return (
     <Layout>
-      <div className="classic-version bg-red-500">
+      <div className="classic-version">
         <AnimatedHero />
         <ClassicAbout />
 
@@ -36,192 +29,29 @@ export function AnimatedPortfolio({ onAdultLinkClick }: AnimatedPortfolioProps) 
           <div className="container mx-auto px-4">
             <div className="mb-16 flex flex-col items-center text-center">
               <Badge className="mb-4">My Work</Badge>
-              <h2 className="mb-6 text-3xl font-bold md:text-4xl">Featured Projects</h2>
+              <h2 className="mb-6 text-3xl font-bold md:text-4xl">Featured Systems and Products</h2>
               <Separator className="mb-6 w-24" />
-              <p className="max-w-2xl text-muted-foreground">
-                A collection of my recent projects demonstrating my skills and capabilities.
+              <p className="max-w-3xl leading-7 text-muted-foreground">
+                SaaS products, Pantheon automation, agent orchestration, game pipelines, and safe
+                demos of the systems behind the builds.
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {/* Project 1 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
-                <div className="relative aspect-video bg-muted">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <img
-                      src="/images/devjourney.png"
-                      alt="Dev Journey Project Screenshot"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-                <CardHeader>
-                  <CardTitle>Dev Journey</CardTitle>
-                  <CardDescription>Personal learning and portfolio website</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    A comprehensive learning platform that combines portfolio showcasing with
-                    interactive learning features. Built with modern web technologies and a focus on
-                    user engagement.
-                  </p>
-                  <div className="mb-4 space-y-2">
-                    <h4 className="text-sm font-medium">Key Features:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• User authentication and profile management</li>
-                      <li>• Interactive learning modules and progress tracking</li>
-                      <li>• Gamification system with achievements and badges</li>
-                      <li>• Responsive design with dark/light mode</li>
-                      <li>• Dynamic UI components and animations</li>
-                    </ul>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Badge variant="secondary">Remix</Badge>
-                    <Badge variant="secondary">React</Badge>
-                    <Badge variant="secondary">TypeScript</Badge>
-                    <Badge variant="secondary">Tailwind CSS</Badge>
-                    <Badge variant="secondary">Prisma</Badge>
-                    <Badge variant="secondary">PostgreSQL</Badge>
-                  </div>
-                </CardContent>
-                <CardFooter className="mt-auto flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                      Code
-                    </a>
-                  </Button>
-                  <Button size="sm" asChild>
-                    <a
-                      href="https://dev-journey-five.vercel.app"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Demo
-                    </a>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              {/* Project 2 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
-                <div className="relative aspect-video bg-muted">
-                  <div className="absolute inset-0 flex items-center justify-center blur-xl">
-                    <img
-                      src="/images/ai.png"
-                      alt="Kinky AI Chat Project Screenshot"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-                <CardHeader>
-                  <CardTitle>Kinky AI Chat</CardTitle>
-                  <CardDescription>Real-Time AI Chat System</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    An advanced AI-powered chat platform featuring real-time communication,
-                    intelligent message filtering, and personalized user interactions.
-                  </p>
-                  <div className="mb-4 space-y-2">
-                    <h4 className="text-sm font-medium">Key Features:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• Real-time messaging with WebSocket integration</li>
-                      <li>• AI-powered message filtering and moderation</li>
-                      <li>• Smart auto-suggestions and context awareness</li>
-                      <li>• User tagging and notification system</li>
-                      <li>• Responsive mobile-first design</li>
-                    </ul>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Badge variant="secondary">React.js</Badge>
-                    <Badge variant="secondary">Next.js</Badge>
-                    <Badge variant="secondary">WebSockets</Badge>
-                    <Badge variant="secondary">AI Integration</Badge>
-                    <Badge variant="secondary">TypeScript</Badge>
-                    <Badge variant="secondary">Tailwind CSS</Badge>
-                  </div>
-                </CardContent>
-                <CardFooter className="mt-auto flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                      Code
-                    </a>
-                  </Button>
-                  <ClientOnly>
-                    <Button size="sm" asChild>
-                      <a
-                        href="https://chat.kink.ai"
-                        onClick={onAdultLinkClick('https://chat.kink.ai', 'Kinky AI Chat')}
-                        className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        Demo
-                      </a>
-                    </Button>
-                  </ClientOnly>
-                </CardFooter>
-              </Card>
-
-              {/* Project 3 */}
-              <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
-                <div className="relative aspect-video bg-muted">
-                  <div className="absolute inset-0 flex items-center justify-center blur-xl">
-                    <img
-                      src="/images/clips.png"
-                      alt="KinkyClips Project Screenshot"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
-                <CardHeader>
-                  <CardTitle>KinkyClips</CardTitle>
-                  <CardDescription>Mobile & Web Application</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    A cross-platform mobile application with advanced video processing capabilities,
-                    available on both iOS and Android platforms.
-                  </p>
-                  <div className="mb-4 space-y-2">
-                    <h4 className="text-sm font-medium">Key Features:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      <li>• Cross-platform mobile app (iOS & Android)</li>
-                      <li>• Advanced video processing and editing</li>
-                      <li>• Adaptive streaming for optimal performance</li>
-                      <li>• Secure payment integration</li>
-                      <li>• Admin dashboard for content management</li>
-                    </ul>
-                  </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Badge variant="secondary">React Native</Badge>
-                    <Badge variant="secondary">Mobile Apps</Badge>
-                    <Badge variant="secondary">Video Processing</Badge>
-                    <Badge variant="secondary">Payments</Badge>
-                    <Badge variant="secondary">Firebase</Badge>
-                    <Badge variant="secondary">AWS</Badge>
-                  </div>
-                </CardContent>
-                <CardFooter className="mt-auto flex justify-between">
-                  <Button variant="outline" size="sm" asChild>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                      Code
-                    </a>
-                  </Button>
-                  <ClientOnly>
-                    <Button size="sm" asChild>
-                      <a
-                        href="https://kinkyclips.com"
-                        onClick={onAdultLinkClick('https://kinkyclips.com', 'KinkyClips')}
-                        className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        Demo
-                      </a>
-                    </Button>
-                  </ClientOnly>
-                </CardFooter>
-              </Card>
+              {featuredProjects.map(project => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  compact
+                  onAdultLinkClick={onAdultLinkClick}
+                />
+              ))}
             </div>
 
-            <div className="mt-12 flex justify-center">
+            <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
+              <Button asChild>
+                <Link to="/pantheon-demo">Open Pantheon Demo</Link>
+              </Button>
               <Button variant="outline" asChild>
                 <Link to="/projects">View All Projects</Link>
               </Button>

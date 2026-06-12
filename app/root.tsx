@@ -8,6 +8,8 @@ import {
   isRouteErrorResponse,
   MetaFunction,
 } from '@remix-run/react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 
 import { ThemeProvider } from './components/theme-provider';
 
@@ -24,12 +26,59 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+type AnimationMode = 'classic' | 'animated';
+
+interface AnimationModeContextValue {
+  mode: AnimationMode;
+  setMode: (mode: AnimationMode) => void;
+}
+
+const AnimationModeContext = createContext<AnimationModeContextValue | null>(null);
+
+export function useAnimationMode() {
+  const context = useContext(AnimationModeContext);
+
+  if (!context) {
+    return {
+      mode: 'classic' as AnimationMode,
+      setMode: () => undefined,
+    };
+  }
+
+  return context;
+}
+
+function AnimationModeProvider({ children }: { children: ReactNode }) {
+  const [mode, setModeState] = useState<AnimationMode>('classic');
+
+  useEffect(() => {
+    const savedMode = window.localStorage.getItem('selectedMode');
+    if (savedMode === 'classic' || savedMode === 'animated') {
+      setModeState(savedMode);
+    }
+  }, []);
+
+  const value = useMemo<AnimationModeContextValue>(
+    () => ({
+      mode,
+      setMode: nextMode => {
+        setModeState(nextMode);
+        window.localStorage.setItem('selectedMode', nextMode);
+        window.localStorage.setItem('portfolioExperienceSelected', 'true');
+      },
+    }),
+    [mode]
+  );
+
+  return <AnimationModeContext.Provider value={value}>{children}</AnimationModeContext.Provider>;
+}
+
 // Common head component to ensure consistency
 function Document({
   children,
   className = 'min-h-screen bg-background font-sans antialiased',
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
   return (
@@ -53,16 +102,18 @@ export default function App() {
   return (
     <Document>
       <ThemeProvider>
-        <div className="relative flex min-h-screen flex-col overflow-x-hidden">
-          {/* Global Theme-Aware Background */}
-          <div className="fixed inset-0 -z-50">
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 dark:from-slate-950 dark:via-blue-950/30 dark:to-indigo-950/30" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.05),transparent_50%)]" />
+        <AnimationModeProvider>
+          <div className="relative flex min-h-screen flex-col overflow-x-clip">
+            {/* Global Theme-Aware Background */}
+            <div className="fixed inset-0 -z-50">
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 dark:from-slate-950 dark:via-blue-950/30 dark:to-indigo-950/30" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.05),transparent_50%)]" />
+            </div>
+            <div className="relative z-0 flex-1">
+              <Outlet />
+            </div>
           </div>
-          <div className="relative z-0 flex-1">
-            <Outlet />
-          </div>
-        </div>
+        </AnimationModeProvider>
       </ThemeProvider>
     </Document>
   );

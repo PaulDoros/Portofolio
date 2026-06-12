@@ -42,6 +42,7 @@ export default defineConfig({
     alias: {
       '~': '/app',
     },
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
   },
   build: {
     // Turn off sourcemaps in production to prevent message channel issues
@@ -72,6 +73,19 @@ export default defineConfig({
       '@radix-ui/react-progress',
       '@radix-ui/react-separator',
       '@radix-ui/react-tabs',
+      'lucide-react',
+      'motion/react',
+      'framer-motion',
+      'gsap',
+      'gsap/ScrollTrigger',
+      'gsap/Draggable',
+      'gsap/DrawSVGPlugin',
+      'gsap/Flip',
+      'gsap/InertiaPlugin',
+      'gsap/Observer',
+      'gsap/Physics2DPlugin',
+      'gsap/ScrambleTextPlugin',
+      'gsap/SplitText',
     ],
     exclude: ['@remix-run/node', '@remix-run/react'],
   },

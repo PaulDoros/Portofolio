@@ -10,19 +10,22 @@ import {
   CircleDot,
   ClipboardCheck,
   ClipboardList,
+  CreditCard,
   Gauge,
+  HelpCircle,
   HeartPulse,
   MousePointer2,
+  PhoneCall,
   ScanLine,
   ShieldCheck,
   Smile,
   Sparkles,
   Star,
   Stethoscope,
+  UserRound,
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import { Draggable } from 'gsap/Draggable';
 import { Flip } from 'gsap/Flip';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
@@ -31,7 +34,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, Flip, Observer, Draggable, InertiaPlugin);
+  gsap.registerPlugin(ScrollTrigger, SplitText, Flip, Observer, Draggable, InertiaPlugin);
 }
 
 export const meta: MetaFunction = () => [
@@ -123,17 +126,66 @@ const calendarPreview = [
   ['7d', 'Treatment plan', '3 windows'],
 ];
 
+const clinicians = [
+  {
+    name: 'Dr. Elena Marcu',
+    role: 'Cosmetic dentistry',
+    detail: 'Smile design, whitening plans, and veneer consults with clear treatment timelines.',
+    availability: 'Mon, Wed, Fri',
+  },
+  {
+    name: 'Dr. Raul Ionescu',
+    role: 'Family and preventive care',
+    detail: 'Gentle exams, cleanings, gum health, and long-term household care plans.',
+    availability: 'Tue-Sat',
+  },
+  {
+    name: 'Dr. Mina Pavel',
+    role: 'Urgent dental care',
+    detail: 'Pain triage, swelling checks, repair visits, and priority appointment review.',
+    availability: '24h triage',
+  },
+];
+
+const insuranceNotes = [
+  ['Accepted plans', 'Most PPO plans, direct pay, and staged treatment estimates.'],
+  [
+    'Transparent costs',
+    'Patients see what is diagnostic, cosmetic, or urgent before requesting care.',
+  ],
+  ['Emergency line', 'Pain or swelling routes show when to call instead of waiting.'],
+];
+
+const clinicFaqs = [
+  [
+    'Do you treat dental emergencies?',
+    'Yes. The triage route flags pain, swelling, and repair needs for priority review.',
+  ],
+  [
+    'Can I request cosmetic pricing?',
+    'Yes. Smile design starts with a consult and staged treatment estimate.',
+  ],
+  [
+    'Is this form submitting health data?',
+    'No. This is a static showcase; no patient information is sent anywhere.',
+  ],
+];
+
 export default function NovaDentClinicRoute() {
   const containerRef = useRef<HTMLElement | null>(null);
   const [activePath, setActivePath] = useState(symptomPaths[0]);
 
-  useGSAP(
-    () => {
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    let animationCleanup: (() => void) | undefined;
+
+    const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (reduceMotion) {
         gsap.set(
-          '.nova-reveal, .nova-service-card, .nova-review, .nova-appointment, .nova-checkin-card, .nova-stage-card, .nova-triage-shell, .nova-triage-option, .nova-day-card',
+          '.nova-reveal, .nova-service-card, .nova-review, .nova-appointment, .nova-checkin-card, .nova-stage-card, .nova-triage-shell, .nova-triage-option, .nova-day-card, .nova-clinician-card, .nova-faq-card',
           {
             autoAlpha: 1,
             y: 0,
@@ -153,10 +205,10 @@ export default function NovaDentClinicRoute() {
         onSplit(self) {
           return gsap.from(self.words, {
             autoAlpha: 0,
-            yPercent: 92,
-            rotate: 1.6,
-            duration: 0.78,
-            stagger: 0.032,
+            yPercent: 34,
+            rotate: 0.6,
+            duration: 0.5,
+            stagger: 0.018,
             ease: 'power3.out',
           });
         },
@@ -177,49 +229,56 @@ export default function NovaDentClinicRoute() {
       const journey = gsap.timeline({
         scrollTrigger: {
           trigger: '.nova-journey-pin',
-          start: 'top top',
-          end: '+=1600',
+          start: 'top 72%',
+          end: 'bottom 32%',
           scrub: 0.8,
-          pin: true,
         },
       });
 
       journey
         .to('.nova-journey-progress', { scaleX: 1, ease: 'none' })
-        .to('.nova-stage-card', { y: -24, stagger: 0.12, ease: 'power2.out' }, '<')
-        .to('.nova-orbit-ring', { rotate: 120, ease: 'none' }, 0)
-        .to('.nova-orbit-dot', { rotate: -120, ease: 'none' }, 0);
+        .to('.nova-stage-card', { y: -14, stagger: 0.08, ease: 'power2.out' }, '<')
+        .to('.nova-orbit-ring', { rotate: 80, ease: 'none' }, 0)
+        .to('.nova-orbit-dot', { rotate: -80, ease: 'none' }, 0);
 
       ScrollTrigger.batch('.nova-reveal', {
         start: 'top 82%',
         once: true,
         onEnter: batch => {
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 32 },
-            { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }
-          );
+          gsap.from(batch, {
+            y: 26,
+            duration: 0.68,
+            stagger: 0.08,
+            ease: 'power3.out',
+            clearProps: 'transform',
+          });
         },
       });
 
-      ScrollTrigger.batch('.nova-triage-option, .nova-day-card', {
-        start: 'top 84%',
-        once: true,
-        onEnter: batch => {
-          gsap.fromTo(
-            batch,
-            { autoAlpha: 0, y: 28, rotate: -0.6 },
-            { autoAlpha: 1, y: 0, rotate: 0, duration: 0.68, stagger: 0.07, ease: 'power3.out' }
-          );
-        },
-      });
+      ScrollTrigger.batch(
+        '.nova-triage-option, .nova-day-card, .nova-clinician-card, .nova-faq-card',
+        {
+          start: 'top 84%',
+          once: true,
+          onEnter: batch => {
+            gsap.from(batch, {
+              y: 24,
+              rotate: -0.4,
+              duration: 0.64,
+              stagger: 0.07,
+              ease: 'power3.out',
+              clearProps: 'transform',
+            });
+          },
+        }
+      );
 
       gsap.from('.nova-review', {
-        autoAlpha: 0,
         y: 26,
         stagger: 0.08,
         duration: 0.68,
         ease: 'power3.out',
+        clearProps: 'transform',
         scrollTrigger: {
           trigger: '.nova-review-grid',
           start: 'top 80%',
@@ -262,7 +321,7 @@ export default function NovaDentClinicRoute() {
 
       const serviceObserver = Observer.create({
         target: '.nova-service-orbit',
-        type: 'wheel,touch,pointer',
+        type: 'touch,pointer',
         tolerance: 18,
         onLeft: () => activateService(activeService + 1),
         onRight: () => activateService(activeService - 1),
@@ -279,18 +338,24 @@ export default function NovaDentClinicRoute() {
 
       activateService(0);
 
-      return () => {
+      animationCleanup = () => {
         split.revert();
         serviceObserver.kill();
         comfortDraggables.forEach(instance => instance.kill());
         removeListeners.forEach(remove => remove());
       };
-    },
-    { scope: containerRef }
-  );
+    }, containerRef);
 
-  useGSAP(
-    () => {
+    return () => {
+      animationCleanup?.();
+      ctx.revert();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (reduceMotion) return;
@@ -305,13 +370,14 @@ export default function NovaDentClinicRoute() {
         { autoAlpha: 0, x: -14 },
         { autoAlpha: 1, x: 0, duration: 0.38, stagger: 0.055, ease: 'power2.out' }
       );
-    },
-    { scope: containerRef, dependencies: [activePath.id], revertOnUpdate: true }
-  );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [activePath.id]);
 
   return (
     <main ref={containerRef} className="min-h-screen overflow-hidden bg-[#F7FBFA] text-[#102321]">
-      <section className="relative min-h-screen overflow-hidden bg-[#F7FBFA]">
+      <section className="relative overflow-hidden bg-[#F7FBFA]">
         <div className="absolute inset-0 bg-[linear-gradient(110deg,#F7FBFA_0%,#E7F8F4_42%,#C8E2EA_100%)]" />
         <div className="absolute right-0 top-0 h-full w-[42vw] bg-[url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1400&q=80')] bg-cover bg-center opacity-20" />
 
@@ -327,6 +393,22 @@ export default function NovaDentClinicRoute() {
             <Smile className="h-4 w-4" />
             NovaDent Clinic
           </div>
+          <nav className="hidden items-center gap-2 rounded-full border border-[#102321]/10 bg-white/70 p-1 text-xs font-bold text-[#48615D] lg:flex">
+            {[
+              ['Services', '#services'],
+              ['Doctors', '#doctors'],
+              ['Insurance', '#insurance'],
+              ['FAQ', '#faq'],
+            ].map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                className="rounded-full px-3 py-2 transition hover:bg-white hover:text-[#102321]"
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
           <a
             href="#appointment"
             className="hidden rounded-full bg-[#102321] px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#0F766E] motion-reduce:hover:translate-y-0 sm:inline-flex"
@@ -335,7 +417,7 @@ export default function NovaDentClinicRoute() {
           </a>
         </header>
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl gap-8 px-4 pb-14 pt-8 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-8">
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-8">
           <div className="flex flex-col justify-center">
             <div className="nova-kicker mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-teal-400/25 bg-white/70 px-3 py-2 text-xs uppercase tracking-[0.22em] text-[#0F766E]">
               <Sparkles className="h-4 w-4" />
@@ -416,17 +498,19 @@ export default function NovaDentClinicRoute() {
 
       <section
         id="journey"
-        className="nova-journey-pin relative min-h-screen overflow-hidden bg-[#102321] px-4 py-20 text-white sm:px-6 lg:px-8"
+        className="nova-journey-pin relative overflow-hidden bg-[#102321] px-4 py-20 text-white sm:px-6 lg:px-8"
       >
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-center">
           <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-[#5EEAD4]">Pinned journey</p>
+            <p className="text-xs uppercase tracking-[0.24em] text-[#5EEAD4]">
+              Animated care journey
+            </p>
             <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
               Scroll turns care into visible steps.
             </h2>
             <p className="text-white/62 mt-4 text-sm leading-7">
-              GSAP pins this section and scrubs the progress so the clinic story feels different
-              from the real estate search interface.
+              GSAP scrubs the progress so the clinic story feels different from the other demo
+              templates without locking the page scroll.
             </p>
             <div className="mt-8 h-2 overflow-hidden rounded-full bg-white/10">
               <div className="nova-journey-progress h-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-[#2DD4BF] via-[#60A5FA] to-[#F59E0B]" />
@@ -458,7 +542,7 @@ export default function NovaDentClinicRoute() {
         <div className="nova-reveal mb-8 max-w-3xl">
           <p className="text-xs uppercase tracking-[0.24em] text-[#0F766E]">Service pathways</p>
           <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
-            Swipe, wheel, or click to change the care focus.
+            Swipe or click to change the care focus.
           </h2>
         </div>
 
@@ -658,6 +742,99 @@ export default function NovaDentClinicRoute() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="doctors" className="bg-[#102321] px-4 py-20 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="nova-reveal mb-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end">
+            <div>
+              <p className="text-xs uppercase tracking-[0.24em] text-[#5EEAD4]">
+                Doctors and trust
+              </p>
+              <h2 className="mt-2 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl">
+                A clinic site needs people, policies, and emergency clarity.
+              </h2>
+            </div>
+            <p className="text-white/62 text-sm leading-7">
+              The template gives patients a reason to trust the appointment request before they ever
+              reach the form.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {clinicians.map(clinician => (
+              <article
+                key={clinician.name}
+                className="nova-clinician-card rounded-[1.45rem] border border-white/10 bg-white/[0.06] p-5"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2DD4BF] text-[#102321]">
+                  <UserRound className="h-6 w-6" />
+                </div>
+                <p className="text-xs uppercase tracking-[0.2em] text-[#5EEAD4]/70">
+                  {clinician.role}
+                </p>
+                <h3 className="mt-2 text-2xl font-black">{clinician.name}</h3>
+                <p className="text-white/62 mt-3 text-sm leading-7">{clinician.detail}</p>
+                <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-bold text-[#5EEAD4]">
+                  {clinician.availability}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="insurance" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
+          <div>
+            <div className="nova-reveal mb-8 max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.24em] text-[#0F766E]">
+                Insurance and emergency notes
+              </p>
+              <h2 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">
+                Patient questions are handled before the form.
+              </h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3">
+              {insuranceNotes.map(([title, detail], index) => (
+                <article
+                  key={title}
+                  className="nova-faq-card rounded-[1.35rem] border border-[#D3E7E3] bg-white p-5 shadow-[0_16px_45px_rgba(16,35,33,0.05)]"
+                >
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-[#E9F8F4] text-[#0F766E]">
+                    {index === 0 ? (
+                      <CreditCard className="h-5 w-5" />
+                    ) : index === 1 ? (
+                      <ShieldCheck className="h-5 w-5" />
+                    ) : (
+                      <PhoneCall className="h-5 w-5" />
+                    )}
+                  </div>
+                  <h3 className="text-xl font-black">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#48615D]">{detail}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <aside
+            id="faq"
+            className="nova-reveal rounded-[1.6rem] border border-[#D3E7E3] bg-white p-5 shadow-[0_20px_70px_rgba(16,35,33,0.08)]"
+          >
+            <div className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#0F766E]">
+              <HelpCircle className="h-4 w-4" />
+              Patient FAQ
+            </div>
+            <div className="space-y-3">
+              {clinicFaqs.map(([question, answer]) => (
+                <div key={question} className="nova-faq-card rounded-2xl bg-[#F7FBFA] p-4">
+                  <h3 className="font-black">{question}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#48615D]">{answer}</p>
+                </div>
+              ))}
+            </div>
+          </aside>
         </div>
       </section>
 
