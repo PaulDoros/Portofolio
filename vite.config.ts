@@ -46,6 +46,9 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
   },
+  ssr: {
+    noExternal: ['gsap'],
+  },
   build: {
     // Turn off sourcemaps in production to prevent message channel issues
     sourcemap: false,
